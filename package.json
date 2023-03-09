@@ -1,0 +1,35 @@
+{
+  "name": "@leapwallet/name-matcha",
+  "version": "0.0.1",
+  "repository": "https://github.com/leapwallet/name-matcha",
+  "author": "Leap Wallet",
+  "license": "MIT",
+  "type": "module",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js"
+    }
+  },
+  "module": "./dist/index.es.js",
+  "unpkg": "./dist/index.umd.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "run-s build:*",
+    "build:lib": "vite build",
+    "build:types": "tsc",
+    "lint": "eslint src",
+    "dev": "run-p watch:*",
+    "test": "vitest",
+    "coverage": "vitest --coverage"
+  },
+  "devDependencies": {
+    "npm-run-all": "4.1.5",
+    "typescript": "4.9.5",
+    "vite": "4.1.4",
+    "vitest": "0.29.2"
+  }
+}
