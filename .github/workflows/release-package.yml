@@ -1,0 +1,36 @@
+name: Release Package
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+      
+      - name: ⬇️ Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+          scope: '@leapwallet'
+      
+      - name: 📥 Install Dependencies
+        run: yarn install
+      
+      - name: 🏗️ Build Library
+        run: yarn build
+
+      - name: 📤 Publish Package
+        env:
+          NEW_VERSION: ${{ github.ref_name }}
+        run: yarn publish --non-interactive --no-git-tag-version --registry="https://npm.pkg.github.com" --scope="@leapwallet" --new-version=${NEW_VERSION:1}
