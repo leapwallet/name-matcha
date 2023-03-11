@@ -13,12 +13,7 @@ export default defineConfig({
     },
     sourcemap: true,
     rollupOptions: {
-      external: ['zod'],
-      output: {
-        globals: {
-          zod: 'zod'
-        }
-      }
+      external: ['@cosmjs/*']
     }
   },
   exclude: ['./src/**/*.spec.ts']

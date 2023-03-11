@@ -1,0 +1,5 @@
+vite.config.js
+dist
+node_modules
+.github
+.vscode
