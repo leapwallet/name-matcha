@@ -5,15 +5,25 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'Parser Parfait',
-      formats: ['es', 'umd'],
+      name: 'NameMatcha',
+      formats: ['es', 'cjs'],
       fileName: (format) => {
-        return `index.${format}.js`
+        switch (format) {
+          case 'es':
+            return `index.es.js`
+          case 'cjs':
+            return `index.cjs`
+        }
       }
     },
     sourcemap: true,
     rollupOptions: {
-      external: ['@cosmjs/*']
+      external: ['@cosmjs/cosmwasm-stargate'],
+      output: {
+        globals: {
+          '@cosmjs/cosmwasm-stargate': 'cosmwasmStargate'
+        }
+      }
     }
   },
   exclude: ['./src/**/*.spec.ts']
