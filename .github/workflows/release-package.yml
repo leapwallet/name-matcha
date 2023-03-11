@@ -33,4 +33,4 @@ jobs:
       - name: 📤 Publish Package
         env:
           NEW_VERSION: ${{ github.ref_name }}
-        run: yarn publish --non-interactive --no-git-tag-version --registry="https://npm.pkg.github.com" --scope="@leapwallet" --new-version=${NEW_VERSION:1}
+        run: yarn publish --non-interactive --no-git-tag-version --registry="https://registry.npmjs.org/" --scope="@leapwallet" --new-version=${NEW_VERSION:1}
