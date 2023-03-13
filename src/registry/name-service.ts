@@ -22,14 +22,6 @@ export class MatchaError extends Error {
   }
 }
 
-export type NSResult<T> =
-  | { success: false; error: MatchaError }
-  | { success: true; data: T }
-
-export type ResolutionResult = NSResult<string>
-
-export type LookupResult = NSResult<string[]>
-
 export type Network = 'mainnet' | 'testnet'
 
 class CosmWasmClientHandler {
@@ -66,11 +58,11 @@ export abstract class NameService {
   /**
    * @param name Resolve this name into an address
    */
-  abstract resolve(name: string, network: Network): Promise<ResolutionResult>
+  abstract resolve(name: string, network: Network): Promise<string>
   /**
    * @param address Lookup this address and return a list of all associated names
    */
-  abstract lookup(address: string, network: Network): Promise<LookupResult>
+  abstract lookup(address: string, network: Network): Promise<string[]>
   /**
    * @param network The network to use
    */

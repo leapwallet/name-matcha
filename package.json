@@ -38,7 +38,8 @@
     "vitest": "0.29.2"
   },
   "dependencies": {
-    "@cosmjs/cosmwasm-stargate": "0.30.0"
+    "@cosmjs/cosmwasm-stargate": "0.30.0",
+    "bech32": "1.1.4"
   },
   "peerDependencies": {
     "@cosmjs/cosmwasm-stargate": "0.30.0"

@@ -2,12 +2,10 @@ import { ICNS } from './icns'
 import { IBCDomains } from './ibc-domains'
 import { StargazeNames } from './stargaze-names'
 import {
-  LookupResult,
   MatchaError,
   MatchaErrorType,
   NameService,
-  Network,
-  ResolutionResult
+  Network
 } from './name-service'
 
 export class Registry {
@@ -45,30 +43,30 @@ export class Registry {
     return Object.keys(this.services)
   }
 
-  async resolve(name: string, serviceID: string): Promise<ResolutionResult> {
+  async resolve(name: string, serviceID: string): Promise<string> {
     const service = this.getService(serviceID)
     return service.resolve(name, this.network)
   }
 
-  async lookup(address: string, serviceID: string): Promise<LookupResult> {
+  async lookup(address: string, serviceID: string): Promise<string[]> {
     const service = this.getService(serviceID)
     return service.lookup(address, this.network)
   }
 
   async resolveAll(name: string) {
-    return await Promise.all(
+    return Promise.allSettled(
       Object.entries(this.services).map(async ([serviceID, service]) => {
         const result = await service.resolve(name, this.network)
-        return { ...result, serviceID }
+        return { address: result, serviceID }
       })
     )
   }
 
   async lookupAll(address: string) {
-    return await Promise.all(
+    return Promise.allSettled(
       Object.entries(this.services).map(async ([serviceID, service]) => {
         const result = await service.lookup(address, this.network)
-        return { ...result, serviceID }
+        return { address: result, serviceID }
       })
     )
   }

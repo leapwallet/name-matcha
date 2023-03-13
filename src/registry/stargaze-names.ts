@@ -1,15 +1,14 @@
+import * as bech32 from 'bech32'
 import {
-  LookupResult,
   MatchaError,
   MatchaErrorType,
   NameService,
-  Network,
-  ResolutionResult
+  Network
 } from './name-service'
 
 const rpcUrls = {
-  mainnet: 'https://rpc.stargaze.cosmos.network',
-  testnet: 'https://rpc.testnet.stargaze.cosmos.network'
+  mainnet: 'https://rpc.cosmos.directory/stargaze',
+  testnet: 'https://rpc.elgafar-1.stargaze-apis.com'
 }
 
 export class StargazeNames extends NameService {
@@ -20,28 +19,33 @@ export class StargazeNames extends NameService {
     testnet: 'stars1rp5ttjvd5g0vlpltrkyvq62tcrdz949gjtpah000ynh4n2laz52qarz2z8'
   }
 
-  async resolve(name: string, network: Network): Promise<ResolutionResult> {
+  async resolve(name: string, network: Network): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
-
-    const [username] = name.split('.')
-    const res = await client.queryContractSmart(this.contractAddress[network], {
-      nft_info: {
-        token_id: username
+    const [username, prefix] = name.split('.')
+    try {
+      const res = await client.queryContractSmart(
+        this.contractAddress[network],
+        {
+          nft_info: {
+            token_id: username
+          }
+        }
+      )
+      if (!res?.token_uri) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
-    })
-    if (!res?.token_uri) {
-      return {
-        success: false,
-        error: new MatchaError('', MatchaErrorType.NOT_FOUND)
+      try {
+        const { words } = bech32.decode(res.token_uri.trim())
+        return bech32.encode(prefix, words)
+      } catch {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
-    }
-    return {
-      success: true,
-      data: res.token_uri
+    } catch (e) {
+      throw new MatchaError('', MatchaErrorType.NOT_FOUND)
     }
   }
 
-  async lookup(address: string, network: Network): Promise<LookupResult> {
-    throw new Error('Method not implemented.' + address)
+  async lookup(address: string, network: Network): Promise<string[]> {
+    throw new Error('Method not implemented.' + address + network)
   }
 }

@@ -1,15 +1,13 @@
 import {
-  LookupResult,
   MatchaError,
   MatchaErrorType,
   NameService,
-  Network,
-  ResolutionResult
+  Network
 } from './name-service'
 
 const rpcUrls = {
-  mainnet: 'https://rpc-osmosis.keplr.app',
-  testnet: 'https://rpc-osmosis-testnet.keplr.app'
+  mainnet: 'https://rpc.cosmos.directory/osmosis',
+  testnet: 'https://rpc-test.osmosis.zone'
 }
 
 export class ICNS extends NameService {
@@ -20,32 +18,30 @@ export class ICNS extends NameService {
     testnet: 'osmo1q2qpencrnnlamwalxt6tac2ytl35z5jejn0v4frnp6jff7gwp37sjcnhu5'
   }
 
-  async resolve(name: string, network: Network): Promise<ResolutionResult> {
+  async resolve(name: string, network: Network): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
 
-    const [username, bech32_prefix] = name.split('.')
-    const res = await client?.queryContractSmart(
-      this.contractAddress[network],
-      {
-        address: {
-          name: username,
-          bech32_prefix
+    const [username, prefix] = name.split('.')
+    try {
+      const res = await client?.queryContractSmart(
+        this.contractAddress[network],
+        {
+          address: {
+            name: username,
+            bech32_prefix: prefix
+          }
         }
+      )
+      if (!res?.address) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
-    )
-    if (!res?.address) {
-      return {
-        success: false,
-        error: new MatchaError('', MatchaErrorType.NOT_FOUND)
-      }
-    }
-    return {
-      success: true,
-      data: res.address
+      return res.address
+    } catch (e) {
+      throw new MatchaError('', MatchaErrorType.NOT_FOUND)
     }
   }
 
-  async lookup(address: string, network: Network): Promise<LookupResult> {
-    throw new Error('Method not implemented.' + address)
+  async lookup(address: string, network: Network): Promise<string[]> {
+    throw new Error('Method not implemented.' + address + network)
   }
 }
