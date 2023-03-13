@@ -34,8 +34,8 @@ export const Landing = () => {
         </h2>
         <p className="w-full sm:w-[75%] text-center leading-7 text-white mt-12 mx-auto">
           <strong>Name Matcha</strong> (<em>Matcha</em> -{' '}
-          <span lang="jp">抹茶</span>; Meaning - 'ground and powdered green
-          tea'; Emoji - 🍵) - a pun on <strong>name-matcher</strong> - is a
+          <span lang="jp">抹茶</span>; Meaning - &apos;ground and powdered green
+          tea&apos;; Emoji - 🍵) - a pun on <strong>name-matcher</strong> - is a
           javascript library (built in typescript) for resolving names to wallet
           addresses in the cosmos universe.
         </p>
@@ -61,11 +61,13 @@ export const Landing = () => {
         </ul>
       </section>
       <section className="w-full sm:w-[75%] mx-auto mt-20 flex flex-col items-center justify-center">
-        <h3 className="font-bold text-2xl sm:text-3xl">It's this Simple</h3>
+        <h3 className="font-bold text-2xl sm:text-3xl">
+          It&apos;s this Simple
+        </h3>
         <code className="mt-8 text-center p-4 sm:p-8 bg-gray-800 text-white rounded-lg text-sm sm:text-base">
           <span className="text-blue-400">matcha</span>.
           <span className="text-purple-400">resolve</span>(
-          <span className="text-green-400">'leap_cosmos.cosmos'</span>
+          <span className="text-green-400">&apos;leap_cosmos.cosmos&apos;</span>
           {', '}
           <span className="text-blue-400">services</span>.<span>icns</span>);
         </code>
