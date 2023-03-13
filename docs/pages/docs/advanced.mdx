@@ -1,0 +1,114 @@
+## List Name Services
+
+To list all registered name services, you can call the `listServices` method. Here's an example:
+
+```ts filename="index.ts"
+import nameMatcha from '@leapwallet/name-matcha'
+
+const services = nameMatcha.listServices()
+// ['icns', 'ibcDomains', 'stargazeNames']
+```
+
+## Custom Name Services
+
+This library allows you to define and register your own name services.
+
+### Defining a Name Service
+
+A name service is a class that implements the `NameService` interface. Here's an example of ICNS2 name service:
+
+```ts filename="icns2.ts"
+import { decode } from 'bech32'
+import {
+  MatchaError,
+  MatchaErrorType,
+  NameService,
+  Network
+} from '@leapwallet/name-matcha'
+
+const rpcUrls = {
+  mainnet: 'https://rpc.cosmos.directory/osmosis',
+  testnet: 'https://rpc-test.osmosis.zone'
+}
+
+// make sure this is unique
+export const serviceID = 'icns2'
+
+export class ICNS2 extends NameService {
+  serviceID = serviceID
+  chain = 'osmosis'
+  contractAddress = {
+    mainnet: 'osmo1xk0s8xgktn9x5vwcgtjdxqzadg88fgn33p8u9cnpdxwemvxscvast52cdd',
+    testnet: 'osmo1q2qpencrnnlamwalxt6tac2ytl35z5jejn0v4frnp6jff7gwp37sjcnhu5'
+  }
+
+  async resolve(name: string, network: Network): Promise<string> {
+    const client = await this.getCosmWasmClient(rpcUrls[network])
+
+    const [username, prefix] = name.split('.')
+    // place your logic here
+    try {
+      const res = await client?.queryContractSmart(
+        this.contractAddress[network],
+        {
+          address: {
+            name: username,
+            bech32_prefix: prefix
+          }
+        }
+      )
+      if (!res?.address) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      return res.address
+    } catch (e) {
+      throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+    }
+  }
+
+  async lookup(address: string, network: Network): Promise<string> {
+    const client = await this.getCosmWasmClient(rpcUrls[network])
+
+    const { prefix } = decode(address)
+    // place your logic here
+    try {
+      const res = await client?.queryContractSmart(
+        this.contractAddress[network],
+        {
+          primary_name: {
+            address
+          }
+        }
+      )
+      if (!res?.name) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      return `${res.name}.${prefix}`
+    } catch (e) {
+      throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+    }
+  }
+}
+```
+
+The `this.getCosmWasmClient{:ts}` method is a helper method that returns a `CosmWasmClient` instance. It is built into the NameService abstract class so you can use it in your own name service. Everything is taken care of for you.
+
+### Registering a Name Service
+
+To register a name service, you need to call the `registerNameService` method. Here's an example:
+
+```ts filename="index.ts"
+import nameMatcha, { services } from '@leapwallet/name-matcha'
+
+import { ICNS2, serviceID as icns2Id } from './icns2'
+
+// add the service ID to the services object
+const allServices = {
+  // built-in services
+  ...services,
+  // your custom icns2 service
+  [icns2Id]: icns2Id
+}
+
+nameMatcha.registerNameService(new ICNS2())
+```

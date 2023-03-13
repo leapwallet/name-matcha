@@ -35,22 +35,3 @@ You can use your favourtie package manager to install the library
     ```
   </Tab>
 </Tabs>
-
-
-## Usage
-
-Here's how you can quickly get started with resolving names -
-
-```js
-import matcha, { services } from '@leapwallet/name-matcha'
-
-const address = await matcha.resolve('alice.stars', service.stargazeNames)
-```
-
-Here's how you can lookup associated names for a wallet address -
-
-```js
-import matcha, { services } from '@leapwallet/name-matcha'
-
-const names = await matcha.lookup('cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh', service.stargazeNames)
-```

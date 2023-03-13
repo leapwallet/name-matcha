@@ -1,0 +1,124 @@
+## Imports
+
+### `nameMatcha`
+
+The library exports a default object with the required methods. You can import it like this:
+
+```ts
+import nameMatcha from '@leapwallet/name-matcha'
+```
+
+### `services`
+
+The library exports a `services` object with the available services:
+
+```ts
+import { services } from '@leapwallet/name-matcha'
+```
+
+It looks like this:
+
+```ts
+const services = {
+  icns: 'icns',
+  ibcDomains: 'ibcDomains',
+  stargazeNames: 'stargazeNames'
+}
+```
+
+## Name Resolution
+
+### `resolve`
+
+For resolving a name to address, you can use the `resolve` method. It takes two arguments:
+
+1. The name to query 
+2. The service to query against
+
+```ts
+const address = await nameMatcha.resolve('leap_cosmos.osmo', services.icns)
+console.log(address); // osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9
+```
+
+### `resolveAll`
+
+To resolve a name to an address, for all the available services, you can use the `resolveAll` method. It takes one argument:
+
+1. The name to query
+
+```ts
+const address = await nameMatcha.resolveAll('leap_cosmos.osmo')
+console.log(address);
+```
+
+The output will be an object with the service as key and the address as value:
+
+```ts
+{
+  icns: 'osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9',
+  ibcDomains: null,
+  stargazeNames: null,
+}
+```
+
+## Name Lookup
+
+### `lookup`
+
+For getting the name associated to an address, you can use the `lookup` method. It takes two arguments:
+
+1. The address to query
+2. The service to query against
+
+```ts
+const name = await nameMatcha.lookup('osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9', services.icns)
+console.log(name); // leap_cosmos.osmo
+```
+
+### `lookupAll`
+
+To get the name associated to an address, for all the available services, you can use the `lookupAll` method. It takes one argument:
+
+1. The address to query
+
+```ts
+const names = await nameMatcha.lookupAll('osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9')
+```
+
+The output will be an object with the service as key and the name as value:
+
+```ts
+{
+  icns: 'leap_cosmos.osmo',
+  ibcDomains: 'leapwallet.osmo',
+  stargazeNames: 'messi.osmo',
+}
+```
+
+## Switch Network
+
+By default, the library uses the `mainnet` network. To switch network, you can use the `setNetwork` method. It takes one argument:
+
+1. The network to use
+
+Here's an example:
+
+```ts
+nameMatcha.setNetwork('testnet')
+```
+
+## Error Handling
+
+The library throws errors when something goes wrong. The library throw errors of type `MatchaError`. It is built on top of the `Error` class, and has an additional property `type` of type `MatchaErrorType`.
+
+```ts
+import nameMatcha, { MatchaError, MatchaErrorType } from '@leapwallet/name-matcha'
+
+try {
+  const name = await nameMatcha.lookup('osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9', services.icns)
+} catch (error: MatchaError) {
+  if (error.type === MatchaErrorType.NOT_FOUND) {
+    alert('Name not found')
+  }
+}
+```

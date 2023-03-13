@@ -17,15 +17,16 @@ jobs:
       - name: ⬇️ Checkout Repo
         uses: actions/checkout@v3
 
-      - name: 🔧 Install Deps
+      - name: 🔧 Build Library
         run: |
           yarn install --frozen-lockfile
-          cd docs
-          yarn install --frozen-lockfile
+          yarn build
+          cp package.json dist
       
       - name: 📚 Build Docs
         run: |
           cd docs
+          yarn install --frozen-lockfile
           yarn build
 
       - name: 🚀 Deploy
