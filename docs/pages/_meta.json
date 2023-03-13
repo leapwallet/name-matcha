@@ -11,7 +11,7 @@
     "type": "page"
   },
   "demo": {
-    "title": "Working Demo",
+    "title": "Demo",
     "type": "page",
     "theme": {
       "layout": "full"

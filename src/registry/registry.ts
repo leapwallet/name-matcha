@@ -62,7 +62,7 @@ export class Registry {
     return service.resolve(name, this.network)
   }
 
-  async lookup(address: string, serviceID: string): Promise<string[]> {
+  async lookup(address: string, serviceID: string): Promise<string> {
     const service = this.getService(serviceID)
     return service.lookup(address, this.network)
   }
