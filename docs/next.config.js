@@ -4,6 +4,7 @@ const withNextra = require('nextra')({
 })
 
 module.exports = withNextra({
+  basePath: '/name-matcha',
   reactStrictMode: true,
   images: {
     unoptimized: true
