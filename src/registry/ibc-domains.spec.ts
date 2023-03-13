@@ -47,4 +47,16 @@ describe('IBCDomains', () => {
     },
     10000
   )
+
+  it.concurrent(
+    'should lookup name for cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
+    async () => {
+      const result = await resolver.lookup(
+        'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
+        'mainnet'
+      )
+      expect(result).toEqual('leapwallet.cosmos')
+    },
+    10000
+  )
 })

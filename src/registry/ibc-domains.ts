@@ -48,7 +48,28 @@ export class IBCDomains extends NameService {
     }
   }
 
-  async lookup(address: string, network: Network): Promise<string[]> {
-    throw new Error('Method not implemented.' + address + network)
+  async lookup(address: string, network: Network): Promise<string> {
+    const client = await this.getCosmWasmClient(rpcUrls.mainnet)
+
+    const { prefix, words } = decode(address)
+    const junoAddress = encode('juno', words)
+    try {
+      const res = await client?.queryContractSmart(
+        this.contractAddress[network],
+        {
+          primary_domain: {
+            address: junoAddress
+          }
+        }
+      )
+      if (!res?.domain) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      return `${res.domain}.${prefix}`
+    } catch (e) {
+      console.log(e)
+
+      throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+    }
   }
 }

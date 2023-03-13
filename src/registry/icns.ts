@@ -1,3 +1,4 @@
+import { decode } from 'bech32'
 import {
   MatchaError,
   MatchaErrorType,
@@ -43,7 +44,25 @@ export class ICNS extends NameService {
     }
   }
 
-  async lookup(address: string, network: Network): Promise<string[]> {
-    throw new Error('Method not implemented.' + address + network)
+  async lookup(address: string, network: Network): Promise<string> {
+    const client = await this.getCosmWasmClient(rpcUrls[network])
+
+    const { prefix } = decode(address)
+    try {
+      const res = await client?.queryContractSmart(
+        this.contractAddress[network],
+        {
+          primary_name: {
+            address
+          }
+        }
+      )
+      if (!res?.name) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      return `${res.name}.${prefix}`
+    } catch (e) {
+      throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+    }
   }
 }

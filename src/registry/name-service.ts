@@ -60,9 +60,9 @@ export abstract class NameService {
    */
   abstract resolve(name: string, network: Network): Promise<string>
   /**
-   * @param address Lookup this address and return a list of all associated names
+   * @param address Lookup this address and returns primary name
    */
-  abstract lookup(address: string, network: Network): Promise<string[]>
+  abstract lookup(address: string, network: Network): Promise<string>
   /**
    * @param network The network to use
    */

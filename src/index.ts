@@ -1,4 +1,10 @@
-import { Registry, NameService, MatchaError, MatchaErrorType } from './registry'
+import {
+  Registry,
+  NameService,
+  MatchaError,
+  MatchaErrorType,
+  services
+} from './registry'
 
 /**
  * Instance of registry class
@@ -12,4 +18,4 @@ const registry = new Registry('mainnet')
 
 export type { Registry, NameService, MatchaError, MatchaErrorType }
 
-export { registry as default }
+export { services, registry as default }

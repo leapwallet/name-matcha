@@ -48,7 +48,21 @@ export class StargazeNames extends NameService {
     }
   }
 
-  async lookup(address: string, network: Network): Promise<string[]> {
-    throw new Error('Method not implemented.' + address + network)
+  async lookup(address: string, network: Network): Promise<string> {
+    const client = await this.getCosmWasmClient(rpcUrls[network])
+    const { prefix } = decode(address)
+    try {
+      const res = await client.queryContractSmart(
+        this.contractAddress[network],
+        {
+          name: {
+            address
+          }
+        }
+      )
+      return `${res}.${prefix}`
+    } catch (e) {
+      throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+    }
   }
 }
