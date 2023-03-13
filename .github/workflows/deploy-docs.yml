@@ -1,0 +1,30 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+      
+      - name: ⬇️ Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: 🔧 Install Deps and Build 
+        run: |
+          cd docs
+          yarn install --frozen-lockfile
+          yarn build:static
+
+      - name: 🚀 Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build
