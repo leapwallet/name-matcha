@@ -28,9 +28,9 @@ describe('registry', () => {
   })
 
   it.concurrent(
-    'should resolve messi.cosmos on stargaze-names',
+    'should resolve messi.cosmos on stargazeNames',
     async () => {
-      const res = await registry.resolve('messi.cosmos', 'stargaze-names')
+      const res = await registry.resolve('messi.cosmos', 'stargazeNames')
       expect(res).toBe('cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh')
     },
     10000
@@ -46,9 +46,9 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should resolve leapwallet.osmo on ibc-domains',
+    'should resolve leapwallet.osmo on ibcDomains',
     async () => {
-      const res = await registry.resolve('leapwallet.osmo', 'ibc-domains')
+      const res = await registry.resolve('leapwallet.osmo', 'ibcDomains')
       expect(res).toBe('osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9')
     },
     10000
@@ -58,8 +58,26 @@ describe('registry', () => {
     'should resolveAll for messi.cosmos',
     async () => {
       const res = await registry.resolveAll('messi.cosmos')
-      expect(res).toHaveLength(3)
+      expect(res).toEqual({
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh'
+      })
     },
     10000
+  )
+
+  it.concurrent(
+    'should lookupAll for cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
+    async () => {
+      const res = await registry.lookupAll(
+        'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh'
+      )
+      expect(res).toEqual({
+        icns: 'leap_cosmos.cosmos',
+        ibcDomains: 'leapwallet.cosmos',
+        stargazeNames: 'messi.cosmos'
+      })
+    }
   )
 })

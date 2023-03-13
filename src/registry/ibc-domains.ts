@@ -11,7 +11,7 @@ const rpcUrls = {
   testnet: 'https://rpc.uni.kingnodes.com'
 }
 
-export const serviceID = 'ibc-domains'
+export const serviceID = 'ibcDomains'
 
 export class IBCDomains extends NameService {
   serviceID = serviceID

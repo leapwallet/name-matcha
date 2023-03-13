@@ -68,20 +68,32 @@ export class Registry {
   }
 
   async resolveAll(name: string) {
-    return Promise.allSettled(
+    const record: Record<string, string | null> = {}
+    await Promise.all(
       Object.entries(this.services).map(async ([serviceID, service]) => {
-        const result = await service.resolve(name, this.network)
-        return { address: result, serviceID }
+        try {
+          const result = await service.resolve(name, this.network)
+          record[serviceID] = result
+        } catch (e) {
+          record[serviceID] = null
+        }
       })
     )
+    return record
   }
 
   async lookupAll(address: string) {
-    return Promise.allSettled(
+    const record: Record<string, string | null> = {}
+    await Promise.all(
       Object.entries(this.services).map(async ([serviceID, service]) => {
-        const result = await service.lookup(address, this.network)
-        return { address: result, serviceID }
+        try {
+          const result = await service.lookup(address, this.network)
+          record[serviceID] = result
+        } catch (e) {
+          record[serviceID] = null
+        }
       })
     )
+    return record
   }
 }
