@@ -11,8 +11,10 @@ const rpcUrls = {
   testnet: 'https://rpc.uni.kingnodes.com'
 }
 
+export const serviceID = 'ibc-domains'
+
 export class IBCDomains extends NameService {
-  serviceID = 'ibc-domains'
+  serviceID = serviceID
   chain = 'juno'
   contractAddress = {
     mainnet: 'juno1ce7wjfsuk79t2mdvpdjtv8280pcc64yh9mh62qptuvxe64twt4pqa68z2a',

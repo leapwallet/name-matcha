@@ -10,8 +10,10 @@ const rpcUrls = {
   testnet: 'https://rpc-test.osmosis.zone'
 }
 
+export const serviceID = 'icns'
+
 export class ICNS extends NameService {
-  serviceID = 'icns'
+  serviceID = serviceID
   chain = 'osmosis'
   contractAddress = {
     mainnet: 'osmo1xk0s8xgktn9x5vwcgtjdxqzadg88fgn33p8u9cnpdxwemvxscvast52cdd',

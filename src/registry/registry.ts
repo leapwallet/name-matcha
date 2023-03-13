@@ -1,12 +1,18 @@
-import { ICNS } from './icns'
-import { IBCDomains } from './ibc-domains'
-import { StargazeNames } from './stargaze-names'
+import { ICNS, serviceID as _icnsID } from './icns'
+import { IBCDomains, serviceID as _ibcDomainsID } from './ibc-domains'
+import { StargazeNames, serviceID as _stargazeNamesID } from './stargaze-names'
 import {
   MatchaError,
   MatchaErrorType,
   NameService,
   Network
 } from './name-service'
+
+export const services = {
+  icns: _icnsID,
+  ibcDomains: _ibcDomainsID,
+  stargazeNames: _stargazeNamesID
+}
 
 export class Registry {
   private services: { [key: string]: NameService } = {}
@@ -45,6 +51,10 @@ export class Registry {
 
   setNetwork(network: Network) {
     this.network = network
+  }
+
+  getNetwork(): Network {
+    return this.network
   }
 
   async resolve(name: string, serviceID: string): Promise<string> {

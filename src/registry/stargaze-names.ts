@@ -11,8 +11,10 @@ const rpcUrls = {
   testnet: 'https://rpc.elgafar-1.stargaze-apis.com'
 }
 
+export const serviceID = 'stargaze-names'
+
 export class StargazeNames extends NameService {
-  serviceID = 'stargaze-names'
+  serviceID = serviceID
   chain = 'stargaze'
   contractAddress = {
     mainnet: 'stars1fx74nkqkw2748av8j7ew7r3xt9cgjqduwn8m0ur5lhe49uhlsasszc5fhr',
