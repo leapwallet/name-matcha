@@ -2,6 +2,24 @@
 
 **Name Matcha** (*Matcha* - 抹茶; Meaning - 'ground and powdered green tea'; Emoji - 🍵) - a pun on **name-matcher** - is a javascript library for resolving names to wallet addresses in the cosmos universe.
 
+## Installation
+
+```bash
+npm install @leapwallet/name-matcha
+```
+
+## Usage
+
+Here's how you can quickly get started with resolving names -
+
+```js
+import nameMatcha, { services } from '@leapwallet/name-matcha';
+
+const address = await nameMatcha.resolve('alice.stars', service.stargazeNames);
+```
+
+To know more about the API, check out the [Docs](https://leapwallet.github.io/name-matcha/).
+
 ## Motivation
 
 There are many ways to identify a wallet address in the cosmos universe. The most common way is to use the bech32 address format. However, this format is not very user-friendly. It is also not very easy to remember. This is why we need a way to identify a wallet address by a human-readable name.
@@ -14,27 +32,3 @@ For this purpose, the community has come up with quite a few name-services, a fe
 These services allow users to register a name for their wallet address. However, there is no standard way to resolve these names to wallet addresses. This is where *Name Matcha* comes in. It is a javascript library that allows you to resolve names to wallet addresses in a standard way.
 
 Just a single line of code is all you need to resolve a name to a wallet address.
-
-## Installation
-
-```bash
-npm install @leapwallet/name-matcha
-```
-
-## Usage
-
-Here's how you can quickly get started with resolving names -
-
-```js
-import matcha, { services } from '@leapwallet/name-matcha';
-
-const address = await matcha.resolve('alice.stars', service.stargazeNames);
-```
-
-Here's how you can lookup associated names for a wallet address -
-
-```js
-import matcha, { services } from '@leapwallet/name-matcha';
-
-const names = await matcha.lookup('cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh', service.stargazeNames);
-```
