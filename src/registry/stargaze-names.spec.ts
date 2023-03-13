@@ -10,37 +10,37 @@ describe('StargazeNames', () => {
   })
 
   it.concurrent(
-    'should resolve leapwallet.cosmos',
+    'should resolve messi.cosmos',
     async () => {
-      const result = await resolver.resolve('leapwallet.cosmos', 'mainnet')
+      const result = await resolver.resolve('messi.cosmos', 'mainnet')
       expect(result).toBe('cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh')
     },
     10000
   )
 
   it.concurrent(
-    'should resolve leapwallet.juno',
+    'should resolve messi.juno',
     async () => {
-      const result = await resolver.resolve('leapwallet.juno', 'mainnet')
+      const result = await resolver.resolve('messi.juno', 'mainnet')
       expect(result).toBe('juno19vf5mfr40awvkefw69nl6p3mmlsnacmmu49l8t')
     },
     10000
   )
 
   it.concurrent(
-    'should resolve leapwallet.osmo',
+    'should resolve messi.osmo',
     async () => {
-      const result = await resolver.resolve('leapwallet.osmo', 'mainnet')
+      const result = await resolver.resolve('messi.osmo', 'mainnet')
       expect(result).toBe('osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9')
     },
     10000
   )
 
   it.concurrent(
-    'should resolve leapwallet.stars',
+    'should resolve messi.stars',
     async () => {
-      const result = await resolver.resolve('leapwallet.stars', 'mainnet')
-      expect(result).toBe('stars1f4d3q86j2u8xl5h8n0arcp2k6uaegqu999vtwk')
+      const result = await resolver.resolve('messi.stars', 'mainnet')
+      expect(result).toBe('stars19vf5mfr40awvkefw69nl6p3mmlsnacmm7m3etx')
     },
     10000
   )

@@ -43,6 +43,10 @@ export class Registry {
     return Object.keys(this.services)
   }
 
+  setNetwork(network: Network) {
+    this.network = network
+  }
+
   async resolve(name: string, serviceID: string): Promise<string> {
     const service = this.getService(serviceID)
     return service.resolve(name, this.network)

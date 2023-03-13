@@ -18,12 +18,7 @@ export default defineConfig({
     },
     sourcemap: true,
     rollupOptions: {
-      external: ['@cosmjs/cosmwasm-stargate'],
-      output: {
-        globals: {
-          '@cosmjs/cosmwasm-stargate': 'cosmwasmStargate'
-        }
-      }
+      external: ['@cosmjs/cosmwasm-stargate']
     }
   },
   exclude: ['./src/**/*.spec.ts']

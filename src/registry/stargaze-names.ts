@@ -1,4 +1,4 @@
-import * as bech32 from 'bech32'
+import { decode, encode } from 'bech32'
 import {
   MatchaError,
   MatchaErrorType,
@@ -26,17 +26,18 @@ export class StargazeNames extends NameService {
       const res = await client.queryContractSmart(
         this.contractAddress[network],
         {
-          nft_info: {
-            token_id: username
+          associated_address: {
+            name: username
           }
         }
       )
-      if (!res?.token_uri) {
+
+      if (!res) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
       try {
-        const { words } = bech32.decode(res.token_uri.trim())
-        return bech32.encode(prefix, words)
+        const { words } = decode(res)
+        return encode(prefix, words)
       } catch {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }

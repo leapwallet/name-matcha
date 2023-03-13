@@ -1,4 +1,4 @@
-import * as bech32 from 'bech32'
+import { decode, encode } from 'bech32'
 import {
   MatchaError,
   MatchaErrorType,
@@ -36,8 +36,8 @@ export class IBCDomains extends NameService {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
       try {
-        const { words } = bech32.decode(res.owner)
-        return bech32.encode(prefix, words)
+        const { words } = decode(res.owner)
+        return encode(prefix, words)
       } catch {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
