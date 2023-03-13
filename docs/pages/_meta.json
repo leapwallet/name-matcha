@@ -9,5 +9,12 @@
   "docs": {
     "title": "Documentation",
     "type": "page"
+  },
+  "demo": {
+    "title": "Working Demo",
+    "type": "page",
+    "theme": {
+      "layout": "full"
+    }
   }
 }

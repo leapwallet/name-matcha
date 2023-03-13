@@ -1,9 +1,7 @@
 export default {
   logo: (
     <span>
-      <strong>
-        🍵 <code>name-matcha</code>
-      </strong>
+      <strong>🍵 name-matcha</strong>
     </span>
   ),
   project: {

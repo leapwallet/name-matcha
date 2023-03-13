@@ -1,9 +1,11 @@
 import {
   Checks,
+  Code,
   Lightning,
   ListMagnifyingGlass,
   MagnifyingGlass
 } from '@phosphor-icons/react'
+import Link from 'next/link'
 
 const ListItem = ({ children }: React.PropsWithChildren) => {
   return (
@@ -16,7 +18,7 @@ const ListItem = ({ children }: React.PropsWithChildren) => {
 export const Landing = () => {
   return (
     <main
-      className="py-28 h-full"
+      className="py-28"
       style={{
         background:
           'linear-gradient(90deg, #111111 21px, transparent 1%) center, linear-gradient(#111111 21px, transparent 1%) center, #a766ccc4',
@@ -38,7 +40,7 @@ export const Landing = () => {
           addresses in the cosmos universe.
         </p>
       </header>
-      <section className="w-full sm:w-[75%] mx-auto mt-24 flex items-center justify-center">
+      <section className="w-full sm:w-[75%] mx-auto mt-16 flex items-center justify-center">
         <ul className="list-none grid gap-4 grid-cols-2 lg:grid-cols-4 justify-items-center">
           <ListItem>
             <MagnifyingGlass weight="bold" size={24} className="mb-3" />
@@ -58,7 +60,7 @@ export const Landing = () => {
           </ListItem>
         </ul>
       </section>
-      <section className="w-full sm:w-[75%] mx-auto mt-24 flex flex-col items-center justify-center">
+      <section className="w-full sm:w-[75%] mx-auto mt-20 flex flex-col items-center justify-center">
         <h3 className="font-bold text-2xl sm:text-3xl">It's this Simple</h3>
         <code className="mt-8 text-center p-4 sm:p-8 bg-gray-800 text-white rounded-lg text-sm sm:text-base">
           <span className="text-blue-400">matcha</span>.
@@ -67,6 +69,13 @@ export const Landing = () => {
           {', '}
           <span className="text-blue-400">services</span>.<span>icns</span>);
         </code>
+        <Link
+          href="/docs"
+          className="mt-12 text-center p-3 px-8 bg-indigo-500 text-white font-bold rounded-lg flex items-center justify-center text-sm sm:text-base"
+        >
+          Get Started{' '}
+          <Code weight="bold" className="ml-3 text-xl sm:text-2xl" />
+        </Link>
       </section>
     </main>
   )
