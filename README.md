@@ -1,6 +1,8 @@
 # 🍵 name-matcha
 
-**Name Matcha** (*Matcha* - 抹茶; Meaning - 'ground and powdered green tea'; Emoji - 🍵) - a pun on **name-matcher** - is a javascript library for resolving names to wallet addresses in the cosmos universe.
+**Name Matcha** (*Matcha* - 抹茶; Meaning - 'ground and powdered green tea'; Emoji - 🍵) - a pun on **name-matcher**.
+
+A developer-friendly javascript library that provides a standardized way to easily resolve Cosmos ecosystem name services to wallet addresses (and vice-versa) using just one line of code. 
 
 ## Installation
 
@@ -18,17 +20,14 @@ import nameMatcha, { services } from '@leapwallet/name-matcha';
 const address = await nameMatcha.resolve('alice.stars', service.stargazeNames);
 ```
 
-To know more about the API, check out the [Docs](https://leapwallet.github.io/name-matcha/).
+To know more about the library, check out the [Docs](https://leapwallet.github.io/name-matcha/).
 
-## Motivation
+## Name Service Support
 
-There are many ways to identify a wallet address in the cosmos universe. The most common way is to use the bech32 address format. However, this format is not very user-friendly. It is also not very easy to remember. This is why we need a way to identify a wallet address by a human-readable name.
+We support the following name services -
 
-For this purpose, the community has come up with quite a few name-services, a few popular ones are:
 1. [ICNS](https://www.icns.xyz)
 2. [Stargaze Names](https://www.stargaze.zone/names)
 3. [IBC Domains](https://ibc.domains)
 
-These services allow users to register a name for their wallet address. However, there is no standard way to resolve these names to wallet addresses. This is where *Name Matcha* comes in. It is a javascript library that allows you to resolve names to wallet addresses in a standard way.
-
-Just a single line of code is all you need to resolve a name to a wallet address.
+We also allow you to add your own name service for custom use-cases. You can look at the docs for the same [here](https://leapwallet.github.io/name-matcha/docs/advanced#custom-name-services).

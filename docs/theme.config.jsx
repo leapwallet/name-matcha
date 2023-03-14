@@ -18,6 +18,11 @@ export default {
       />
     </>
   ),
+  useNextSeoProps() {
+    return {
+      titleTemplate: '%s - NameMatcha'
+    }
+  },
   chat: {
     link: 'https://twitter.com/leap_wallet',
     icon: (

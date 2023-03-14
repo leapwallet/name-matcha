@@ -33,12 +33,15 @@ export const Landing = () => {
         <h2 className="mt-4 text-sm sm:text-base uppercase tracking-widest font-bold text-gray-300 text-center">
           One Stop Cosmos Name Resolution
         </h2>
-        <p className="w-full sm:w-[75%] text-center leading-7 text-white mt-12 mx-auto">
+        <p className="w-full sm:w-[75%] text-sm text-center leading-7 text-white mt-8 mx-auto">
           <strong>Name Matcha</strong> (<em>Matcha</em> -{' '}
           <span lang="jp">抹茶</span>; Meaning - &apos;ground and powdered green
-          tea&apos;; Emoji - 🍵) - a pun on <strong>name-matcher</strong> - is a
-          javascript library (built in typescript) for resolving names to wallet
-          addresses in the cosmos universe.
+          tea&apos;; Emoji - 🍵) - a pun on <strong>name-matcher</strong>
+        </p>
+        <p className="w-full sm:w-[50%] text-lg text-center leading-7 text-white mt-12 mx-auto">
+          A developer-friendly javascript library that provides a standardized
+          way to easily resolve Cosmos ecosystem name services to wallet
+          addresses (and vice-versa) using just one line of code.
         </p>
       </header>
       <section className="w-full sm:w-[75%] mx-auto mt-16 flex items-center justify-center">
