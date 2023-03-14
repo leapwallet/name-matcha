@@ -36,13 +36,18 @@ const ResolutionDemo = () => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [nameService, setNameService] = useState<string>(services.icns)
+  const [nameService, setNameService] = useState<string>(services.ibcDomains)
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const data = new FormData(e.currentTarget)
-      const name = data.get('name')!.toString()
+      const name = data.get('name')!.toString().trim()
+      if (!name) {
+        setStatus('error')
+        setError('Name is required')
+        return
+      }
       setStatus('loading')
       registry
         .resolve(name, nameService)
@@ -78,8 +83,8 @@ const ResolutionDemo = () => {
               setNameService(e.target.value)
             }}
           >
-            <option value={services.icns}>ICNS</option>
             <option value={services.ibcDomains}>IBC Domains</option>
+            <option value={services.icns}>ICNS</option>
             <option value={services.stargazeNames}>Stargaze Names</option>
           </select>
         </div>
@@ -96,7 +101,7 @@ const ResolutionDemo = () => {
               type="text"
               name="name"
               autoComplete="off"
-              placeholder="leapwallet.cosmos"
+              placeholder="Enter name to resolve"
               className="mt-2 px-3 py-2 border shadow-sm caret-white bg-[#111111] text-white border-slate-400 placeholder-slate-400 outline-none block w-full rounded-md sm:text-sm focus:ring-1"
             />
           </div>
@@ -141,13 +146,18 @@ const LookupDemo = () => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [nameService, setNameService] = useState<string>(services.icns)
+  const [nameService, setNameService] = useState<string>(services.ibcDomains)
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const data = new FormData(e.currentTarget)
-      const address = data.get('address')!.toString()
+      const address = data.get('address')!.toString().trim()
+      if (!address) {
+        setStatus('error')
+        setError('Address is required')
+        return
+      }
       setStatus('loading')
       registry
         .lookup(address, nameService)
@@ -183,8 +193,8 @@ const LookupDemo = () => {
               setNameService(e.target.value)
             }}
           >
-            <option value={services.icns}>ICNS</option>
             <option value={services.ibcDomains}>IBC Domains</option>
+            <option value={services.icns}>ICNS</option>
             <option value={services.stargazeNames}>Stargaze Names</option>
           </select>
         </div>
@@ -201,7 +211,7 @@ const LookupDemo = () => {
               type="text"
               name="address"
               autoComplete="off"
-              placeholder="osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9"
+              placeholder="Enter address here"
               className="mt-2 px-3 py-2 border shadow-sm caret-white bg-[#111111] text-white border-slate-400 placeholder-slate-400 outline-none block w-full rounded-md sm:text-sm focus:ring-1"
             />
           </div>
