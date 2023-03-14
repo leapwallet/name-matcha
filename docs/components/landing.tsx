@@ -1,6 +1,7 @@
 import {
   Checks,
   Code,
+  CursorClick,
   Lightning,
   ListMagnifyingGlass,
   MagnifyingGlass
@@ -9,7 +10,7 @@ import Link from 'next/link'
 
 const ListItem = ({ children }: React.PropsWithChildren) => {
   return (
-    <li className="px-6 text-xs sm:text-base font-bold border-2 border-gray-600 rounded-xl transition-all hover:bg-[#090909] hover:shadow hover:shadow-slate-600 w-full py-4 text-center flex flex-col items-center justify-center">
+    <li className="px-6 text-xs sm:text-base font-bold border-2 border-gray-800 rounded-xl transition-all hover:bg-[#111111] w-full py-4 text-center flex flex-col items-center justify-center">
       {children}
     </li>
   )
@@ -71,13 +72,22 @@ export const Landing = () => {
           {', '}
           <span className="text-blue-400">services</span>.<span>icns</span>);
         </code>
-        <Link
-          href="/docs"
-          className="mt-12 text-center p-3 px-8 bg-indigo-500 text-white font-bold rounded-lg flex items-center justify-center text-sm sm:text-base"
-        >
-          Get Started{' '}
-          <Code weight="bold" className="ml-3 text-xl sm:text-2xl" />
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center mt-12">
+          <Link
+            href="docs"
+            className="text-center p-3 px-8 bg-indigo-500 border border-indigo-500 text-white font-bold rounded-lg flex items-center justify-center text-sm sm:text-base"
+          >
+            Get Started{' '}
+            <Code weight="bold" className="ml-3 text-xl sm:text-2xl" />
+          </Link>
+          <Link
+            href="demo"
+            className="mt-4 sm:mt-0 sm:ml-4 text-center p-3 px-8 bg-transparent border border-indigo-500 text-white font-bold rounded-lg flex items-center justify-center text-sm sm:text-base"
+          >
+            Try it Out
+            <CursorClick weight="bold" className="ml-3 text-xl sm:text-2xl" />
+          </Link>
+        </div>
       </section>
     </main>
   )

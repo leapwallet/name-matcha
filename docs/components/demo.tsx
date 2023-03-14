@@ -36,13 +36,18 @@ const ResolutionDemo = () => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [nameService, setNameService] = useState<string>(services.icns)
+  const [nameService, setNameService] = useState<string>(services.ibcDomains)
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const data = new FormData(e.currentTarget)
-      const name = data.get('name')!.toString()
+      const name = data.get('name')!.toString().trim()
+      if (!name) {
+        setStatus('error')
+        setError('Name is required')
+        return
+      }
       setStatus('loading')
       registry
         .resolve(name, nameService)
@@ -78,8 +83,8 @@ const ResolutionDemo = () => {
               setNameService(e.target.value)
             }}
           >
-            <option value={services.icns}>ICNS</option>
             <option value={services.ibcDomains}>IBC Domains</option>
+            <option value={services.icns}>ICNS</option>
             <option value={services.stargazeNames}>Stargaze Names</option>
           </select>
         </div>
@@ -96,7 +101,7 @@ const ResolutionDemo = () => {
               type="text"
               name="name"
               autoComplete="off"
-              placeholder="leapwallet.cosmos"
+              placeholder="Enter name to resolve"
               className="mt-2 px-3 py-2 border shadow-sm caret-white bg-[#111111] text-white border-slate-400 placeholder-slate-400 outline-none block w-full rounded-md sm:text-sm focus:ring-1"
             />
           </div>
@@ -107,6 +112,11 @@ const ResolutionDemo = () => {
             <MagnifyingGlass weight="bold" size={20} />
           </button>
         </div>
+        {status === 'idle' ? (
+          <p className="text-sm text-gray-300 mt-2">
+            For example - leapwallet.osmo
+          </p>
+        ) : null}
       </form>
       {status === 'idle' ? null : (
         <div className="w-full min-h-[5rem] mt-8">
@@ -141,13 +151,18 @@ const LookupDemo = () => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [nameService, setNameService] = useState<string>(services.icns)
+  const [nameService, setNameService] = useState<string>(services.ibcDomains)
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const data = new FormData(e.currentTarget)
-      const address = data.get('address')!.toString()
+      const address = data.get('address')!.toString().trim()
+      if (!address) {
+        setStatus('error')
+        setError('Address is required')
+        return
+      }
       setStatus('loading')
       registry
         .lookup(address, nameService)
@@ -183,8 +198,8 @@ const LookupDemo = () => {
               setNameService(e.target.value)
             }}
           >
-            <option value={services.icns}>ICNS</option>
             <option value={services.ibcDomains}>IBC Domains</option>
+            <option value={services.icns}>ICNS</option>
             <option value={services.stargazeNames}>Stargaze Names</option>
           </select>
         </div>
@@ -201,7 +216,7 @@ const LookupDemo = () => {
               type="text"
               name="address"
               autoComplete="off"
-              placeholder="osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9"
+              placeholder="Enter address here"
               className="mt-2 px-3 py-2 border shadow-sm caret-white bg-[#111111] text-white border-slate-400 placeholder-slate-400 outline-none block w-full rounded-md sm:text-sm focus:ring-1"
             />
           </div>
@@ -212,6 +227,11 @@ const LookupDemo = () => {
             <MagnifyingGlass weight="bold" size={20} />
           </button>
         </div>
+        {status === 'idle' ? (
+          <p className="text-sm text-gray-300 mt-2">
+            For example - osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9
+          </p>
+        ) : null}
       </form>
       {status === 'idle' ? null : (
         <div className="w-full min-h-[5rem] mt-8">
@@ -252,15 +272,17 @@ const LookupDemo = () => {
 export const Demo = () => {
   return (
     <main
-      className="w-full h-full flex flex-col py-8 sm:flex-row justify-start sm:justify-center gap-4"
+      className="w-full h-[70%] py-8"
       style={{
         background:
           'linear-gradient(90deg, #111111 21px, transparent 1%) center, linear-gradient(#111111 21px, transparent 1%) center, #a766ccc4',
         backgroundSize: '22px 22px'
       }}
     >
-      <ResolutionDemo />
-      <LookupDemo />
+      <div className="flex flex-col sm:flex-row justify-start sm:justify-center gap-4">
+        <ResolutionDemo />
+        <LookupDemo />
+      </div>
     </main>
   )
 }
