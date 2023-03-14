@@ -112,6 +112,11 @@ const ResolutionDemo = () => {
             <MagnifyingGlass weight="bold" size={20} />
           </button>
         </div>
+        {status === 'idle' ? (
+          <p className="text-sm text-gray-300 mt-2">
+            For example - leapwallet.osmo
+          </p>
+        ) : null}
       </form>
       {status === 'idle' ? null : (
         <div className="w-full min-h-[5rem] mt-8">
@@ -222,6 +227,11 @@ const LookupDemo = () => {
             <MagnifyingGlass weight="bold" size={20} />
           </button>
         </div>
+        {status === 'idle' ? (
+          <p className="text-sm text-gray-300 mt-2">
+            For example - osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9
+          </p>
+        ) : null}
       </form>
       {status === 'idle' ? null : (
         <div className="w-full min-h-[5rem] mt-8">
@@ -262,15 +272,17 @@ const LookupDemo = () => {
 export const Demo = () => {
   return (
     <main
-      className="w-full h-full flex flex-col py-8 sm:flex-row justify-start sm:justify-center gap-4"
+      className="w-full h-[70%] py-8"
       style={{
         background:
           'linear-gradient(90deg, #111111 21px, transparent 1%) center, linear-gradient(#111111 21px, transparent 1%) center, #a766ccc4',
         backgroundSize: '22px 22px'
       }}
     >
-      <ResolutionDemo />
-      <LookupDemo />
+      <div className="flex flex-col sm:flex-row justify-start sm:justify-center gap-4">
+        <ResolutionDemo />
+        <LookupDemo />
+      </div>
     </main>
   )
 }
