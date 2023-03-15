@@ -7,7 +7,8 @@ export enum MatchaErrorType {
   NETWORK = 'network',
   NOT_FOUND = 'not-found',
   UNREGISTERED_SERVICE = 'unregistered-service',
-  DUPLICATE_SERVICE = 'duplicate-service'
+  DUPLICATE_SERVICE = 'duplicate-service',
+  INVALID_ADDRESS = 'invalid-address'
 }
 
 /**
@@ -20,6 +21,11 @@ export class MatchaError extends Error {
     this.name = 'MatchaError'
     this.type = errorType
   }
+}
+
+export type Addr = {
+  prefix: string | null
+  words: number[] | null
 }
 
 export type Network = 'mainnet' | 'testnet'
