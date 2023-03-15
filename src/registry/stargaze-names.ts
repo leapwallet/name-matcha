@@ -1,5 +1,6 @@
 import { decode, encode } from 'bech32'
 import {
+  Addr,
   MatchaError,
   MatchaErrorType,
   NameService,
@@ -50,7 +51,17 @@ export class StargazeNames extends NameService {
 
   async lookup(address: string, network: Network): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
-    const { prefix } = decode(address)
+    const addr: Addr = {
+      prefix: null,
+      words: null
+    }
+    try {
+      const { prefix, words } = decode(address)
+      addr.prefix = prefix
+      addr.words = words
+    } catch (e) {
+      throw new MatchaError('', MatchaErrorType.INVALID_ADDRESS)
+    }
     try {
       const res = await client.queryContractSmart(
         this.contractAddress[network],
@@ -60,7 +71,7 @@ export class StargazeNames extends NameService {
           }
         }
       )
-      return `${res}.${prefix}`
+      return `${res}.${addr.prefix}`
     } catch (e) {
       throw new MatchaError('', MatchaErrorType.NOT_FOUND)
     }

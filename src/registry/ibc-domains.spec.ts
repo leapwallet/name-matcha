@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBCDomains } from './ibc-domains'
-import { MatchaErrorType } from './name-service'
+import { MatchaError, MatchaErrorType } from './name-service'
 
 describe('IBCDomains', () => {
   const resolver = new IBCDomains()
@@ -56,6 +56,46 @@ describe('IBCDomains', () => {
         'mainnet'
       )
       expect(result).toEqual('leapwallet.cosmos')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should fail lookup name for cosmosp3mmlsnacmm28xyqh with invalid address',
+    async () => {
+      try {
+        await resolver.lookup('cosmosp3mmlsnacmm28xyqh', 'mainnet')
+      } catch (e) {
+        expect((e as MatchaError).type).toEqual(MatchaErrorType.INVALID_ADDRESS)
+      }
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should fail lookup name for cosmos1pkzmx7j90m9hxarmtu5j5ywxyetxl2q4wgxl59 with not found',
+    async () => {
+      try {
+        await resolver.lookup(
+          'cosmos1pkzmx7j90m9hxarmtu5j5ywxyetxl2q4wgxl59',
+          'mainnet'
+        )
+      } catch (e) {
+        expect((e as MatchaError).type).toEqual(MatchaErrorType.NOT_FOUND)
+      }
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should fail resolve name for ${Math.random().toString(36).substring(2, 12)}.cosmos with not found',
+    async () => {
+      const randName = `${Math.random().toString(36).substring(2, 12)}.cosmos`
+      try {
+        await resolver.resolve(randName, 'mainnet')
+      } catch (e) {
+        expect((e as MatchaError).type).toEqual(MatchaErrorType.NOT_FOUND)
+      }
     },
     10000
   )

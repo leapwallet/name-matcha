@@ -18,14 +18,7 @@ const ListItem = ({ children }: React.PropsWithChildren) => {
 
 export const Landing = () => {
   return (
-    <main
-      className="py-28"
-      style={{
-        background:
-          'linear-gradient(90deg, #111111 21px, transparent 1%) center, linear-gradient(#111111 21px, transparent 1%) center, #a766ccc4',
-        backgroundSize: '22px 22px'
-      }}
-    >
+    <main className="py-28 dot-grid-bg">
       <header className="w-full flex flex-col items-center justify-center ">
         <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white text-center">
           🍵 name-matcha

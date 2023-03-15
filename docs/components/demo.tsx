@@ -455,14 +455,7 @@ const LookupDemo = () => {
 
 export const Demo = () => {
   return (
-    <main
-      className="w-full h-[80%] py-8"
-      style={{
-        background:
-          'linear-gradient(90deg, #111111 21px, transparent 1%) center, linear-gradient(#111111 21px, transparent 1%) center, #a766ccc4',
-        backgroundSize: '22px 22px'
-      }}
-    >
+    <main className="w-full h-[80%] py-8 dot-grid-bg">
       <div className="flex flex-col sm:flex-row justify-start sm:justify-center gap-4">
         <ResolutionDemo />
         <LookupDemo />
