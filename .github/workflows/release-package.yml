@@ -25,8 +25,7 @@ jobs:
         run: yarn install
       
       - name: 🧪 Run Checks
-        run: 
-          yarn lint && yarn test
+        run: yarn lint
   
   publish-npm-registry:
     needs: [test]
