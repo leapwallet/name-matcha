@@ -25,17 +25,17 @@ jobs:
         run: yarn install
       
       - name: 🧪 Run Checks
-        run: yarn lint
-
-  release-on-npm:
+        run: 
+          yarn lint
+          yarn test
+  
+  publish-npm-registry:
     needs: [test]
     runs-on: ubuntu-latest
     env:
+      NEW_VERSION: ${{ github.ref_name }}
       NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
-      - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-      
       - name: ⬇️ Checkout Repo
         uses: actions/checkout@v3
 
@@ -43,25 +43,30 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: https://registry.npmjs.org/
+          registry-url: 'https://registry.npmjs.org'
           scope: '@leapwallet'
-      
+
       - name: 📥 Install Dependencies
         run: yarn --ignore-engines
       
       - name: 🏗️ Build Library
         run: yarn build
+      
+      - name: 🏷️ Get Tag
+        id: get_npm_tag
+        # if github.ref_name contains beta, then use beta, else use latest
+        run: echo "${{ github.ref_name }}" | grep -q "beta" && echo "tag_name=beta" >> "$GITHUB_OUTPUT" || echo "tag_name=latest" >> "$GITHUB_OUTPUT"
 
       - name: 🚀 Publish Library
-        env:
-          NEW_VERSION: ${{ github.ref_name }}
-        run: yarn publish --non-interactive --no-git-tag-version --new-version=${NEW_VERSION:1}
-
-  release-on-github:
+        run: yarn publish --non-interactive --no-git-tag-version --new-version=${NEW_VERSION:1} --tag=${{ steps.get_npm_tag.outputs.tag_name }}
+          
+  
+  publish-github-registry:
     needs: [test]
     runs-on: ubuntu-latest
     env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      NEW_VERSION: ${{ github.ref_name }}
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: ⬇️ Checkout Repo
         uses: actions/checkout@v3
@@ -79,7 +84,10 @@ jobs:
       - name: 🏗️ Build Library
         run: yarn build
       
+      - name: 🏷️ Get Tag
+        id: get_npm_tag
+        # if github.ref_name contains beta, then use beta, else use latest
+        run: echo "${{ github.ref_name }}" | grep -q "beta" && echo "tag_name=beta" >> "$GITHUB_OUTPUT" || echo "tag_name=latest" >> "$GITHUB_OUTPUT"
+
       - name: 🚀 Publish Library
-        env:
-          NEW_VERSION: ${{ github.ref_name }}
-        run: yarn publish --non-interactive --no-git-tag-version --new-version=${NEW_VERSION:1}
+        run: yarn publish --non-interactive --no-git-tag-version --new-version=${NEW_VERSION:1} --tag=${{ steps.get_npm_tag.outputs.tag_name }}
