@@ -6,7 +6,29 @@ on:
       - published
 
 jobs:
-  release:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: ⬇️ Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@leapwallet'
+      
+      - name: 📥 Install Dependencies
+        run: yarn install
+      
+      - name: 🧪 Run Checks
+        run: yarn lint
+
+  release-on-npm:
+    needs: [test]
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
@@ -20,17 +42,44 @@ jobs:
       - name: ⎔ Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           registry-url: https://registry.npmjs.org/
           scope: '@leapwallet'
       
       - name: 📥 Install Dependencies
-        run: yarn install
+        run: yarn --ignore-engines
       
       - name: 🏗️ Build Library
         run: yarn build
 
-      - name: 📤 Publish Package
+      - name: 🚀 Publish Library
         env:
           NEW_VERSION: ${{ github.ref_name }}
-        run: yarn publish --non-interactive --no-git-tag-version --registry="https://registry.npmjs.org/" --scope="@leapwallet" --new-version=${NEW_VERSION:1}
+        run: yarn publish --non-interactive --no-git-tag-version --new-version=${NEW_VERSION:1}
+
+  release-on-github:
+    needs: [test]
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+    steps:
+      - name: ⬇️ Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@leapwallet'
+
+      - name: 📥 Install Dependencies
+        run: yarn --ignore-engines
+      
+      - name: 🏗️ Build Library
+        run: yarn build
+      
+      - name: 🚀 Publish Library
+        env:
+          NEW_VERSION: ${{ github.ref_name }}
+        run: yarn publish --non-interactive --no-git-tag-version --new-version=${NEW_VERSION:1}
