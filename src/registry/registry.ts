@@ -1,6 +1,7 @@
 import { ICNS, serviceID as _icnsID } from './icns'
 import { IBCDomains, serviceID as _ibcDomainsID } from './ibc-domains'
 import { StargazeNames, serviceID as _stargazeNamesID } from './stargaze-names'
+import { ArchIdNames, serviceID as _archId } from './arch-id'
 import {
   MatchaError,
   MatchaErrorType,
@@ -11,7 +12,8 @@ import {
 export const services = {
   icns: _icnsID,
   ibcDomains: _ibcDomainsID,
-  stargazeNames: _stargazeNamesID
+  stargazeNames: _stargazeNamesID,
+  archIds: _archId
 }
 
 export class Registry {
@@ -22,6 +24,7 @@ export class Registry {
     this.registerService(new ICNS())
     this.registerService(new IBCDomains())
     this.registerService(new StargazeNames())
+    this.registerService(new ArchIdNames())
   }
 
   registerService(service: NameService) {

@@ -21,6 +21,7 @@ describe('registry', () => {
         .listServices()
         .reduce((acc, cur) => ({ ...acc, [cur]: true }), {})
     ).toEqual({
+      [services.archIds]: true,
       [services.icns]: true,
       [services.ibcDomains]: true,
       [services.stargazeNames]: true
@@ -55,10 +56,34 @@ describe('registry', () => {
   )
 
   it.concurrent(
+    'should resolve leap.arch on archIds',
+    async () => {
+      const res = await registry.resolve('leap.arch', 'archIds')
+      expect(res).toBe('archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolveAll for leap.arch',
+    async () => {
+      const res = await registry.resolveAll('leap.arch')
+      expect(res).toEqual({
+        archIds: 'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q',
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null
+      })
+    },
+    10000
+  )
+
+  it.concurrent(
     'should resolveAll for messi.cosmos',
     async () => {
       const res = await registry.resolveAll('messi.cosmos')
       expect(res).toEqual({
+        archIds: null,
         icns: null,
         ibcDomains: null,
         stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh'
@@ -74,9 +99,25 @@ describe('registry', () => {
         'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh'
       )
       expect(res).toEqual({
+        archIds: null,
         icns: 'leap_cosmos.cosmos',
         ibcDomains: 'leapwallet.cosmos',
         stargazeNames: 'messi.cosmos'
+      })
+    }
+  )
+
+  it.concurrent(
+    'should lookupAll for archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q',
+    async () => {
+      const res = await registry.lookupAll(
+        'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q'
+      )
+      expect(res).toEqual({
+        archIds: 'leap.arch',
+        icns: null,
+        ibcDomains: 'leapwallet.archway',
+        stargazeNames: 'messi.archway'
       })
     }
   )

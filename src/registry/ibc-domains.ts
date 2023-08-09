@@ -23,7 +23,7 @@ export class IBCDomains extends NameService {
   }
 
   async resolve(name: string, network: Network): Promise<string> {
-    const client = await this.getCosmWasmClient(rpcUrls.mainnet)
+    const client = await this.getCosmWasmClient(rpcUrls[network])
 
     const [username, prefix] = name.split('.')
     try {
@@ -50,7 +50,7 @@ export class IBCDomains extends NameService {
   }
 
   async lookup(address: string, network: Network): Promise<string> {
-    const client = await this.getCosmWasmClient(rpcUrls.mainnet)
+    const client = await this.getCosmWasmClient(rpcUrls[network])
 
     const addr: Addr = {
       prefix: null,
