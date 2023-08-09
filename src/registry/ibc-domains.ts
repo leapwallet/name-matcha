@@ -6,6 +6,7 @@ import {
   NameService,
   Network
 } from './name-service'
+import { addressPrefixes } from '../utils/address'
 
 const rpcUrls = {
   mainnet: 'https://rpc.cosmos.directory/juno',
@@ -35,7 +36,7 @@ export class IBCDomains extends NameService {
           }
         }
       )
-      if (!res?.owner) {
+      if (!res?.owner || !addressPrefixes[prefix]) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
       try {
