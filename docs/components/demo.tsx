@@ -12,7 +12,8 @@ import { Listbox, Switch, Transition } from '@headlessui/react'
 const nsMap = {
   [services.icns]: 'ICNS',
   [services.ibcDomains]: 'IBC Domains',
-  [services.stargazeNames]: 'Stargaze Names'
+  [services.stargazeNames]: 'Stargaze Names',
+  [services.archIds]: 'Arch ID'
 }
 
 const nsList = Object.entries(nsMap)
@@ -48,8 +49,7 @@ const Select: React.FC<{
               <Listbox.Option
                 key={value}
                 className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                    active ? 'bg-indigo-400 text-white' : 'text-gray-300'
+                  `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-indigo-400 text-white' : 'text-gray-300'
                   }`
                 }
                 value={value}
@@ -57,9 +57,8 @@ const Select: React.FC<{
                 {({ selected }) => (
                   <>
                     <span
-                      className={`block truncate ${
-                        selected ? 'font-medium' : 'font-normal'
-                      }`}
+                      className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                        }`}
                     >
                       {label}
                     </span>
@@ -195,14 +194,12 @@ const ResolutionDemo = () => {
             onChange={(v) => {
               setMode(v ? 'multi' : 'single')
             }}
-            className={`${
-              mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
+            className={`${mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
+              } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
-              className={`${
-                mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              className={`${mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
         </div>
@@ -357,14 +354,12 @@ const LookupDemo = () => {
             onChange={(v) => {
               setMode(v ? 'multi' : 'single')
             }}
-            className={`${
-              mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
+            className={`${mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
+              } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
-              className={`${
-                mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              className={`${mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
         </div>

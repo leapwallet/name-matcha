@@ -1,4 +1,4 @@
-import { decode, encode } from 'bech32'
+import { decode } from 'bech32'
 import {
   Addr,
   MatchaError,
@@ -8,46 +8,46 @@ import {
 } from './name-service'
 
 const rpcUrls = {
-  mainnet: 'https://rpc.cosmos.directory/juno',
-  testnet: 'https://rpc.uni.kingnodes.com'
+  mainnet: 'https://rpc.mainnet.archway.io',
+  testnet: 'https://rpc.constantine.archway.tech'
 }
 
-export const serviceID = 'ibcDomains'
+export const serviceID = 'archIds'
 
-export class IBCDomains extends NameService {
+export class ArchIdNames extends NameService {
   serviceID = serviceID
-  chain = 'juno'
+  chain = 'archway'
   contractAddress = {
-    mainnet: 'juno1ce7wjfsuk79t2mdvpdjtv8280pcc64yh9mh62qptuvxe64twt4pqa68z2a',
-    testnet: 'juno19al2ptpxz3xk6q8nl3eyvyslkz8g6nz25w48dfpaepwaxavq3mhqsjjqe5'
+    mainnet:
+      'archway1275jwjpktae4y4y0cdq274a2m0jnpekhttnfuljm6n59wnpyd62qppqxq0',
+    testnet:
+      'archway1lr8rstt40s697hqpedv2nvt27f4cuccqwvly9gnvuszxmcevrlns60xw4r'
   }
+
+  // reference: https://gist.github.com/drewstaylor/088af645dd36c013c02a2b4d05110479#file-archid-resolve-address-js
 
   async resolve(name: string, network: Network): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
 
-    const [username, prefix] = name.split('.')
     try {
       const res = await client?.queryContractSmart(
         this.contractAddress[network],
         {
-          owner_of: {
-            token_id: username
+          resolve_record: {
+            name: name
           }
         }
       )
-      if (!res?.owner) {
+      if (!res?.address) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
-      try {
-        const { words } = decode(res.owner)
-        return encode(prefix, words)
-      } catch {
-        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
-      }
+      return res.address
     } catch (e) {
       throw new MatchaError('', MatchaErrorType.NOT_FOUND)
     }
   }
+
+  // reference: https://gist.github.com/drewstaylor/088af645dd36c013c02a2b4d05110479#file-archid-check-domains-resolve-to-address-js
 
   async lookup(address: string, network: Network): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
@@ -63,20 +63,19 @@ export class IBCDomains extends NameService {
     } catch (e) {
       throw new MatchaError('', MatchaErrorType.INVALID_ADDRESS)
     }
-    const junoAddress = encode('juno', addr.words)
     try {
       const res = await client?.queryContractSmart(
         this.contractAddress[network],
         {
-          primary_domain: {
-            address: junoAddress
+          resolve_address: {
+            address: address
           }
         }
       )
-      if (!res?.domain) {
+      if (!res?.names || !res?.names?.length) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
-      return `${res.domain}.${addr.prefix}`
+      return res.names.join(', ')
     } catch (e) {
       throw new MatchaError('', MatchaErrorType.NOT_FOUND)
     }
