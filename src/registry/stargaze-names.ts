@@ -1,12 +1,12 @@
 import { decode, encode } from 'bech32'
 import {
   Addr,
+  AllowedTopLevelDomains,
   MatchaError,
   MatchaErrorType,
   NameService,
   Network
 } from './name-service'
-import { addressPrefixes } from '../utils/address'
 
 const rpcUrls = {
   mainnet: 'https://rpc.cosmos.directory/stargaze',
@@ -23,7 +23,11 @@ export class StargazeNames extends NameService {
     testnet: 'stars1rp5ttjvd5g0vlpltrkyvq62tcrdz949gjtpah000ynh4n2laz52qarz2z8'
   }
 
-  async resolve(name: string, network: Network): Promise<string> {
+  async resolve(
+    name: string,
+    network: Network,
+    allowedTopLevelDomains?: AllowedTopLevelDomains
+  ): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
     const [username, prefix] = name.split('.')
     try {
@@ -36,7 +40,10 @@ export class StargazeNames extends NameService {
         }
       )
 
-      if (!res || !addressPrefixes[prefix]) {
+      if (
+        !res ||
+        allowedTopLevelDomains?.stargazeNames?.indexOf(prefix) === -1
+      ) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
       try {

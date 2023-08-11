@@ -6,7 +6,7 @@ import {
   MagnifyingGlass,
   SpinnerGap
 } from '@phosphor-icons/react'
-import { default as registry, services } from '@leapwallet/name-matcha'
+import { allowedTopLevelDomains, default as registry, services } from '@leapwallet/name-matcha'
 import { Listbox, Switch, Transition } from '@headlessui/react'
 
 const nsMap = {
@@ -150,7 +150,7 @@ const ResolutionDemo = () => {
       setStatus('loading')
       if (mode === 'single') {
         registry
-          .resolve(name, nameService)
+          .resolve(name, nameService, allowedTopLevelDomains)
           .then((res) => {
             setStatus('success')
             setError(null)
@@ -162,7 +162,7 @@ const ResolutionDemo = () => {
           })
       } else {
         registry
-          .resolveAll(name)
+          .resolveAll(name, allowedTopLevelDomains)
           .then((res) => {
             setStatus('success')
             setError(null)

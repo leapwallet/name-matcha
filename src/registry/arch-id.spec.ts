@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { MatchaError, MatchaErrorType } from './name-service'
+import {
+  AllowedTopLevelDomains,
+  MatchaError,
+  MatchaErrorType
+} from './name-service'
 import { ArchIdNames } from './arch-id'
 
 describe('ArchIds', () => {
@@ -95,6 +99,37 @@ describe('ArchIds', () => {
         await resolver.resolve(randName, 'mainnet')
       } catch (e) {
         expect((e as MatchaError).type).toEqual(MatchaErrorType.NOT_FOUND)
+      }
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve archid.arch',
+    async () => {
+      const allowedTopLevelDomains: AllowedTopLevelDomains = {
+        archIds: ['arch']
+      }
+      const result = await resolver.resolve(
+        'archid.arch',
+        'mainnet',
+        allowedTopLevelDomains
+      )
+      expect(result).toBe('archway1n7d4c52knwqqkw9j975ranknkp4fn3we0unrp6')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should not resolve archid.arch',
+    async () => {
+      const allowedTopLevelDomains: AllowedTopLevelDomains = {
+        archIds: []
+      }
+      try {
+        await resolver.resolve('archid.arch', 'mainnet', allowedTopLevelDomains)
+      } catch (e) {
+        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }
     },
     10000

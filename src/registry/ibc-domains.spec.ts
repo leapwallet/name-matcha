@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { IBCDomains } from './ibc-domains'
-import { MatchaError, MatchaErrorType } from './name-service'
+import {
+  AllowedTopLevelDomains,
+  MatchaError,
+  MatchaErrorType
+} from './name-service'
+import { allowedTopLevelDomains } from './registry'
 
 describe('IBCDomains', () => {
   const resolver = new IBCDomains()
@@ -95,6 +100,41 @@ describe('IBCDomains', () => {
         await resolver.resolve(randName, 'mainnet')
       } catch (e) {
         expect((e as MatchaError).type).toEqual(MatchaErrorType.NOT_FOUND)
+      }
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve leapwallet.osmo',
+    async () => {
+      const acceptedTopLevelDomains: AllowedTopLevelDomains = {
+        ibcDomains: [...(allowedTopLevelDomains.ibcDomains as string[])]
+      }
+      const result = await resolver.resolve(
+        'leapwallet.osmo',
+        'mainnet',
+        acceptedTopLevelDomains
+      )
+      expect(result).toBe('osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should not resolve whatevery.cocoa',
+    async () => {
+      try {
+        const acceptedTopLevelDomains: AllowedTopLevelDomains = {
+          ibcDomains: [...(allowedTopLevelDomains.ibcDomains as string[])]
+        }
+        await resolver.resolve(
+          'whatevery.cocoa',
+          'mainnet',
+          acceptedTopLevelDomains
+        )
+      } catch (e) {
+        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }
     },
     10000

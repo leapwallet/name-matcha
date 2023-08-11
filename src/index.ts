@@ -3,7 +3,8 @@ import {
   NameService,
   MatchaError,
   MatchaErrorType,
-  services
+  services,
+  allowedTopLevelDomains
 } from './registry'
 
 /**
@@ -18,4 +19,4 @@ const registry = new Registry('mainnet')
 
 export type { Registry, NameService, MatchaError, MatchaErrorType }
 
-export { services, registry as default }
+export { services, allowedTopLevelDomains, registry as default }

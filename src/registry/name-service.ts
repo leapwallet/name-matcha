@@ -1,5 +1,4 @@
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate'
-
 /**
  * Types of errors
  */
@@ -29,6 +28,13 @@ export type Addr = {
 }
 
 export type Network = 'mainnet' | 'testnet'
+
+export type AllowedTopLevelDomains = {
+  icns?: string[]
+  ibcDomains?: string[]
+  archIds?: string[]
+  stargazeNames?: string[]
+}
 
 class CosmWasmClientHandler {
   private static clients: { [key: string]: CosmWasmClient } = {}
@@ -64,7 +70,11 @@ export abstract class NameService {
   /**
    * @param name Resolve this name into an address
    */
-  abstract resolve(name: string, network: Network): Promise<string>
+  abstract resolve(
+    name: string,
+    network: Network,
+    allowedTopLevelDomains?: AllowedTopLevelDomains
+  ): Promise<string>
   /**
    * @param address Lookup this address and returns primary name
    */

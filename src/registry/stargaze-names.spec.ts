@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { MatchaError, MatchaErrorType } from './name-service'
+import {
+  AllowedTopLevelDomains,
+  MatchaError,
+  MatchaErrorType
+} from './name-service'
 import { StargazeNames } from './stargaze-names'
+import { allowedTopLevelDomains } from './registry'
 
 describe('StargazeNames', () => {
   const resolver = new StargazeNames()
@@ -104,6 +109,41 @@ describe('StargazeNames', () => {
         await resolver.resolve(randName, 'mainnet')
       } catch (e) {
         expect((e as MatchaError).type).toEqual(MatchaErrorType.NOT_FOUND)
+      }
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve messi.stars',
+    async () => {
+      const acceptedTopLevelDomains: AllowedTopLevelDomains = {
+        stargazeNames: [...(allowedTopLevelDomains.stargazeNames as string[])]
+      }
+      const result = await resolver.resolve(
+        'messi.stars',
+        'mainnet',
+        acceptedTopLevelDomains
+      )
+      expect(result).toBe('stars19vf5mfr40awvkefw69nl6p3mmlsnacmm7m3etx')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should not resolve whatevery.cocoa',
+    async () => {
+      try {
+        const acceptedTopLevelDomains: AllowedTopLevelDomains = {
+          stargazeNames: [...(allowedTopLevelDomains.stargazeNames as string[])]
+        }
+        await resolver.resolve(
+          'whatevery.cocoa',
+          'mainnet',
+          acceptedTopLevelDomains
+        )
+      } catch (e) {
+        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }
     },
     10000

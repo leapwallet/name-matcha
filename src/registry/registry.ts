@@ -3,11 +3,13 @@ import { IBCDomains, serviceID as _ibcDomainsID } from './ibc-domains'
 import { StargazeNames, serviceID as _stargazeNamesID } from './stargaze-names'
 import { ArchIdNames, serviceID as _archId } from './arch-id'
 import {
+  AllowedTopLevelDomains,
   MatchaError,
   MatchaErrorType,
   NameService,
   Network
 } from './name-service'
+import { allowedTopLevelDomains as allowedTopLevelDomainData } from '../utils/domain'
 
 export const services = {
   icns: _icnsID,
@@ -15,6 +17,8 @@ export const services = {
   stargazeNames: _stargazeNamesID,
   archIds: _archId
 }
+
+export const allowedTopLevelDomains = allowedTopLevelDomainData
 
 export class Registry {
   private services: { [key: string]: NameService } = {}
@@ -60,9 +64,13 @@ export class Registry {
     return this.network
   }
 
-  async resolve(name: string, serviceID: string): Promise<string> {
+  async resolve(
+    name: string,
+    serviceID: string,
+    allowedTopLevelDomains?: AllowedTopLevelDomains
+  ): Promise<string> {
     const service = this.getService(serviceID)
-    return service.resolve(name, this.network)
+    return service.resolve(name, this.network, allowedTopLevelDomains)
   }
 
   async lookup(address: string, serviceID: string): Promise<string> {
@@ -70,12 +78,19 @@ export class Registry {
     return service.lookup(address, this.network)
   }
 
-  async resolveAll(name: string) {
+  async resolveAll(
+    name: string,
+    allowedTopLevelDomains?: AllowedTopLevelDomains
+  ) {
     const record: Record<string, string | null> = {}
     await Promise.all(
       Object.entries(this.services).map(async ([serviceID, service]) => {
         try {
-          const result = await service.resolve(name, this.network)
+          const result = await service.resolve(
+            name,
+            this.network,
+            allowedTopLevelDomains
+          )
           record[serviceID] = result
         } catch (e) {
           record[serviceID] = null
