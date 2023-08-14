@@ -96,8 +96,8 @@ export const supportedTopLevelDomainListForAllChains = [
 ]
 
 export const allowedTopLevelDomains: AllowedTopLevelDomains = {
-  icns: [...supportedTopLevelDomainListForAllChains],
-  ibcDomains: [...supportedTopLevelDomainListForAllChains],
-  stargazeNames: [...supportedTopLevelDomainListForAllChains],
+  icns: supportedTopLevelDomainListForAllChains,
+  ibcDomains: supportedTopLevelDomainListForAllChains,
+  stargazeNames: supportedTopLevelDomainListForAllChains,
   archIds: ['arch']
 }
