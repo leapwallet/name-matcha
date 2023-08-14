@@ -1,6 +1,7 @@
 import { decode } from 'bech32'
 import {
   Addr,
+  AllowedTopLevelDomains,
   MatchaError,
   MatchaErrorType,
   NameService,
@@ -26,9 +27,14 @@ export class ArchIdNames extends NameService {
 
   // reference: https://gist.github.com/drewstaylor/088af645dd36c013c02a2b4d05110479#file-archid-resolve-address-js
 
-  async resolve(name: string, network: Network): Promise<string> {
+  async resolve(
+    name: string,
+    network: Network,
+    allowedTopLevelDomains?: AllowedTopLevelDomains
+  ): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
 
+    const [, prefix] = name.split('.')
     try {
       const res = await client?.queryContractSmart(
         this.contractAddress[network],
@@ -38,7 +44,10 @@ export class ArchIdNames extends NameService {
           }
         }
       )
-      if (!res?.address) {
+      if (
+        !res?.address ||
+        allowedTopLevelDomains?.archIds?.indexOf(prefix) === -1
+      ) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
       return res.address

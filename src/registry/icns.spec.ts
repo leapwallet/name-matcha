@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { ICNS } from './icns'
-import { MatchaError, MatchaErrorType } from './name-service'
+import {
+  AllowedTopLevelDomains,
+  MatchaError,
+  MatchaErrorType
+} from './name-service'
+import { allowedTopLevelDomains } from './registry'
 
 describe('ICNS', () => {
   const resolver = new ICNS()
@@ -104,6 +109,41 @@ describe('ICNS', () => {
         await resolver.resolve(randName, 'mainnet')
       } catch (e) {
         expect((e as MatchaError).type).toEqual(MatchaErrorType.NOT_FOUND)
+      }
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve leap_cosmos.evmos',
+    async () => {
+      const acceptedTopLevelDomains: AllowedTopLevelDomains = {
+        icns: [...(allowedTopLevelDomains.icns as string[])]
+      }
+      const result = await resolver.resolve(
+        'leap_cosmos.evmos',
+        'mainnet',
+        acceptedTopLevelDomains
+      )
+      expect(result).toBe('evmos1f8h7ud4ftaurzedzgrnjqhlsrk2h0au783fm34')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should not resolve whatevery.cocoa',
+    async () => {
+      try {
+        const acceptedTopLevelDomains: AllowedTopLevelDomains = {
+          icns: [...(allowedTopLevelDomains.icns as string[])]
+        }
+        await resolver.resolve(
+          'whatevery.cocoa',
+          'mainnet',
+          acceptedTopLevelDomains
+        )
+      } catch (e) {
+        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }
     },
     10000

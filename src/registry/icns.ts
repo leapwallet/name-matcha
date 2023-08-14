@@ -1,6 +1,7 @@
 import { decode } from 'bech32'
 import {
   Addr,
+  AllowedTopLevelDomains,
   MatchaError,
   MatchaErrorType,
   NameService,
@@ -22,7 +23,11 @@ export class ICNS extends NameService {
     testnet: 'osmo1q2qpencrnnlamwalxt6tac2ytl35z5jejn0v4frnp6jff7gwp37sjcnhu5'
   }
 
-  async resolve(name: string, network: Network): Promise<string> {
+  async resolve(
+    name: string,
+    network: Network,
+    allowedTopLevelDomains?: AllowedTopLevelDomains
+  ): Promise<string> {
     const client = await this.getCosmWasmClient(rpcUrls[network])
 
     const [username, prefix] = name.split('.')
@@ -36,7 +41,10 @@ export class ICNS extends NameService {
           }
         }
       )
-      if (!res?.address) {
+      if (
+        !res?.address ||
+        allowedTopLevelDomains?.icns?.indexOf(prefix) === -1
+      ) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
       return res.address
