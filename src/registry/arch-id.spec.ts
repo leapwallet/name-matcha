@@ -59,7 +59,7 @@ describe('ArchIds', () => {
         'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q',
         'mainnet'
       )
-      expect(result).toEqual('leap.arch')
+      expect(result).toEqual('archfam.arch, leap.arch, leapdegens.arch')
     },
     10000
   )

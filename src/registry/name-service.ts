@@ -34,6 +34,7 @@ export type AllowedTopLevelDomains = {
   ibcDomains?: string[]
   archIds?: string[]
   stargazeNames?: string[]
+  spaceIds?: string[]
 }
 
 class CosmWasmClientHandler {
@@ -60,13 +61,15 @@ export abstract class NameService {
   /**
    * The chain on which the name service is deployed
    */
-  abstract chain: string
+  abstract chain: string | string[]
   /**
    * The contract address of the name service
    */
-  abstract contractAddress: {
-    [key in Network]: string
-  }
+  abstract contractAddress:
+    | {
+        [key in Network]: string
+      }
+    | Record<string, { [key in Network]: string }>
   /**
    * @param name Resolve this name into an address
    */

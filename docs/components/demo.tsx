@@ -13,7 +13,8 @@ const nsMap = {
   [services.icns]: 'ICNS',
   [services.ibcDomains]: 'IBC Domains',
   [services.stargazeNames]: 'Stargaze Names',
-  [services.archIds]: 'Arch ID'
+  [services.archIds]: 'Arch ID',
+  [services.spaceIds]: 'Space ID'
 }
 
 const nsList = Object.entries(nsMap)
@@ -124,7 +125,7 @@ const CopyToClipboardButton: React.FC<{ text: string }> = ({ text }) => {
   )
 }
 
-const ResolutionDemo = () => {
+const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
     string | null | Record<string, string | null>
@@ -132,6 +133,11 @@ const ResolutionDemo = () => {
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
   const [mode, setMode] = useState<'single' | 'multi'>('single')
+
+  useEffect(() => {
+    registry.setNetwork(testnet ? 'testnet' : 'mainnet')
+    setResult(null)
+  }, [testnet])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -288,7 +294,7 @@ const ResolutionDemo = () => {
   )
 }
 
-const LookupDemo = () => {
+const LookupDemo = ({ testnet }: { testnet: boolean }) => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
     string | null | Record<string, string | null>
@@ -296,6 +302,11 @@ const LookupDemo = () => {
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
   const [mode, setMode] = useState<'single' | 'multi'>('single')
+
+  useEffect(() => {
+    registry.setNetwork(testnet ? 'testnet' : 'mainnet')
+    setResult(null)
+  }, [testnet])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -449,11 +460,28 @@ const LookupDemo = () => {
 }
 
 export const Demo = () => {
+  const [testnet, setTestnet] = useState(false)
   return (
     <main className="w-full h-[80%] py-8 dot-grid-bg">
+      <div className="flex justify-end items-center mx-8">
+        <p className="text-md font-bold px-4">Testnet</p>
+        <Switch
+          checked={testnet}
+          onChange={(v) => {
+            setTestnet(v)
+          }}
+          className={`${testnet ? 'bg-indigo-500' : 'bg-gray-700'
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
+        >
+          <span
+            className={`${testnet ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+          />
+        </Switch>
+      </div>
       <div className="flex flex-col sm:flex-row justify-start sm:justify-center gap-4">
-        <ResolutionDemo />
-        <LookupDemo />
+        <ResolutionDemo testnet={testnet} />
+        <LookupDemo testnet={testnet} />
       </div>
     </main>
   )

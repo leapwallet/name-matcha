@@ -24,7 +24,8 @@ describe('registry', () => {
       [services.archIds]: true,
       [services.icns]: true,
       [services.ibcDomains]: true,
-      [services.stargazeNames]: true
+      [services.stargazeNames]: true,
+      [services.spaceIds]: true
     })
   })
 
@@ -56,6 +57,36 @@ describe('registry', () => {
   )
 
   it.concurrent(
+    '[Testnet] should resolve 999.inj on spaceIds',
+    async () => {
+      registry.setNetwork('testnet')
+      const res = await registry.resolve('999.inj', services.spaceIds)
+      expect(res).toBe('inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc')
+    },
+    10000
+  )
+
+  it.concurrent(
+    '[Testnet] should resolve 000.sei on spaceIds',
+    async () => {
+      registry.setNetwork('testnet')
+      const result = await registry.resolve('000.sei', services.spaceIds)
+      expect(result).toBe('sei1qwzw8u4q859l8pjqvfh9a959u8a3kmvpfnzjpw')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve 000.sei on spaceIds',
+    async () => {
+      registry.setNetwork('mainnet')
+      const result = await registry.resolve('000.sei', services.spaceIds)
+      expect(result).toBe('sei16fg5g3h57kp58k7grnfql56zsa6evqvqlzpjz9')
+    },
+    10000
+  )
+
+  it.concurrent(
     'should resolve leap.arch on archIds',
     async () => {
       const res = await registry.resolve('leap.arch', 'archIds')
@@ -72,7 +103,8 @@ describe('registry', () => {
         archIds: 'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q',
         icns: null,
         ibcDomains: null,
-        stargazeNames: null
+        stargazeNames: null,
+        spaceIds: null
       })
     },
     10000
@@ -86,8 +118,63 @@ describe('registry', () => {
         archIds: null,
         icns: null,
         ibcDomains: null,
-        stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh'
+        stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
+        spaceIds: null
       })
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolveAll for allen.sei',
+    async () => {
+      const res = await registry.resolveAll('allen.sei')
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
+      })
+    },
+    10000
+  )
+
+  it.concurrent(
+    '[Testnet] should lookup name for inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc',
+    async () => {
+      registry.setNetwork('testnet')
+      const result = await registry.lookup(
+        'inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc',
+        services.spaceIds
+      )
+      expect(result).toEqual('999.inj')
+    },
+    10000
+  )
+
+  it.concurrent(
+    '[Testnet] should lookup name for sei1qwzw8u4q859l8pjqvfh9a959u8a3kmvpfnzjpw',
+    async () => {
+      registry.setNetwork('testnet')
+      const result = await registry.lookup(
+        'sei1qwzw8u4q859l8pjqvfh9a959u8a3kmvpfnzjpw',
+        services.spaceIds
+      )
+      expect(result).toEqual('000.sei')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should lookup name for sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+    async () => {
+      registry.setNetwork('mainnet')
+      const result = await registry.lookup(
+        'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+        services.spaceIds
+      )
+      expect(result).toEqual('allen.sei')
     },
     10000
   )
@@ -102,7 +189,8 @@ describe('registry', () => {
         archIds: null,
         icns: 'leap_cosmos.cosmos',
         ibcDomains: 'leapwallet.cosmos',
-        stargazeNames: 'messi.cosmos'
+        stargazeNames: 'messi.cosmos',
+        spaceIds: null
       })
     }
   )
@@ -114,10 +202,27 @@ describe('registry', () => {
         'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q'
       )
       expect(res).toEqual({
-        archIds: 'leap.arch',
+        archIds: 'archfam.arch, leap.arch, leapdegens.arch',
         icns: null,
         ibcDomains: 'leapwallet.archway',
-        stargazeNames: 'messi.archway'
+        stargazeNames: 'messi.archway',
+        spaceIds: null
+      })
+    }
+  )
+
+  it.concurrent(
+    'should lookupAll for sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+    async () => {
+      const res = await registry.lookupAll(
+        'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
+      )
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        spaceIds: 'allen.sei'
       })
     }
   )

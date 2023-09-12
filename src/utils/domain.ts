@@ -99,5 +99,6 @@ export const allowedTopLevelDomains: AllowedTopLevelDomains = {
   icns: supportedTopLevelDomainListForAllChains,
   ibcDomains: supportedTopLevelDomainListForAllChains,
   stargazeNames: supportedTopLevelDomainListForAllChains,
-  archIds: ['arch']
+  archIds: ['arch'],
+  spaceIds: ['inj', 'sei']
 }
