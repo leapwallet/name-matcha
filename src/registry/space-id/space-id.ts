@@ -13,7 +13,7 @@ type SupportedSpaceIdDomains = 'inj' | 'sei'
 
 const chainRpcUrls: Record<SupportedSpaceIdDomains, Record<Network, string>> = {
   inj: {
-    mainnet: 'https://injective-rpc.publicnode.com',
+    mainnet: 'https://tm.injective.network',
     testnet: 'https://testnet.tm.injective.dev'
   },
   sei: {
@@ -29,7 +29,7 @@ export class SpaceIds extends NameService {
   chain = ['injective', 'sei']
   contractAddress: Record<SupportedSpaceIdDomains, Record<Network, string>> = {
     inj: {
-      mainnet: '',
+      mainnet: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
       testnet: 'inj1ppneyx6qfnye26k9mwnf3ngyelvqng67f5v948'
     },
     sei: {
