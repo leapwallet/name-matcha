@@ -19,6 +19,15 @@ describe('SpaceIds', () => {
   )
 
   it.concurrent(
+    'should resolve testtest.inj',
+    async () => {
+      const result = await resolver.resolve('testtest.inj', 'mainnet')
+      expect(result).toBe('inj10zvhv2a2mam8w7lhy96zgg2v8d800xcs7hf2tf')
+    },
+    10000
+  )
+
+  it.concurrent(
     'should not resolve every.cocoa',
     async () => {
       try {
