@@ -41,7 +41,9 @@ export class SpaceIds extends NameService {
   async resolve(
     name: string,
     network: Network,
-    allowedTopLevelDomains?: AllowedTopLevelDomains
+    options?: {
+      allowedTopLevelDomains?: AllowedTopLevelDomains
+    }
   ): Promise<string> {
     try {
       const [, prefix] = name.split('.')
@@ -58,7 +60,7 @@ export class SpaceIds extends NameService {
         })
         if (
           !res?.address ||
-          allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1
+          options?.allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1
         ) {
           throw new MatchaError('', MatchaErrorType.NOT_FOUND)
         }

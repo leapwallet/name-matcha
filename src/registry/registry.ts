@@ -8,7 +8,8 @@ import {
   MatchaError,
   MatchaErrorType,
   NameService,
-  Network
+  Network,
+  RpcURLs
 } from './name-service'
 import { allowedTopLevelDomains as allowedTopLevelDomainData } from '../utils/domain'
 
@@ -70,30 +71,40 @@ export class Registry {
   async resolve(
     name: string,
     serviceID: string,
-    allowedTopLevelDomains?: AllowedTopLevelDomains
+    options?: {
+      allowedTopLevelDomains?: AllowedTopLevelDomains
+      rpcUrls?: RpcURLs
+    }
   ): Promise<string> {
     const service = this.getService(serviceID)
-    return service.resolve(name, this.network, allowedTopLevelDomains)
+    return service.resolve(name, this.network, options)
   }
 
-  async lookup(address: string, serviceID: string): Promise<string> {
+  async lookup(
+    address: string,
+    serviceID: string,
+    options?: {
+      rpcUrls?: RpcURLs
+    }
+  ): Promise<string> {
     const service = this.getService(serviceID)
-    return service.lookup(address, this.network)
+    return service.lookup(address, this.network, options)
   }
 
   async resolveAll(
     name: string,
-    allowedTopLevelDomains?: AllowedTopLevelDomains
+    options?: {
+      allowedTopLevelDomains?: AllowedTopLevelDomains
+      rpcUrls?: {
+        [key: string]: { [key in Network]: string }
+      }
+    }
   ) {
     const record: Record<string, string | null> = {}
     await Promise.all(
       Object.entries(this.services).map(async ([serviceID, service]) => {
         try {
-          const result = await service.resolve(
-            name,
-            this.network,
-            allowedTopLevelDomains
-          )
+          const result = await service.resolve(name, this.network, options)
           record[serviceID] = result
         } catch (e) {
           record[serviceID] = null
@@ -103,12 +114,19 @@ export class Registry {
     return record
   }
 
-  async lookupAll(address: string) {
+  async lookupAll(
+    address: string,
+    options?: {
+      rpcUrls?: {
+        [key: string]: { [key in Network]: string }
+      }
+    }
+  ) {
     const record: Record<string, string | null> = {}
     await Promise.all(
       Object.entries(this.services).map(async ([serviceID, service]) => {
         try {
-          const result = await service.lookup(address, this.network)
+          const result = await service.lookup(address, this.network, options)
           record[serviceID] = result
         } catch (e) {
           record[serviceID] = null

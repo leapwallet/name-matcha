@@ -28,7 +28,8 @@ import {
   MatchaError,
   MatchaErrorType,
   NameService,
-  Network
+  Network,
+  RpcURLs
 } from '@leapwallet/name-matcha'
 
 const rpcUrls = {
@@ -50,9 +51,14 @@ export class ICNS2 extends NameService {
   async resolve(
     name: string,
     network: Network,
-    allowedTopLevelDomains?: AllowedTopLevelDomains
+    options?: {
+      allowedTopLevelDomains?: AllowedTopLevelDomains
+      rpcUrls?: RpcURLs
+    }
   ): Promise<string> {
-    const client = await this.getCosmWasmClient(rpcUrls[network])
+    const client = await this.getCosmWasmClient(
+      options?.rpcUrls?.[serviceID]?.[network] ?? rpcUrls[network]
+    )
 
     const [username, prefix] = name.split('.')
     // place your logic here
@@ -78,8 +84,12 @@ export class ICNS2 extends NameService {
     }
   }
 
-  async lookup(address: string, network: Network): Promise<string> {
-    const client = await this.getCosmWasmClient(rpcUrls[network])
+  async lookup(address: string, network: Network, options?: {
+    rpcUrls?: RpcURLs
+  }): Promise<string> {
+    const client = await this.getCosmWasmClient(
+      options?.rpcUrls?.[serviceID]?.[network] ?? rpcUrls[network]
+    )
 
     const { prefix } = decode(address)
     // place your logic here

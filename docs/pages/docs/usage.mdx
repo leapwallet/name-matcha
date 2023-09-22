@@ -4,12 +4,12 @@ title: "Usage"
 
 ## Imports
 
-### `nameMatcha`
+### `registry`
 
-The library exports a default object with the required methods. You can import it like this:
+The library exports a registry object with the required methods. You can import it like this:
 
 ```ts
-import nameMatcha from '@leapwallet/name-matcha'
+import { registry } from '@leapwallet/name-matcha'
 ```
 
 ### `services`
@@ -17,7 +17,7 @@ import nameMatcha from '@leapwallet/name-matcha'
 The library exports a `services` object with the available services:
 
 ```ts
-import { services } from '@leapwallet/name-matcha'
+import { services as nameMatcha } from '@leapwallet/name-matcha'
 ```
 
 It looks like this:
@@ -116,6 +116,10 @@ Here's an example:
 ```ts
 nameMatcha.setNetwork('testnet')
 ```
+
+## Custom RPC Endpoints
+
+Name Matcha comes with default RPC endpoints for each service.
 
 ## Error Handling
 

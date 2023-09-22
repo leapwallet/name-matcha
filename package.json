@@ -54,6 +54,9 @@
     "js-sha3": "0.8.0"
   },
   "peerDependencies": {
-    "@cosmjs/cosmwasm-stargate": "0.30.0"
+    "@cosmjs/cosmwasm-stargate": "0.30.0",
+    "bech32": "1.1.4",
+    "idna-uts46-hx": "5.0.7",
+    "js-sha3": "0.8.0"
   }
 }

@@ -5,7 +5,6 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'NameMatcha',
       formats: ['es', 'cjs'],
       fileName: (format) => {
         switch (format) {
@@ -18,7 +17,7 @@ export default defineConfig({
     },
     sourcemap: true,
     rollupOptions: {
-      external: ['@cosmjs/cosmwasm-stargate']
+      external: ['@cosmjs/cosmwasm-stargate', 'idna-uts46-hx', 'js-sha3']
     }
   },
   exclude: ['./src/**/*.spec.ts']

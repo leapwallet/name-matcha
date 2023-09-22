@@ -3,5 +3,7 @@ export type {
   NameService,
   MatchaError,
   MatchaErrorType,
-  AllowedTopLevelDomains
+  AllowedTopLevelDomains,
+  Network,
+  RpcURLs
 } from './name-service'

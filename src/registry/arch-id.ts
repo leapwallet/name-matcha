@@ -5,7 +5,8 @@ import {
   MatchaError,
   MatchaErrorType,
   NameService,
-  Network
+  Network,
+  RpcURLs
 } from './name-service'
 
 const rpcUrls = {
@@ -30,9 +31,14 @@ export class ArchIdNames extends NameService {
   async resolve(
     name: string,
     network: Network,
-    allowedTopLevelDomains?: AllowedTopLevelDomains
+    options?: {
+      allowedTopLevelDomains?: AllowedTopLevelDomains
+      rpcUrls?: RpcURLs
+    }
   ): Promise<string> {
-    const client = await this.getCosmWasmClient(rpcUrls[network])
+    const client = await this.getCosmWasmClient(
+      options?.rpcUrls?.[serviceID]?.[network] ?? rpcUrls[network]
+    )
 
     const [, prefix] = name.split('.')
     try {
@@ -46,7 +52,7 @@ export class ArchIdNames extends NameService {
       )
       if (
         !res?.address ||
-        allowedTopLevelDomains?.archIds?.indexOf(prefix) === -1
+        options?.allowedTopLevelDomains?.archIds?.indexOf(prefix) === -1
       ) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
@@ -58,8 +64,16 @@ export class ArchIdNames extends NameService {
 
   // reference: https://gist.github.com/drewstaylor/088af645dd36c013c02a2b4d05110479#file-archid-check-domains-resolve-to-address-js
 
-  async lookup(address: string, network: Network): Promise<string> {
-    const client = await this.getCosmWasmClient(rpcUrls[network])
+  async lookup(
+    address: string,
+    network: Network,
+    options?: {
+      rpcUrls?: RpcURLs
+    }
+  ): Promise<string> {
+    const client = await this.getCosmWasmClient(
+      options?.rpcUrls?.[serviceID]?.[network] ?? rpcUrls[network]
+    )
 
     const addr: Addr = {
       prefix: null,

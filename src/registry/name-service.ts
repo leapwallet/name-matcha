@@ -37,6 +37,16 @@ export type AllowedTopLevelDomains = {
   spaceIds?: string[]
 }
 
+export type rpcUrls = Record<Network, string>
+
+export type RpcURLs = {
+  icns?: rpcUrls
+  ibcDomains?: rpcUrls
+  archIds?: rpcUrls
+  stargazeNames?: rpcUrls
+  spaceIds?: rpcUrls
+}
+
 class CosmWasmClientHandler {
   private static clients: { [key: string]: CosmWasmClient } = {}
 
@@ -76,12 +86,21 @@ export abstract class NameService {
   abstract resolve(
     name: string,
     network: Network,
-    allowedTopLevelDomains?: AllowedTopLevelDomains
+    options?: {
+      allowedTopLevelDomains?: AllowedTopLevelDomains
+      rpcUrls?: RpcURLs
+    }
   ): Promise<string>
   /**
    * @param address Lookup this address and returns primary name
    */
-  abstract lookup(address: string, network: Network): Promise<string>
+  abstract lookup(
+    address: string,
+    network: Network,
+    options?: {
+      rpcUrls?: RpcURLs
+    }
+  ): Promise<string>
   /**
    * @param network The network to use
    */

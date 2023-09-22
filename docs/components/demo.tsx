@@ -6,7 +6,11 @@ import {
   MagnifyingGlass,
   SpinnerGap
 } from '@phosphor-icons/react'
-import { allowedTopLevelDomains, default as registry, services } from '@leapwallet/name-matcha'
+import {
+  allowedTopLevelDomains,
+  registry,
+  services
+} from '@leapwallet/name-matcha'
 import { Listbox, Switch, Transition } from '@headlessui/react'
 
 const nsMap = {
@@ -50,7 +54,8 @@ const Select: React.FC<{
               <Listbox.Option
                 key={value}
                 className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-indigo-400 text-white' : 'text-gray-300'
+                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                    active ? 'bg-indigo-400 text-white' : 'text-gray-300'
                   }`
                 }
                 value={value}
@@ -58,8 +63,9 @@ const Select: React.FC<{
                 {({ selected }) => (
                   <>
                     <span
-                      className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                        }`}
+                      className={`block truncate ${
+                        selected ? 'font-medium' : 'font-normal'
+                      }`}
                     >
                       {label}
                     </span>
@@ -200,12 +206,14 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
             onChange={(v) => {
               setMode(v ? 'multi' : 'single')
             }}
-            className={`${mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
+            className={`${
+              mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
-              className={`${mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              className={`${
+                mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
         </div>
@@ -365,12 +373,14 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
             onChange={(v) => {
               setMode(v ? 'multi' : 'single')
             }}
-            className={`${mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
+            className={`${
+              mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
-              className={`${mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              className={`${
+                mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
         </div>
@@ -470,12 +480,14 @@ export const Demo = () => {
           onChange={(v) => {
             setTestnet(v)
           }}
-          className={`${testnet ? 'bg-indigo-500' : 'bg-gray-700'
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
+          className={`${
+            testnet ? 'bg-indigo-500' : 'bg-gray-700'
+          } relative inline-flex h-6 w-11 items-center rounded-full`}
         >
           <span
-            className={`${testnet ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+            className={`${
+              testnet ? 'translate-x-6' : 'translate-x-1'
+            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
           />
         </Switch>
       </div>
