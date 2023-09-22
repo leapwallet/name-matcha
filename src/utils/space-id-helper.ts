@@ -3,8 +3,10 @@
  * Reference: https://github.com/Space-ID/injective-sidjs/tree/main/src/utils
  */
 
-import { keccak_256 as sha3 } from 'js-sha3'
+import * as jsSha3 from 'js-sha3'
 import { toUnicode } from 'idna-uts46-hx'
+
+const { keccak_256: sha3 } = jsSha3
 
 const normalize = (name: string) => {
   return name ? toUnicode(name, { useStd3ASCII: true }) : name

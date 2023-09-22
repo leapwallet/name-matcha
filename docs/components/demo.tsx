@@ -162,7 +162,9 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
       setStatus('loading')
       if (mode === 'single') {
         registry
-          .resolve(name, nameService, allowedTopLevelDomains)
+          .resolve(name, nameService, {
+            allowedTopLevelDomains
+          })
           .then((res) => {
             setStatus('success')
             setError(null)
@@ -174,7 +176,9 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
           })
       } else {
         registry
-          .resolveAll(name, allowedTopLevelDomains)
+          .resolveAll(name, {
+            allowedTopLevelDomains
+          })
           .then((res) => {
             setStatus('success')
             setError(null)
