@@ -1,7 +1,7 @@
 {
   "name": "@leapwallet/name-matcha",
   "description": "Name Matcha is a javascript library for resolving names to wallet addresses in the cosmos universe.",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "repository": "https://github.com/leapwallet/name-matcha",
   "author": "Leap Wallet",
   "license": "MIT",
