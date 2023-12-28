@@ -9,28 +9,60 @@ describe('SNS', () => {
   })
 
   it.concurrent(
-    'should resolve injective.sol',
+    'should resolve injective1699472317873.sol',
     async () => {
-      const result = await resolver.resolve('injective.sol', 'testnet')
+      const result = await resolver.resolve(
+        'injective1699472317873.sol',
+        'testnet'
+      )
       expect(result).toBe('inj1axwxmevzgvz5esrmzuyjmra3l9vvl7ury7qegq')
     },
     10000
   )
 
   it.concurrent(
-    'should resolve injective',
+    'should resolve injective1699472317873',
     async () => {
-      const result = await resolver.resolve('injective', 'testnet')
+      const result = await resolver.resolve('injective1699472317873', 'testnet')
       expect(result).toBe('inj1axwxmevzgvz5esrmzuyjmra3l9vvl7ury7qegq')
+    },
+    10000
+  )
+
+  it.concurrent('should return injective1699472317873.sol', async () => {
+    const result = await resolver.lookup(
+      'inj1axwxmevzgvz5esrmzuyjmra3l9vvl7ury7qegq',
+      'testnet'
+    )
+    expect(result).toBe('injective1699472317873.sol')
+  })
+
+  it.concurrent(
+    'should resolve injective1703588265',
+    async () => {
+      const result = await resolver.resolve('injective1703588265', 'mainnet')
+      expect(result).toBe('inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve injective1703588265.sol',
+    async () => {
+      const result = await resolver.resolve(
+        'injective1703588265.sol',
+        'mainnet'
+      )
+      expect(result).toBe('inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2')
     },
     10000
   )
 
   it.concurrent('should return injective.sol', async () => {
     const result = await resolver.lookup(
-      'inj1axwxmevzgvz5esrmzuyjmra3l9vvl7ury7qegq',
-      'testnet'
+      'inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2',
+      'mainnet'
     )
-    expect(result).toBe('injective1693584960359.sol')
+    expect(result).toBe('injective1703588265.sol')
   })
 })

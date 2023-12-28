@@ -9,8 +9,8 @@ import { decode, fromWords } from 'bech32'
 export const serviceID = 'sns'
 
 const rpcUrls = {
-  mainnet: 'TODO',
-  testnet: 'https://k8s.testnet.tm.injective.network:443'
+  mainnet: 'https://injective-rpc.publicnode.com:443',
+  testnet: 'https://testnet.sentry.tm.injective.network:443'
 }
 
 const trimTld = (x: string): string => {
@@ -24,7 +24,7 @@ export class SNS extends NameService {
   serviceID = serviceID
   chain = 'injective'
   contractAddress = {
-    mainnet: 'TODO',
+    mainnet: 'inj1v7chmgm7vmuwldjt80utmw9c95jkrch979ps8z',
     testnet: 'inj1q79ujqyh72p43mhr2ldaly3x6d50rzp3354at3'
   }
 
