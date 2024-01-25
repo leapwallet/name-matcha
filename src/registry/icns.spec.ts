@@ -120,11 +120,9 @@ describe('ICNS', () => {
       const acceptedTopLevelDomains: AllowedTopLevelDomains = {
         icns: [...(allowedTopLevelDomains.icns as string[])]
       }
-      const result = await resolver.resolve(
-        'leap_cosmos.evmos',
-        'mainnet',
-        acceptedTopLevelDomains
-      )
+      const result = await resolver.resolve('leap_cosmos.evmos', 'mainnet', {
+        allowedTopLevelDomains: acceptedTopLevelDomains
+      })
       expect(result).toBe('evmos1f8h7ud4ftaurzedzgrnjqhlsrk2h0au783fm34')
     },
     10000
@@ -137,11 +135,9 @@ describe('ICNS', () => {
         const acceptedTopLevelDomains: AllowedTopLevelDomains = {
           icns: [...(allowedTopLevelDomains.icns as string[])]
         }
-        await resolver.resolve(
-          'whatevery.cocoa',
-          'mainnet',
-          acceptedTopLevelDomains
-        )
+        await resolver.resolve('whatevery.cocoa', 'mainnet', {
+          allowedTopLevelDomains: acceptedTopLevelDomains
+        })
       } catch (e) {
         expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }

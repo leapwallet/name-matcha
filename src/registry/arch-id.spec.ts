@@ -110,11 +110,9 @@ describe('ArchIds', () => {
       const allowedTopLevelDomains: AllowedTopLevelDomains = {
         archIds: ['arch']
       }
-      const result = await resolver.resolve(
-        'archid.arch',
-        'mainnet',
-        allowedTopLevelDomains
-      )
+      const result = await resolver.resolve('archid.arch', 'mainnet', {
+        allowedTopLevelDomains: allowedTopLevelDomains
+      })
       expect(result).toBe('archway1n7d4c52knwqqkw9j975ranknkp4fn3we0unrp6')
     },
     10000
@@ -127,7 +125,9 @@ describe('ArchIds', () => {
         archIds: []
       }
       try {
-        await resolver.resolve('archid.arch', 'mainnet', allowedTopLevelDomains)
+        await resolver.resolve('archid.arch', 'mainnet', {
+          allowedTopLevelDomains: allowedTopLevelDomains
+        })
       } catch (e) {
         expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }

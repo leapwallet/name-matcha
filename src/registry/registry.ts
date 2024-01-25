@@ -3,6 +3,7 @@ import { IBCDomains, serviceID as _ibcDomainsID } from './ibc-domains'
 import { StargazeNames, serviceID as _stargazeNamesID } from './stargaze-names'
 import { ArchIdNames, serviceID as _archId } from './arch-id'
 import { SpaceIds, serviceID as _spaceId } from './space-id/space-id'
+import { SNS, serviceID as _sns } from './sns'
 import {
   AllowedTopLevelDomains,
   MatchaError,
@@ -18,7 +19,8 @@ export const services = {
   ibcDomains: _ibcDomainsID,
   stargazeNames: _stargazeNamesID,
   archIds: _archId,
-  spaceIds: _spaceId
+  spaceIds: _spaceId,
+  sns: _sns
 }
 
 export const allowedTopLevelDomains = allowedTopLevelDomainData
@@ -33,6 +35,7 @@ export class Registry {
     this.registerService(new StargazeNames())
     this.registerService(new ArchIdNames())
     this.registerService(new SpaceIds())
+    this.registerService(new SNS())
   }
 
   registerService(service: NameService) {

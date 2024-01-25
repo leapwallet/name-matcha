@@ -35,6 +35,7 @@ export type AllowedTopLevelDomains = {
   archIds?: string[]
   stargazeNames?: string[]
   spaceIds?: string[]
+  sns?: string[]
 }
 
 export type rpcUrls = Record<Network, string>
@@ -45,6 +46,7 @@ export type RpcURLs = {
   archIds?: rpcUrls
   stargazeNames?: rpcUrls
   spaceIds?: rpcUrls
+  sns?: rpcUrls
 }
 
 class CosmWasmClientHandler {

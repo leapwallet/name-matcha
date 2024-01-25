@@ -100,5 +100,6 @@ export const allowedTopLevelDomains: AllowedTopLevelDomains = {
   ibcDomains: supportedTopLevelDomainListForAllChains,
   stargazeNames: supportedTopLevelDomainListForAllChains,
   archIds: ['arch'],
-  spaceIds: ['inj', 'sei']
+  spaceIds: ['inj', 'sei'],
+  sns: ['sol']
 }
