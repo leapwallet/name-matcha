@@ -89,7 +89,6 @@ const MultipleResults = ({
 }: {
   results: Record<string, string | null>
 }) => {
-  console.log("======results=====", results)
   return (
     <div className="flex flex-col space-y-4">
       {Object.entries(results).map(([service, result]) => (
