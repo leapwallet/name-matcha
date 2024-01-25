@@ -120,11 +120,9 @@ describe('StargazeNames', () => {
       const acceptedTopLevelDomains: AllowedTopLevelDomains = {
         stargazeNames: [...(allowedTopLevelDomains.stargazeNames as string[])]
       }
-      const result = await resolver.resolve(
-        'messi.stars',
-        'mainnet',
-        acceptedTopLevelDomains
-      )
+      const result = await resolver.resolve('messi.stars', 'mainnet', {
+        allowedTopLevelDomains: acceptedTopLevelDomains
+      })
       expect(result).toBe('stars19vf5mfr40awvkefw69nl6p3mmlsnacmm7m3etx')
     },
     10000
@@ -137,11 +135,9 @@ describe('StargazeNames', () => {
         const acceptedTopLevelDomains: AllowedTopLevelDomains = {
           stargazeNames: [...(allowedTopLevelDomains.stargazeNames as string[])]
         }
-        await resolver.resolve(
-          'whatevery.cocoa',
-          'mainnet',
-          acceptedTopLevelDomains
-        )
+        await resolver.resolve('whatevery.cocoa', 'mainnet', {
+          allowedTopLevelDomains: acceptedTopLevelDomains
+        })
       } catch (e) {
         expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }

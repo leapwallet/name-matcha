@@ -25,7 +25,8 @@ describe('registry', () => {
       [services.icns]: true,
       [services.ibcDomains]: true,
       [services.stargazeNames]: true,
-      [services.spaceIds]: true
+      [services.spaceIds]: true,
+      [services.sns]: true
     })
   })
 
@@ -89,7 +90,7 @@ describe('registry', () => {
   it.concurrent(
     'should resolve leap.arch on archIds',
     async () => {
-      const res = await registry.resolve('leap.arch', 'archIds')
+      const res = await registry.resolve('leap.arch', services.archIds)
       expect(res).toBe('archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q')
     },
     10000
@@ -104,6 +105,7 @@ describe('registry', () => {
         icns: null,
         ibcDomains: null,
         stargazeNames: null,
+        sns: null,
         spaceIds: null
       })
     },
@@ -118,6 +120,7 @@ describe('registry', () => {
         archIds: null,
         icns: null,
         ibcDomains: null,
+        sns: null,
         stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
         spaceIds: null
       })
@@ -134,6 +137,7 @@ describe('registry', () => {
         icns: null,
         ibcDomains: null,
         stargazeNames: null,
+        sns: null,
         spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
       })
     },
@@ -190,6 +194,7 @@ describe('registry', () => {
         icns: 'leap_cosmos.cosmos',
         ibcDomains: 'leapwallet.cosmos',
         stargazeNames: 'messi.cosmos',
+        sns: null,
         spaceIds: null
       })
     }
@@ -206,6 +211,7 @@ describe('registry', () => {
         icns: null,
         ibcDomains: 'leapwallet.archway',
         stargazeNames: 'messi.archway',
+        sns: null,
         spaceIds: null
       })
     }
@@ -222,8 +228,38 @@ describe('registry', () => {
         icns: null,
         ibcDomains: null,
         stargazeNames: null,
+        sns: null,
         spaceIds: 'allen.sei'
       })
     }
   )
+
+  it.concurrent(
+    'should resolve injective1703588265.sol',
+    async () => {
+      const result = await registry.resolve('injective1703588265', services.sns)
+      expect(result).toBe('inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve injective1703588265.sol',
+    async () => {
+      const result = await registry.resolve(
+        'injective1703588265.sol',
+        services.sns
+      )
+      expect(result).toBe('inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2')
+    },
+    10000
+  )
+
+  it.concurrent('should return injective.sol', async () => {
+    const result = await registry.lookup(
+      'inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2',
+      services.sns
+    )
+    expect(result).toBe('injective1703588265.sol')
+  })
 })

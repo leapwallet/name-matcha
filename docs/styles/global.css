@@ -4,7 +4,7 @@
 
 .dot-grid-bg {
   background: linear-gradient(90deg, #111111 21px, transparent 1%) center,
-    linear-gradient(#111111 21px, transparent 1%) center, #a766ccc4;
+  linear-gradient(#111111 21px, transparent 1%) center, #a766ccc4;
   background-size: 22px 22px;
   background-attachment: fixed;
 }

@@ -38,7 +38,7 @@ describe('SNS', () => {
   })
 
   it.concurrent(
-    'should resolve injective1703588265',
+    'should resolve injective1703588265.sol',
     async () => {
       const result = await resolver.resolve('injective1703588265', 'mainnet')
       expect(result).toBe('inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2')
@@ -58,7 +58,7 @@ describe('SNS', () => {
     10000
   )
 
-  it.concurrent('should return injective.sol', async () => {
+  it.concurrent('should return injective1703588265.sol', async () => {
     const result = await resolver.lookup(
       'inj1qeqxtntyndqg336d7uw4pp9dg3sf8yhwadzez2',
       'mainnet'

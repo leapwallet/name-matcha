@@ -70,7 +70,11 @@ export class SNS extends NameService {
       if (!result) {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
-      return result.domains.pop() + '.sol'
+      const domain = result?.domains?.pop?.()
+      if (!domain) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      return domain + '.sol'
     } catch (err) {
       throw new MatchaError('', MatchaErrorType.NOT_FOUND)
     }

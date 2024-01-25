@@ -111,11 +111,9 @@ describe('IBCDomains', () => {
       const acceptedTopLevelDomains: AllowedTopLevelDomains = {
         ibcDomains: [...(allowedTopLevelDomains.ibcDomains as string[])]
       }
-      const result = await resolver.resolve(
-        'leapwallet.osmo',
-        'mainnet',
-        acceptedTopLevelDomains
-      )
+      const result = await resolver.resolve('leapwallet.osmo', 'mainnet', {
+        allowedTopLevelDomains: acceptedTopLevelDomains
+      })
       expect(result).toBe('osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9')
     },
     10000
@@ -128,11 +126,9 @@ describe('IBCDomains', () => {
         const acceptedTopLevelDomains: AllowedTopLevelDomains = {
           ibcDomains: [...(allowedTopLevelDomains.ibcDomains as string[])]
         }
-        await resolver.resolve(
-          'whatevery.cocoa',
-          'mainnet',
-          acceptedTopLevelDomains
-        )
+        await resolver.resolve('whatevery.cocoa', 'mainnet', {
+          allowedTopLevelDomains: acceptedTopLevelDomains
+        })
       } catch (e) {
         expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }
