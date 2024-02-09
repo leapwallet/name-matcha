@@ -26,7 +26,8 @@ describe('registry', () => {
       [services.ibcDomains]: true,
       [services.stargazeNames]: true,
       [services.spaceIds]: true,
-      [services.sns]: true
+      [services.sns]: true,
+      [services.bdd]: true
     })
   })
 
@@ -106,7 +107,8 @@ describe('registry', () => {
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: null
+        spaceIds: null,
+        bdd: null,
       })
     },
     10000
@@ -122,7 +124,8 @@ describe('registry', () => {
         ibcDomains: null,
         sns: null,
         stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
-        spaceIds: null
+        spaceIds: null,
+        bdd: null,
       })
     },
     10000
@@ -138,7 +141,8 @@ describe('registry', () => {
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
+        spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+        bdd: null,
       })
     },
     10000
@@ -195,7 +199,8 @@ describe('registry', () => {
         ibcDomains: 'leapwallet.cosmos',
         stargazeNames: 'messi.cosmos',
         sns: null,
-        spaceIds: null
+        spaceIds: null,
+        bdd: null,
       })
     }
   )
@@ -212,7 +217,8 @@ describe('registry', () => {
         ibcDomains: 'leapwallet.archway',
         stargazeNames: 'messi.archway',
         sns: null,
-        spaceIds: null
+        spaceIds: null,
+        bdd: null,
       })
     }
   )
@@ -229,7 +235,8 @@ describe('registry', () => {
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: 'allen.sei'
+        spaceIds: 'allen.sei',
+        bdd: null,
       })
     }
   )
@@ -262,4 +269,56 @@ describe('registry', () => {
     )
     expect(result).toBe('injective1703588265.sol')
   })
+
+  it.concurrent(
+    'should resolve bdd-registrar.core',
+    async () => {
+      const result = await registry.resolve('bdd-registrar.core', services.bdd)
+      expect(result).toBe('core10g5cy007hcmzhh4ta9sne0trasfds59lless97')
+    },
+    10000
+  )
+
+  it.concurrent('should return bdd-registrar.core', async () => {
+    const result = await registry.lookup(
+      'core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
+      services.bdd
+    )
+    expect(result).toBe('bdd-registrar.core')
+  })
+
+  it.concurrent(
+    'should resolveAll for bdd-registrar.core',
+    async () => {
+      const res = await registry.resolveAll('bdd-registrar.core')
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        bdd: 'core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
+      })
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should lookupAll for core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
+    async () => {
+      const res = await registry.lookupAll(
+        'core10g5cy007hcmzhh4ta9sne0trasfds59lless97'
+      )
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        bdd: 'bdd-registrar.core',
+      })
+    }
+  )
 })
