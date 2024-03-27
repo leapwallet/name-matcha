@@ -7,7 +7,8 @@ export enum MatchaErrorType {
   NOT_FOUND = 'not-found',
   UNREGISTERED_SERVICE = 'unregistered-service',
   DUPLICATE_SERVICE = 'duplicate-service',
-  INVALID_ADDRESS = 'invalid-address'
+  INVALID_ADDRESS = 'invalid-address',
+  UNAVAILABLE_METHOD = 'invalid-address'
 }
 
 /**
