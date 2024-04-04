@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Registry, services } from './registry'
+import { MatchaErrorType } from './name-service'
 
 describe('registry', () => {
   const registry = new Registry('mainnet')
@@ -26,7 +27,8 @@ describe('registry', () => {
       [services.ibcDomains]: true,
       [services.stargazeNames]: true,
       [services.spaceIds]: true,
-      [services.sns]: true
+      [services.sns]: true,
+      [services.nibId]: true
     })
   })
 
@@ -106,7 +108,8 @@ describe('registry', () => {
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: null
+        spaceIds: null,
+        nibId: null
       })
     },
     10000
@@ -122,7 +125,8 @@ describe('registry', () => {
         ibcDomains: null,
         sns: null,
         stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
-        spaceIds: null
+        spaceIds: null,
+        nibId: null
       })
     },
     10000
@@ -138,7 +142,8 @@ describe('registry', () => {
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
+        spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+        nibId: null
       })
     },
     10000
@@ -195,7 +200,8 @@ describe('registry', () => {
         ibcDomains: 'leapwallet.cosmos',
         stargazeNames: 'messi.cosmos',
         sns: null,
-        spaceIds: null
+        spaceIds: null,
+        nibId: null
       })
     }
   )
@@ -212,7 +218,8 @@ describe('registry', () => {
         ibcDomains: 'leapwallet.archway',
         stargazeNames: 'messi.archway',
         sns: null,
-        spaceIds: null
+        spaceIds: null,
+        nibId: null
       })
     }
   )
@@ -229,7 +236,8 @@ describe('registry', () => {
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: 'allen.sei'
+        spaceIds: 'allen.sei',
+        nibId: null
       })
     }
   )
@@ -262,4 +270,25 @@ describe('registry', () => {
     )
     expect(result).toBe('injective1703588265.sol')
   })
+
+  it.concurrent(
+    'should resolve zucky.nibi',
+    async () => {
+      const result = await registry.resolve('zucky.nibi', services.nibId)
+      expect(result).toBe('nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should not resolve nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m',
+    async () => {
+      const result = await registry.lookup(
+        'nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m',
+        services.nibId
+      )
+      expect(result).toEqual(MatchaErrorType.UNAVAILABLE_METHOD)
+    },
+    10000
+  )
 })

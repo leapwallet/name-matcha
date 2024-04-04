@@ -19,7 +19,8 @@ const nsMap = {
   [services.stargazeNames]: 'Stargaze Names',
   [services.archIds]: 'Arch ID',
   [services.spaceIds]: 'Space ID',
-  [services.sns]: 'SNS'
+  [services.sns]: 'SNS',
+  [services.nibId]: 'Nib ID'
 }
 
 const nsList = Object.entries(nsMap)

@@ -129,7 +129,7 @@ describe('ArchIds', () => {
           allowedTopLevelDomains: allowedTopLevelDomains
         })
       } catch (e) {
-        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
+        expect(e.type).toEqual(MatchaErrorType.NOT_FOUND)
       }
     },
     10000
