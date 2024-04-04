@@ -51,6 +51,6 @@ export class NibId extends NameService {
   }
 
   async lookup(address: string, network: Network): Promise<string> {
-    throw new MatchaError('', MatchaErrorType.UNAVAILABLE_METHOD)
+    throw new MatchaError(`Lookup is unavailable for ${address} on ${network}`, MatchaErrorType.UNAVAILABLE_METHOD)
   }
 }
