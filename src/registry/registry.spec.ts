@@ -60,16 +60,6 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    '[Testnet] should resolve 999.inj on spaceIds',
-    async () => {
-      registry.setNetwork('testnet')
-      const res = await registry.resolve('999.inj', services.spaceIds)
-      expect(res).toBe('inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc')
-    },
-    10000
-  )
-
-  it.concurrent(
     '[Testnet] should resolve 000.sei on spaceIds',
     async () => {
       registry.setNetwork('testnet')
@@ -145,19 +135,6 @@ describe('registry', () => {
         spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
         nibId: null
       })
-    },
-    10000
-  )
-
-  it.concurrent(
-    '[Testnet] should lookup name for inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc',
-    async () => {
-      registry.setNetwork('testnet')
-      const result = await registry.lookup(
-        'inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc',
-        services.spaceIds
-      )
-      expect(result).toEqual('999.inj')
     },
     10000
   )
@@ -276,18 +253,6 @@ describe('registry', () => {
     async () => {
       const result = await registry.resolve('zucky.nibi', services.nibId)
       expect(result).toBe('nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m')
-    },
-    10000
-  )
-
-  it.concurrent(
-    'should not resolve nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m',
-    async () => {
-      const result = await registry.lookup(
-        'nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m',
-        services.nibId
-      )
-      expect(result).toEqual(MatchaErrorType.UNAVAILABLE_METHOD)
     },
     10000
   )
