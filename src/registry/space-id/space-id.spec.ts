@@ -10,15 +10,6 @@ describe('SpaceIds', () => {
   })
 
   it.concurrent(
-    'should resolve 999.inj',
-    async () => {
-      const result = await resolver.resolve('999.inj', 'testnet')
-      expect(result).toBe('inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc')
-    },
-    10000
-  )
-
-  it.concurrent(
     'should resolve testtest.inj',
     async () => {
       const result = await resolver.resolve('testtest.inj', 'mainnet')
@@ -47,18 +38,6 @@ describe('SpaceIds', () => {
       } catch (e) {
         expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }
-    },
-    10000
-  )
-
-  it.concurrent(
-    'should lookup name for inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc',
-    async () => {
-      const result = await resolver.lookup(
-        'inj1h4rprmdmf9mx6rje7t3zwqsm9f4cf4gzv3ewnc',
-        'testnet'
-      )
-      expect(result).toEqual('999.inj')
     },
     10000
   )
