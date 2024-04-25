@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { Registry, services } from './registry'
-import { MatchaErrorType } from './name-service'
 
 describe('registry', () => {
   const registry = new Registry('mainnet')
@@ -28,7 +27,8 @@ describe('registry', () => {
       [services.stargazeNames]: true,
       [services.spaceIds]: true,
       [services.sns]: true,
-      [services.nibId]: true
+      [services.nibId]: true,
+      [services.oneIdSei]: true,
     })
   })
 
@@ -99,7 +99,8 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        oneIdSei: null,
       })
     },
     10000
@@ -116,7 +117,8 @@ describe('registry', () => {
         sns: null,
         stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        oneIdSei: null,
       })
     },
     10000
@@ -133,7 +135,8 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
-        nibId: null
+        nibId: null,
+        oneIdSei: null,
       })
     },
     10000
@@ -178,7 +181,8 @@ describe('registry', () => {
         stargazeNames: 'messi.cosmos',
         sns: null,
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        oneIdSei: null,
       })
     }
   )
@@ -196,7 +200,8 @@ describe('registry', () => {
         stargazeNames: 'messi.archway',
         sns: null,
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        oneIdSei: null,
       })
     }
   )
@@ -214,7 +219,8 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: 'allen.sei',
-        nibId: null
+        nibId: null,
+        oneIdSei: null
       })
     }
   )
@@ -253,6 +259,61 @@ describe('registry', () => {
     async () => {
       const result = await registry.resolve('zucky.nibi', services.nibId)
       expect(result).toBe('nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolve oneidtest.c98',
+    async () => {
+      const result = await registry.resolve('oneidtest.c98', services.oneIdSei)
+      expect(result).toBe('sei1p4qz9p6jq8cxmnhfxnp8dye2kaugp0wgk24c3v')
+    },
+    10000
+  )
+
+  it.concurrent('should return oneidtest.c98', async () => {
+    const result = await registry.lookup(
+      'sei1p4qz9p6jq8cxmnhfxnp8dye2kaugp0wgk24c3v',
+      services.oneIdSei
+    )
+    expect(result).toBe('oneidtest.c98')
+  })
+
+  it.concurrent(
+    'should resolveAll for oneidtest.c98',
+    async () => {
+      const res = await registry.resolveAll('oneidtest.c98')
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        nibId: null,
+        oneIdSei: 'sei1p4qz9p6jq8cxmnhfxnp8dye2kaugp0wgk24c3v'
+      })
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should lookupAll for sei1p4qz9p6jq8cxmnhfxnp8dye2kaugp0wgk24c3v',
+    async () => {
+      const res = await registry.lookupAll(
+        'sei1p4qz9p6jq8cxmnhfxnp8dye2kaugp0wgk24c3v'
+      )
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        nibId: null,
+        oneIdSei: 'oneidtest.c98',
+      })
     },
     10000
   )

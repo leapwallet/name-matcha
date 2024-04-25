@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@cosmjs/cosmwasm-stargate": "0.30.0",
+    "@oneid-xyz/inspect": "^1.0.3",
     "bech32": "1.1.4",
     "idna-uts46-hx": "5.0.7",
     "js-sha3": "0.8.0"
