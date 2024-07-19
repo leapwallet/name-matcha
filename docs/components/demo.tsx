@@ -20,7 +20,8 @@ const nsMap = {
   [services.archIds]: 'Arch ID',
   [services.spaceIds]: 'Space ID',
   [services.sns]: 'SNS',
-  [services.nibId]: 'Nib ID'
+  [services.nibId]: 'Nib ID',
+  [services.degeNS]: 'DegeNS',
 }
 
 const nsList = Object.entries(nsMap)
