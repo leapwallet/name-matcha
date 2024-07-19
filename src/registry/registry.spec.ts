@@ -81,11 +81,11 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should resolve dirty.pp on degens-domains',
+    'should resolve degens.pp on Degen Name Service',
     async () => {
       registry.setNetwork('mainnet')
-      const result = await registry.resolve('dirty.pp', services.degeNS)
-      expect(result).toBe('sei1w0gv4w5fr84selne6tpgj9vhwyk0r4cm8l6825')
+      const result = await registry.resolve('degens.pp', services.degeNS)
+      expect(result).toBe('sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv')
     },
     10000
   )
@@ -154,18 +154,18 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should resolveAll for dirty.pp',
+    'should resolveAll for degens.pp',
     async () => {
-      const res = await registry.resolveAll('dirty.pp')
+      const res = await registry.resolveAll('degens.pp')
       expect(res).toEqual({
         archIds: null,
         icns: null,
         ibcDomains: null,
-        stargazeNames: 'pp1fv7lgxh3zkx2x6qgtm8976kk94eczdkfl88lk4',
+        stargazeNames: null,
         sns: null,
         spaceIds: null,
         nibId: null,
-        degeNS: 'sei1w0gv4w5fr84selne6tpgj9vhwyk0r4cm8l6825'
+        degeNS: 'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv'
       })
     },
     10000
@@ -198,16 +198,16 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should lookup name for sei15pz333htntschjk0mu89m7rmetduemvdvpl4cr',
+    'should lookup name for sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv',
     async () => {
       registry.setNetwork('mainnet')
       const result = await registry.lookup(
-        'sei15pz333htntschjk0mu89m7rmetduemvdvpl4cr',
+        'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv',
         services.degeNS
       )
-      expect(result).toEqual('dirtyshab.sei')
+      expect(result).toEqual('degens.pp')
     },
-    10000
+    100000
   )
 
   it.concurrent(

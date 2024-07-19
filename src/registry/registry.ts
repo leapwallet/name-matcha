@@ -5,7 +5,7 @@ import { ArchIdNames, serviceID as _archId } from './arch-id'
 import { SpaceIds, serviceID as _spaceId } from './space-id/space-id'
 import { SNS, serviceID as _sns } from './sns'
 import { NibId, serviceID as _nibId } from './nib-id'
-import { DegeNSDomains, serviceID as _degeNS } from './degens-domains'
+import { DegenNameService, serviceID as _degeNS } from './degen-name-service'
 import {
   AllowedTopLevelDomains,
   MatchaError,
@@ -41,7 +41,7 @@ export class Registry {
     this.registerService(new SpaceIds())
     this.registerService(new SNS())
     this.registerService(new NibId())
-    this.registerService(new DegeNSDomains())
+    this.registerService(new DegenNameService())
   }
 
   registerService(service: NameService) {

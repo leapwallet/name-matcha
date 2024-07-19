@@ -11,7 +11,7 @@ const rpcUrls = {
   mainnet: 'https://rpc.sei-apis.com:443',
 }
 
-export class DegeNSDomains extends NameService {
+export class DegenNameService extends NameService {
   serviceID = serviceID
   chain = 'sei'
   contractAddress = {
