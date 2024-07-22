@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { DegenNameService } from './degen-name-service'
+import { DegeNS } from './degens'
 
-describe('Degen Name Service', () => {
-  const resolver = new DegenNameService()
+describe('DegeNS', () => {
+  const resolver = new DegeNS()
 
   it('should be defined', () => {
     expect(resolver).toBeDefined()

@@ -81,7 +81,7 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should resolve degens.pp on Degen Name Service',
+    'should resolve degens.pp on DegeNS',
     async () => {
       registry.setNetwork('mainnet')
       const result = await registry.resolve('degens.pp', services.degeNS)

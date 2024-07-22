@@ -30,6 +30,6 @@ We support the following name services -
 2. [Stargaze Names](https://www.stargaze.zone/names)
 3. [IBC Domains](https://ibc.domains)
 4. [ArchId](https://archid.app)
-5. [Degen Name Service](https://www.degens.domains)
+5. [DegeNS](https://www.degens.domains)
 
 We also allow you to add your own name service for custom use-cases. You can look at the docs for the same [here](https://leapwallet.github.io/name-matcha/docs/advanced#custom-name-services).
