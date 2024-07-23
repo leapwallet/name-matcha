@@ -8,7 +8,7 @@ import {
 export const serviceID = 'degeNS'
 
 const rpcUrls = {
-  mainnet: 'https://rpc.sei-apis.com:443',
+  mainnet: 'https://rpc.sei-apis.com:443'
 }
 
 export class DegeNS extends NameService {
@@ -21,7 +21,10 @@ export class DegeNS extends NameService {
 
   async resolve(name: string, network: Network): Promise<string> {
     if (network === 'testnet') {
-      throw new MatchaError(`Resolve is unavailable for ${name} on ${network}`, MatchaErrorType.UNAVAILABLE_METHOD)
+      throw new MatchaError(
+        `Resolve is unavailable for ${name} on ${network}`,
+        MatchaErrorType.UNAVAILABLE_METHOD
+      )
     }
     const client = await this.getCosmWasmClient(rpcUrls[network])
     if (this.contractAddress[network] == '') {
@@ -51,7 +54,10 @@ export class DegeNS extends NameService {
 
   async lookup(address: string, network: Network): Promise<string> {
     if (network === 'testnet') {
-      throw new MatchaError(`Lookup is unavailable for ${address} on ${network}`, MatchaErrorType.UNAVAILABLE_METHOD)
+      throw new MatchaError(
+        `Lookup is unavailable for ${address} on ${network}`,
+        MatchaErrorType.UNAVAILABLE_METHOD
+      )
     }
     const client = await this.getCosmWasmClient(rpcUrls[network])
     if (this.contractAddress[network] == '') {
