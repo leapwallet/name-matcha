@@ -80,18 +80,18 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should resolve leap.arch on archIds',
+    'should resolve leapdegens.arch on archIds',
     async () => {
-      const res = await registry.resolve('leap.arch', services.archIds)
+      const res = await registry.resolve('leapdegens.arch', services.archIds)
       expect(res).toBe('archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q')
     },
     10000
   )
 
   it.concurrent(
-    'should resolveAll for leap.arch',
+    'should resolveAll for leapdegens.arch',
     async () => {
-      const res = await registry.resolveAll('leap.arch')
+      const res = await registry.resolveAll('leapdegens.arch')
       expect(res).toEqual({
         archIds: 'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q',
         icns: null,
@@ -190,7 +190,7 @@ describe('registry', () => {
         'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q'
       )
       expect(res).toEqual({
-        archIds: 'archfam.arch, leap.arch, leapdegens.arch',
+        archIds: 'archfam.arch, leapdegens.arch',
         icns: null,
         ibcDomains: 'leapwallet.archway',
         stargazeNames: 'messi.archway',
