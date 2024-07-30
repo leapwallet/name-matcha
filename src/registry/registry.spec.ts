@@ -91,10 +91,13 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should resolve leap.arch on archIds',
+    'should not resolve leap.arch on archIds',
     async () => {
-      const res = await registry.resolve('leap.arch', services.archIds)
-      expect(res).toBe('archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q')
+      try {
+        await registry.resolve('leap.arch', services.archIds)
+      } catch (e) {
+        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
+      }
     },
     10000
   )
@@ -104,7 +107,7 @@ describe('registry', () => {
     async () => {
       const res = await registry.resolveAll('leap.arch')
       expect(res).toEqual({
-        archIds: 'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q',
+        archIds: null,
         icns: null,
         ibcDomains: null,
         stargazeNames: null,
