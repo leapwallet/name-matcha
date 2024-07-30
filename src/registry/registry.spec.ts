@@ -28,7 +28,8 @@ describe('registry', () => {
       [services.stargazeNames]: true,
       [services.spaceIds]: true,
       [services.sns]: true,
-      [services.nibId]: true
+      [services.nibId]: true,
+      [services.degeNS]: true
     })
   })
 
@@ -80,6 +81,16 @@ describe('registry', () => {
   )
 
   it.concurrent(
+    'should resolve degens.pp on DegeNS',
+    async () => {
+      registry.setNetwork('mainnet')
+      const result = await registry.resolve('degens.pp', services.degeNS)
+      expect(result).toBe('sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv')
+    },
+    10000
+  )
+
+  it.concurrent(
     'should resolve leap.arch on archIds',
     async () => {
       const res = await registry.resolve('leap.arch', services.archIds)
@@ -99,7 +110,8 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        degeNS: null
       })
     },
     10000
@@ -116,7 +128,8 @@ describe('registry', () => {
         sns: null,
         stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        degeNS: null
       })
     },
     10000
@@ -133,7 +146,26 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
-        nibId: null
+        nibId: null,
+        degeNS: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
+      })
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolveAll for degens.pp',
+    async () => {
+      const res = await registry.resolveAll('degens.pp')
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        nibId: null,
+        degeNS: 'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv'
       })
     },
     10000
@@ -166,6 +198,19 @@ describe('registry', () => {
   )
 
   it.concurrent(
+    'should lookup name for sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv',
+    async () => {
+      registry.setNetwork('mainnet')
+      const result = await registry.lookup(
+        'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv',
+        services.degeNS
+      )
+      expect(result).toEqual('degens.pp')
+    },
+    100000
+  )
+
+  it.concurrent(
     'should lookupAll for cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
     async () => {
       const res = await registry.lookupAll(
@@ -178,7 +223,8 @@ describe('registry', () => {
         stargazeNames: 'messi.cosmos',
         sns: null,
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        degeNS: null
       })
     }
   )
@@ -190,13 +236,14 @@ describe('registry', () => {
         'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q'
       )
       expect(res).toEqual({
-        archIds: 'archfam.arch, leap.arch, leapdegens.arch',
+        archIds: 'archfam.arch, leapdegens.arch',
         icns: null,
         ibcDomains: 'leapwallet.archway',
         stargazeNames: 'messi.archway',
         sns: null,
         spaceIds: null,
-        nibId: null
+        nibId: null,
+        degeNS: null
       })
     }
   )
@@ -214,7 +261,8 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: 'allen.sei',
-        nibId: null
+        nibId: null,
+        degeNS: 'allen.sei'
       })
     }
   )

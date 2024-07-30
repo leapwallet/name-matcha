@@ -102,5 +102,6 @@ export const allowedTopLevelDomains: AllowedTopLevelDomains = {
   archIds: ['arch'],
   spaceIds: ['inj', 'sei'],
   sns: ['sol'],
-  nibId: ['nibi']
+  nibId: ['nibi'],
+  degeNS: ['pp', 'sei']
 }

@@ -38,6 +38,7 @@ export type AllowedTopLevelDomains = {
   spaceIds?: string[]
   sns?: string[]
   nibId?: string[]
+  degeNS?: string[]
 }
 
 export type rpcUrls = Record<Network, string>
@@ -50,6 +51,7 @@ export type RpcURLs = {
   spaceIds?: rpcUrls
   sns?: rpcUrls
   nibId?: rpcUrls
+  degeNS?: rpcUrls
 }
 
 class CosmWasmClientHandler {
