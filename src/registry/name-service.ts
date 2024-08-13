@@ -7,7 +7,8 @@ export enum MatchaErrorType {
   NOT_FOUND = 'not-found',
   UNREGISTERED_SERVICE = 'unregistered-service',
   DUPLICATE_SERVICE = 'duplicate-service',
-  INVALID_ADDRESS = 'invalid-address'
+  INVALID_ADDRESS = 'invalid-address',
+  UNAVAILABLE_METHOD = 'invalid-address'
 }
 
 /**
@@ -37,6 +38,7 @@ export type AllowedTopLevelDomains = {
   spaceIds?: string[]
   sns?: string[]
   bdd?: string[]
+  nibId?: string[]
 }
 
 export type rpcUrls = Record<Network, string>
@@ -49,6 +51,7 @@ export type RpcURLs = {
   spaceIds?: rpcUrls
   sns?: rpcUrls,
   bdd?: rpcUrls
+  nibId?: rpcUrls
 }
 
 class CosmWasmClientHandler {
