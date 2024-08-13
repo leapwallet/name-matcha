@@ -30,7 +30,8 @@ const services = {
   archIds: 'archIds',
   spaceIds: 'spaceIds',
   sns: 'sns',
-  nibId: 'nibId'
+  nibId: 'nibId',
+  degeNS: 'degeNS'
 }
 ```
 
@@ -69,7 +70,8 @@ The output will be an object with the service as key and the address as value:
   archIds: null,
   spaceIds: null,
   sns: null,
-  nibId: null
+  nibId: null,
+  degeNS: null
 }
 ```
 
@@ -107,7 +109,8 @@ The output will be an object with the service as key and the name as value:
   archIds: null,
   spaceIds: null,
   sns: null,
-  nibId: null 
+  nibId: null,
+  degeNS: 'ligma.pp'
 }
 ```
 
@@ -129,7 +132,7 @@ Name Matcha comes with default RPC endpoints for each service.
 
 ## Error Handling
 
-The library throws errors when something goes wrong. The library throw errors of type `MatchaError`. It is built on top of the `Error` class, and has an additional property `type` of type `MatchaErrorType`.
+The library throws errors when something goes wrong. The library throws errors of type `MatchaError`. It is built on top of the `Error` class, and has an additional property `type` of type `MatchaErrorType`.
 
 ```ts
 import nameMatcha, { MatchaError, MatchaErrorType } from '@leapwallet/name-matcha'
@@ -153,3 +156,4 @@ try {
 - [SNS](https://www.sns.id) - Injective .sol domains 
 - [NIB ID](https://nibid.app) - .nibi domains on Nibiru
 - [Bidds Decentralized Domains](https://bidds.com) - Coreum .core domains
+- [DegeNS](https://www.degens.domains) - Degen Name Service on Sei Network

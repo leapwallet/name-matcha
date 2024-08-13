@@ -6,6 +6,7 @@ import { SpaceIds, serviceID as _spaceId } from './space-id/space-id'
 import { SNS, serviceID as _sns } from './sns'
 import { BDD, serviceID as _bdd } from './bdd'
 import { NibId, serviceID as _nibId } from './nib-id'
+import { DegeNS, serviceID as _degeNS } from './degens'
 import {
   AllowedTopLevelDomains,
   MatchaError,
@@ -24,7 +25,8 @@ export const services = {
   spaceIds: _spaceId,
   sns: _sns,
   bdd: _bdd,
-  nibId: _nibId
+  nibId: _nibId,
+  degeNS: _degeNS
 }
 
 export const allowedTopLevelDomains = allowedTopLevelDomainData
@@ -42,6 +44,7 @@ export class Registry {
     this.registerService(new SNS())
     this.registerService(new BDD())
     this.registerService(new NibId())
+    this.registerService(new DegeNS())
   }
 
   registerService(service: NameService) {

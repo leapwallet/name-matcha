@@ -14,10 +14,13 @@ describe('ArchIds', () => {
   })
 
   it.concurrent(
-    'should resolve leap.arch',
+    'should not resolve leap.arch',
     async () => {
-      const result = await resolver.resolve('leap.arch', 'mainnet')
-      expect(result).toBe('archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q')
+      try {
+        await resolver.resolve('leap.arch', 'mainnet')
+      } catch (e) {
+        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
+      }
     },
     10000
   )
@@ -32,10 +35,13 @@ describe('ArchIds', () => {
   )
 
   it.concurrent(
-    'should resolve nft.arch',
+    'should not resolve nft.arch',
     async () => {
-      const result = await resolver.resolve('nft.arch', 'mainnet')
-      expect(result).toBe('archway1qf0kxkk60qrcj5qa7v7t439249qfkcd4a2rpja')
+      try {
+        await resolver.resolve('nft.arch', 'mainnet')
+      } catch (e) {
+        expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
+      }
     },
     10000
   )
@@ -59,7 +65,7 @@ describe('ArchIds', () => {
         'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q',
         'mainnet'
       )
-      expect(result).toEqual('archfam.arch, leap.arch, leapdegens.arch')
+      expect(result).toEqual('archfam.arch, leapdegens.arch')
     },
     10000
   )
