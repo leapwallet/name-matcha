@@ -28,6 +28,7 @@ describe('registry', () => {
       [services.stargazeNames]: true,
       [services.spaceIds]: true,
       [services.sns]: true,
+      [services.bdd]: true,
       [services.nibId]: true,
       [services.degeNS]: true
     })
@@ -113,6 +114,7 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: null,
+        bdd: null,
         nibId: null,
         degeNS: null
       })
@@ -131,6 +133,7 @@ describe('registry', () => {
         sns: null,
         stargazeNames: 'cosmos19vf5mfr40awvkefw69nl6p3mmlsnacmm28xyqh',
         spaceIds: null,
+        bdd: null,
         nibId: null,
         degeNS: null
       })
@@ -149,6 +152,7 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+        bdd: null,
         nibId: null,
         degeNS: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
       })
@@ -168,7 +172,8 @@ describe('registry', () => {
         sns: null,
         spaceIds: null,
         nibId: null,
-        degeNS: 'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv'
+        degeNS: 'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv',
+        bdd: null
       })
     },
     10000
@@ -227,7 +232,8 @@ describe('registry', () => {
         sns: null,
         spaceIds: null,
         nibId: null,
-        degeNS: null
+        degeNS: null,
+        bdd: null,
       })
     }
   )
@@ -246,7 +252,8 @@ describe('registry', () => {
         sns: null,
         spaceIds: null,
         nibId: null,
-        degeNS: null
+        degeNS: null,
+        bdd: null,
       })
     }
   )
@@ -265,7 +272,8 @@ describe('registry', () => {
         sns: null,
         spaceIds: 'allen.sei',
         nibId: null,
-        degeNS: 'allen.sei'
+        degeNS: 'allen.sei',
+        bdd: null,
       })
     }
   )
@@ -300,7 +308,62 @@ describe('registry', () => {
   })
 
   it.concurrent(
-    'should resolve zucky.nibi',
+    'should resolve bdd-registrar.core',
+    async () => {
+      const result = await registry.resolve('bdd-registrar.core', services.bdd)
+      expect(result).toBe('core10g5cy007hcmzhh4ta9sne0trasfds59lless97')
+    },
+    10000
+  )
+
+  it.concurrent('should return bdd-registrar.core', async () => {
+    const result = await registry.lookup(
+      'core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
+      services.bdd
+    )
+    expect(result).toBe('bdd-registrar.core')
+  })
+
+  it.concurrent(
+    'should resolveAll for bdd-registrar.core',
+    async () => {
+      const res = await registry.resolveAll('bdd-registrar.core')
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        nibId: null,
+        degeNS: null,
+        bdd: 'core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
+      })
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should lookupAll for core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
+    async () => {
+      const res = await registry.lookupAll(
+        'core10g5cy007hcmzhh4ta9sne0trasfds59lless97'
+      )
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        nibId: null,
+        degeNS: null,
+        bdd: 'bdd-registrar.core',
+      })
+    }
+  )
+    
+  it.concurrent('should resolve zucky.nibi',
     async () => {
       const result = await registry.resolve('zucky.nibi', services.nibId)
       expect(result).toBe('nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m')

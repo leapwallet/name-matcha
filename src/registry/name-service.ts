@@ -37,6 +37,7 @@ export type AllowedTopLevelDomains = {
   stargazeNames?: string[]
   spaceIds?: string[]
   sns?: string[]
+  bdd?: string[]
   nibId?: string[]
   degeNS?: string[]
 }
@@ -49,7 +50,8 @@ export type RpcURLs = {
   archIds?: rpcUrls
   stargazeNames?: rpcUrls
   spaceIds?: rpcUrls
-  sns?: rpcUrls
+  sns?: rpcUrls,
+  bdd?: rpcUrls
   nibId?: rpcUrls
   degeNS?: rpcUrls
 }

@@ -22,6 +22,7 @@ const nsMap = {
   [services.sns]: 'SNS',
   [services.nibId]: 'Nib ID',
   [services.degeNS]: 'DegeNS',
+  [services.bdd]: 'BDD',
 }
 
 const nsList = Object.entries(nsMap)
