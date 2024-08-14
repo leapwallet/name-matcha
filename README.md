@@ -33,5 +33,6 @@ We support the following name services -
 5. [SpaceId](https://space.id)
 6. [SNS](https://www.sns.id)
 7. [DegeNS](https://www.degens.domains)
+8. [Bidds Decentralized Domains](https://bidds.com)
 
 We also allow you to add your own name service for custom use-cases. You can look at the docs for the same [here](https://leapwallet.github.io/name-matcha/docs/advanced#custom-name-services).
