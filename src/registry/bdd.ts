@@ -1,13 +1,12 @@
 import {
   Addr,
-  AllowedTopLevelDomains,
   MatchaError,
   MatchaErrorType,
   NameService,
   Network,
   RpcURLs
 } from './name-service'
-import { decode, encode, fromWords } from 'bech32'
+import { decode, encode } from 'bech32'
 
 export const serviceID = 'bdd'
 
@@ -83,7 +82,6 @@ export class BDD extends NameService {
       }
       return res
     } catch (e) {
-      console.error(e)
       throw new MatchaError('', MatchaErrorType.NOT_FOUND)
     }
   }

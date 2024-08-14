@@ -172,7 +172,8 @@ describe('registry', () => {
         sns: null,
         spaceIds: null,
         nibId: null,
-        degeNS: 'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv'
+        degeNS: 'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv',
+        bdd: null
       })
     },
     10000
@@ -230,9 +231,9 @@ describe('registry', () => {
         stargazeNames: 'messi.cosmos',
         sns: null,
         spaceIds: null,
-        bdd: null,
         nibId: null,
-        degeNS: null
+        degeNS: null,
+        bdd: null,
       })
     }
   )
@@ -250,9 +251,9 @@ describe('registry', () => {
         stargazeNames: 'messi.archway',
         sns: null,
         spaceIds: null,
-        bdd: null,
         nibId: null,
-        degeNS: null
+        degeNS: null,
+        bdd: null,
       })
     }
   )
@@ -270,9 +271,9 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: 'allen.sei',
-        bdd: null,
         nibId: null,
-        degeNS: 'allen.sei'
+        degeNS: 'allen.sei',
+        bdd: null,
       })
     }
   )
@@ -334,6 +335,8 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: null,
+        nibId: null,
+        degeNS: null,
         bdd: 'core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
       })
     },
@@ -353,6 +356,8 @@ describe('registry', () => {
         stargazeNames: null,
         sns: null,
         spaceIds: null,
+        nibId: null,
+        degeNS: null,
         bdd: 'bdd-registrar.core',
       })
     }
