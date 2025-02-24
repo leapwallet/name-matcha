@@ -5,20 +5,33 @@ import {
   MatchaErrorType,
   RpcURLs
 } from './name-service'
-import { CelestiaIds } from './celestia'
+import { CelestialsId } from './celestials'
 
-describe('CelestiaIds', () => {
-  const resolver = new CelestiaIds()
+describe('CelestialsId', () => {
+  const resolver = new CelestialsId()
 
   it('should be defined', () => {
     expect(resolver).toBeDefined()
   })
 
   it.concurrent(
-    'should resolve celestiaa',
+    'should resolve celestiaa.id with multi-chain addresses',
     async () => {
       const result = await resolver.resolve('celestiaa.id', 'mainnet')
-      expect(result).toBe('celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy')
+      expect(result).toEqual([
+        {
+          chain_id: '8453',
+          address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
+        },
+        {
+          chain_id: 'celestia',
+          address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
+        },
+        {
+          chain_id: '984122',
+          address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
+        }
+      ])
     },
     10000
   )
@@ -42,7 +55,12 @@ describe('CelestiaIds', () => {
         'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy',
         'mainnet'
       )
-      expect(result).toBe('celestiaa.id')
+      expect(result).toEqual([
+        {
+          name: 'celestiaa.id',
+          chain_id: 'celestia'
+        }
+      ])
     },
     10000
   )
@@ -91,12 +109,25 @@ describe('CelestiaIds', () => {
     'should resolve with allowed top level domains',
     async () => {
       const allowedTopLevelDomains: AllowedTopLevelDomains = {
-        celestiaIds: ['id']
+        celestialsId: ['id']
       }
       const result = await resolver.resolve('celestiaa.id', 'mainnet', {
         allowedTopLevelDomains: allowedTopLevelDomains
       })
-      expect(result).toBe('celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy')
+      expect(result).toEqual([
+        {
+          chain_id: '8453',
+          address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
+        },
+        {
+          chain_id: 'celestia',
+          address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
+        },
+        {
+          chain_id: '984122',
+          address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
+        }
+      ])
     },
     10000
   )
@@ -105,7 +136,7 @@ describe('CelestiaIds', () => {
     'should not resolve with empty allowed top level domains',
     async () => {
       const allowedTopLevelDomains: AllowedTopLevelDomains = {
-        celestiaIds: []
+        celestialsId: []
       }
       try {
         await resolver.resolve('celestiaa.id', 'mainnet', {
@@ -122,7 +153,7 @@ describe('CelestiaIds', () => {
     'should resolve with custom rpc url',
     async () => {
       const rpcUrls: RpcURLs = {
-        celestiaIds: {
+        celestialsId: {
           testnet: 'https://api.stage.celestials.id',
           mainnet: 'https://api.celestials.id'
         }
@@ -130,7 +161,20 @@ describe('CelestiaIds', () => {
       const result = await resolver.resolve('celestiaa.id', 'mainnet', {
         rpcUrls
       })
-      expect(result).toBe('celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy')
+      expect(result).toEqual([
+        {
+          chain_id: '8453',
+          address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
+        },
+        {
+          chain_id: 'celestia',
+          address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
+        },
+        {
+          chain_id: '984122',
+          address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
+        }
+      ])
     },
     10000
   )

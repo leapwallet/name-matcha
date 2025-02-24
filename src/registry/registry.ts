@@ -7,12 +7,14 @@ import { SNS, serviceID as _sns } from './sns'
 import { BDD, serviceID as _bdd } from './bdd'
 import { NibId, serviceID as _nibId } from './nib-id'
 import { DegeNS, serviceID as _degeNS } from './degens'
-import { CelestiaIds, serviceID as _celestiaIds } from './celestia'
+import { CelestialsId, serviceID as _celestialsId } from './celestials'
 import {
   AllowedTopLevelDomains,
   MatchaError,
   MatchaErrorType,
   NameService,
+  NameServiceLookupResult,
+  NameServiceResolveResult,
   Network,
   RpcURLs
 } from './name-service'
@@ -28,7 +30,7 @@ export const services = {
   bdd: _bdd,
   nibId: _nibId,
   degeNS: _degeNS,
-  celestiaIds: _celestiaIds
+  celestialsId: _celestialsId
 }
 
 export const allowedTopLevelDomains = allowedTopLevelDomainData
@@ -47,7 +49,7 @@ export class Registry {
     this.registerService(new BDD())
     this.registerService(new NibId())
     this.registerService(new DegeNS())
-    this.registerService(new CelestiaIds())
+    this.registerService(new CelestialsId())
   }
 
   registerService(service: NameService) {
@@ -90,7 +92,7 @@ export class Registry {
       allowedTopLevelDomains?: AllowedTopLevelDomains
       rpcUrls?: RpcURLs
     }
-  ): Promise<string> {
+  ): Promise<NameServiceResolveResult> {
     const service = this.getService(serviceID)
     return service.resolve(name, this.network, options)
   }
@@ -101,7 +103,7 @@ export class Registry {
     options?: {
       rpcUrls?: RpcURLs
     }
-  ): Promise<string> {
+  ): Promise<NameServiceLookupResult> {
     const service = this.getService(serviceID)
     return service.lookup(address, this.network, options)
   }
@@ -115,7 +117,7 @@ export class Registry {
       }
     }
   ) {
-    const record: Record<string, string | null> = {}
+    const record: Record<string, NameServiceResolveResult | null> = {}
     await Promise.all(
       Object.entries(this.services).map(async ([serviceID, service]) => {
         try {
@@ -137,7 +139,7 @@ export class Registry {
       }
     }
   ) {
-    const record: Record<string, string | null> = {}
+    const record: Record<string, NameServiceLookupResult | null> = {}
     await Promise.all(
       Object.entries(this.services).map(async ([serviceID, service]) => {
         try {

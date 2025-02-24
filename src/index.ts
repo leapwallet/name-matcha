@@ -7,7 +7,9 @@ import {
   allowedTopLevelDomains,
   AllowedTopLevelDomains,
   Network,
-  RpcURLs
+  RpcURLs,
+  NameServiceResolveResult,
+  NameServiceLookupResult
 } from './registry'
 
 /**
@@ -27,7 +29,9 @@ export type {
   MatchaErrorType,
   AllowedTopLevelDomains,
   Network,
-  RpcURLs
+  RpcURLs,
+  NameServiceResolveResult,
+  NameServiceLookupResult
 }
 
 export { services, allowedTopLevelDomains, registry }
