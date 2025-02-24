@@ -113,7 +113,7 @@ export abstract class NameService {
       }
     | Record<string, { [key in Network]: string }>
   /**
-   * @param name Resolve this name into an address or a mapping of chain_id to address
+   * @param name Resolve this name into an address or an array of objects with chain_id and address
    */
   abstract resolve(
     name: string,
