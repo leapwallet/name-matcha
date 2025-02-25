@@ -105,5 +105,5 @@ export const allowedTopLevelDomains: AllowedTopLevelDomains = {
   nibId: ['nibi'],
   degeNS: ['pp', 'sei'],
   bdd: ['core'],
-  celestialsId: ['id']
+  celestialsId: ['i']
 }

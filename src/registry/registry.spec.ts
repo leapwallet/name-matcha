@@ -382,9 +382,9 @@ describe('registry', () => {
   )
 
   it.concurrent(
-    'should resolveAll for celestiaa.id',
+    'should resolveAll for celestiaa.i',
     async () => {
-      const res = await registry.resolveAll('celestiaa.id')
+      const res = await registry.resolveAll('celestiaa.i')
       expect(res).toEqual({
         archIds: null,
         icns: null,

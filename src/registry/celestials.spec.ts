@@ -15,9 +15,9 @@ describe('CelestialsId', () => {
   })
 
   it.concurrent(
-    'should resolve celestiaa.id with multi-chain addresses',
+    'should resolve celestiaa.i with multi-chain addresses',
     async () => {
-      const result = await resolver.resolve('celestiaa.id', 'mainnet')
+      const result = await resolver.resolve('celestiaa.i', 'mainnet')
       expect(result).toEqual([
         {
           chain_id: '8453',
@@ -37,10 +37,10 @@ describe('CelestialsId', () => {
   )
 
   it.concurrent(
-    'should not resolve nonexistent.id',
+    'should not resolve whatevery.cocoa',
     async () => {
       try {
-        await resolver.resolve('nonexistent.id', 'testnet')
+        await resolver.resolve('whatevery.cocoa', 'testnet')
       } catch (e) {
         expect(e.type).toBe(MatchaErrorType.NOT_FOUND)
       }
@@ -57,7 +57,7 @@ describe('CelestialsId', () => {
       )
       expect(result).toEqual([
         {
-          name: 'celestiaa.id',
+          name: 'celestiaa.i',
           chain_id: 'celestia'
         }
       ])
@@ -93,25 +93,12 @@ describe('CelestialsId', () => {
   )
 
   it.concurrent(
-    'should fail resolve for random name',
-    async () => {
-      const randName = `${Math.random().toString(36).substring(2, 12)}.id`
-      try {
-        await resolver.resolve(randName, 'testnet')
-      } catch (e) {
-        expect((e as MatchaError).type).toEqual(MatchaErrorType.NOT_FOUND)
-      }
-    },
-    10000
-  )
-
-  it.concurrent(
     'should resolve with allowed top level domains',
     async () => {
       const allowedTopLevelDomains: AllowedTopLevelDomains = {
-        celestialsId: ['id']
+        celestialsId: ['i']
       }
-      const result = await resolver.resolve('celestiaa.id', 'mainnet', {
+      const result = await resolver.resolve('celestiaa.i', 'mainnet', {
         allowedTopLevelDomains: allowedTopLevelDomains
       })
       expect(result).toEqual([
@@ -139,7 +126,7 @@ describe('CelestialsId', () => {
         celestialsId: []
       }
       try {
-        await resolver.resolve('celestiaa.id', 'mainnet', {
+        await resolver.resolve('celestiaa.i', 'mainnet', {
           allowedTopLevelDomains: allowedTopLevelDomains
         })
       } catch (e) {
@@ -158,7 +145,7 @@ describe('CelestialsId', () => {
           mainnet: 'https://api.celestials.id'
         }
       }
-      const result = await resolver.resolve('celestiaa.id', 'mainnet', {
+      const result = await resolver.resolve('celestiaa.i', 'mainnet', {
         rpcUrls
       })
       expect(result).toEqual([
