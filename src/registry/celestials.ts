@@ -1,3 +1,4 @@
+import { hexToDecimal } from '../utils'
 import {
   AllowedTopLevelDomains,
   ChainAddressResult,
@@ -15,15 +16,6 @@ const rpcUrls = {
 }
 
 export const serviceID = 'celestialsId'
-
-// Map Celestials chain IDs to our standardized chain IDs
-const chainIdMap: Record<string, string> = {
-  '0x1': 'ethereum-1',
-  bitcoin: '3652501241',
-  '0x2105': '8453',
-  'celestia-1': 'celestia',
-  'forma-1': '984122',
-}
 
 interface Chain {
   name: string
@@ -125,9 +117,9 @@ export class CelestialsId extends NameService {
       const resolveResult: ChainAddressResult[] = []
       chains.forEach((chain, index) => {
         const address = res.addresses[index]?.address
-        if (address && chainIdMap[chain.chain_id]) {
+        if (address) {
           resolveResult.push({
-            chain_id: chainIdMap[chain.chain_id],
+            chain_id: hexToDecimal(chain.chain_id),
             address
           })
         }
@@ -180,10 +172,10 @@ export class CelestialsId extends NameService {
       const lookupResult: NameResult[] = []
       res.celestial_ids.forEach((chainResults, index) => {
         const chain = chains[index]
-        if (chainResults?.[0]?.celestial_id && chainIdMap[chain.chain_id]) {
+        if (chainResults?.[0]?.celestial_id) {
           lookupResult.push({
             name: chainResults[0].celestial_id,
-            chain_id: chainIdMap[chain.chain_id]
+            chain_id: hexToDecimal(chain.chain_id)
           })
         }
       })

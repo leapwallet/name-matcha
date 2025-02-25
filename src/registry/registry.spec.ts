@@ -373,7 +373,8 @@ describe('registry', () => {
     }
   )
 
-  it.concurrent('should resolve zucky.nibi',
+  it.concurrent(
+    'should resolve zucky.nibi',
     async () => {
       const result = await registry.resolve('zucky.nibi', services.nibId)
       expect(result).toBe('nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m')
@@ -397,16 +398,16 @@ describe('registry', () => {
         degeNS: null,
         celestialsId: [
           {
-            address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c',
-            chain_id: '8453'
+            address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16',
+            chain_id: '984122'
           },
           {
             address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy',
             chain_id: 'celestia'
           },
           {
-            address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16',
-            chain_id: '984122'
+            address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c',
+            chain_id: '8453'
           }
         ]
       })
