@@ -77,7 +77,7 @@ describe('registry', () => {
     async () => {
       registry.setNetwork('mainnet')
       const result = await registry.resolve('000.sei', services.spaceIds)
-      expect(result).toBe('sei16fg5g3h57kp58k7grnfql56zsa6evqvqlzpjz9')
+      expect(result).toBe('sei16888j0hlrtpk5gq58jf9enaqjkr0eyzf3knt79')
     },
     10000
   )
@@ -147,17 +147,17 @@ describe('registry', () => {
   it.concurrent(
     'should resolveAll for allen.sei',
     async () => {
-      const res = await registry.resolveAll('allen.sei')
+      const res = await registry.resolveAll('degens.sei')
       expect(res).toEqual({
         archIds: null,
         icns: null,
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+        spaceIds: 'sei1j8agkkd7w537djqt9yjexk8j6hn26uc2gskl9n',
         bdd: null,
         nibId: null,
-        degeNS: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+        degeNS: 'sei1ah7vnw9cg8w3j0mampptm5kc4462lltkzt6sl8',
         celestialsId: null
       })
     },
@@ -251,7 +251,7 @@ describe('registry', () => {
         'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q'
       )
       expect(res).toEqual({
-        archIds: 'archfam.arch, leapdegens.arch',
+        archIds: null,
         icns: null,
         ibcDomains: 'leapwallet.archway',
         stargazeNames: 'messi.archway',
@@ -279,7 +279,7 @@ describe('registry', () => {
         sns: null,
         spaceIds: 'allen.sei',
         nibId: null,
-        degeNS: 'allen.sei',
+        degeNS: null,
         bdd: null,
         celestialsId: null
       })

@@ -70,7 +70,7 @@ describe('SpaceIds', () => {
     'should resolve 000.sei mainnet',
     async () => {
       const result = await resolver.resolve('000.sei', 'mainnet')
-      expect(result).toBe('sei16fg5g3h57kp58k7grnfql56zsa6evqvqlzpjz9')
+      expect(result).toBe('sei16888j0hlrtpk5gq58jf9enaqjkr0eyzf3knt79')
     },
     10000
   )
