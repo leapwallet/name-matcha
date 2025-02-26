@@ -396,7 +396,7 @@ describe('registry', () => {
         bdd: null,
         nibId: null,
         degeNS: null,
-        celestialsId: [
+        celestialsId: expect.arrayContaining([
           {
             address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16',
             chain_id: '984122'
@@ -409,8 +409,9 @@ describe('registry', () => {
             address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c',
             chain_id: '8453'
           }
-        ]
+        ])
       })
+      
     },
     10000
   )

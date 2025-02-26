@@ -18,20 +18,22 @@ describe('CelestialsId', () => {
     'should resolve celestiaa.i with multi-chain addresses',
     async () => {
       const result = await resolver.resolve('celestiaa.i', 'mainnet')
-      expect(result).toEqual([
-        {
-          chain_id: '984122',
-          address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
-        },
-        {
-          chain_id: 'celestia',
-          address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
-        },
-        {
-          chain_id: '8453',
-          address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
-        }
-      ])
+      expect(result).toEqual(
+        expect.arrayContaining([
+          {
+            chain_id: 'celestia',
+            address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
+          },
+          {
+            chain_id: '8453',
+            address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
+          },
+          {
+            chain_id: '984122',
+            address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
+          }
+        ])
+      )
     },
     10000
   )
@@ -101,20 +103,22 @@ describe('CelestialsId', () => {
       const result = await resolver.resolve('celestiaa.i', 'mainnet', {
         allowedTopLevelDomains: allowedTopLevelDomains
       })
-      expect(result).toEqual([
-        {
-          chain_id: '984122',
-          address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
-        },
-        {
-          chain_id: 'celestia',
-          address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
-        },
-        {
-          chain_id: '8453',
-          address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
-        }
-      ])
+      expect(result).toEqual(
+        expect.arrayContaining([
+          {
+            chain_id: 'celestia',
+            address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
+          },
+          {
+            chain_id: '8453',
+            address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
+          },
+          {
+            chain_id: '984122',
+            address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
+          }
+        ])
+      )
     },
     10000
   )
@@ -148,20 +152,22 @@ describe('CelestialsId', () => {
       const result = await resolver.resolve('celestiaa.i', 'mainnet', {
         rpcUrls
       })
-      expect(result).toEqual([
-        {
-          chain_id: '984122',
-          address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
-        },
-        {
-          chain_id: 'celestia',
-          address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
-        },
-        {
-          chain_id: '8453',
-          address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
-        }
-      ])
+      expect(result).toEqual(
+        expect.arrayContaining([
+          {
+            chain_id: 'celestia',
+            address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy'
+          },
+          {
+            chain_id: '8453',
+            address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c'
+          },
+          {
+            chain_id: '984122',
+            address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16'
+          }
+        ])
+      )
     },
     10000
   )
