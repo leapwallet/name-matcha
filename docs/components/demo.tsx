@@ -1,4 +1,11 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import { Listbox, Switch, Transition } from '@headlessui/react'
+import {
+  allowedTopLevelDomains,
+  NameServiceLookupResult,
+  NameServiceResolveResult,
+  registry,
+  services
+} from '@leapwallet/name-matcha'
 import {
   CaretUpDown,
   Check,
@@ -6,16 +13,7 @@ import {
   MagnifyingGlass,
   SpinnerGap
 } from '@phosphor-icons/react'
-import {
-  allowedTopLevelDomains,
-  registry,
-  services
-} from '@leapwallet/name-matcha'
-import { Listbox, Switch, Transition } from '@headlessui/react'
-import {
-  NameServiceLookupResult,
-  NameServiceResolveResult
-} from '~/.yalc/@leapwallet/name-matcha/dist/registry/name-service'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 
 const nsMap = {
   [services.icns]: 'ICNS',
@@ -150,10 +148,11 @@ const CopyToClipboardButton: React.FC<{ text: string }> = ({ text }) => {
 }
 
 const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
-
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
-    NameServiceResolveResult | null | Record<string, NameServiceResolveResult | null>
+    | NameServiceResolveResult
+    | null
+    | Record<string, NameServiceResolveResult | null>
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
@@ -338,10 +337,11 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
 }
 
 const LookupDemo = ({ testnet }: { testnet: boolean }) => {
-
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
-  NameServiceLookupResult | null | Record<string, NameServiceLookupResult | null>
+    | NameServiceLookupResult
+    | null
+    | Record<string, NameServiceLookupResult | null>
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
