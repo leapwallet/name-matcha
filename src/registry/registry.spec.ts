@@ -30,7 +30,8 @@ describe('registry', () => {
       [services.sns]: true,
       [services.bdd]: true,
       [services.nibId]: true,
-      [services.degeNS]: true
+      [services.degeNS]: true,
+      [services.celestialsId]: true
     })
   })
 
@@ -76,7 +77,7 @@ describe('registry', () => {
     async () => {
       registry.setNetwork('mainnet')
       const result = await registry.resolve('000.sei', services.spaceIds)
-      expect(result).toBe('sei16fg5g3h57kp58k7grnfql56zsa6evqvqlzpjz9')
+      expect(result).toBe('sei16888j0hlrtpk5gq58jf9enaqjkr0eyzf3knt79')
     },
     10000
   )
@@ -116,7 +117,8 @@ describe('registry', () => {
         spaceIds: null,
         bdd: null,
         nibId: null,
-        degeNS: null
+        degeNS: null,
+        celestialsId: null
       })
     },
     10000
@@ -135,7 +137,8 @@ describe('registry', () => {
         spaceIds: null,
         bdd: null,
         nibId: null,
-        degeNS: null
+        degeNS: null,
+        celestialsId: null
       })
     },
     10000
@@ -144,17 +147,18 @@ describe('registry', () => {
   it.concurrent(
     'should resolveAll for allen.sei',
     async () => {
-      const res = await registry.resolveAll('allen.sei')
+      const res = await registry.resolveAll('degens.sei')
       expect(res).toEqual({
         archIds: null,
         icns: null,
         ibcDomains: null,
         stargazeNames: null,
         sns: null,
-        spaceIds: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
+        spaceIds: 'sei1j8agkkd7w537djqt9yjexk8j6hn26uc2gskl9n',
         bdd: null,
         nibId: null,
-        degeNS: 'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf'
+        degeNS: 'sei1ah7vnw9cg8w3j0mampptm5kc4462lltkzt6sl8',
+        celestialsId: null
       })
     },
     10000
@@ -173,7 +177,8 @@ describe('registry', () => {
         spaceIds: null,
         nibId: null,
         degeNS: 'sei1yq82exxgmgvrdvq9a0pvzrvra5g3mvclhmagxv',
-        bdd: null
+        bdd: null,
+        celestialsId: null
       })
     },
     10000
@@ -234,6 +239,7 @@ describe('registry', () => {
         nibId: null,
         degeNS: null,
         bdd: null,
+        celestialsId: null
       })
     }
   )
@@ -245,7 +251,7 @@ describe('registry', () => {
         'archway19vf5mfr40awvkefw69nl6p3mmlsnacmmlv6q2q'
       )
       expect(res).toEqual({
-        archIds: 'archfam.arch, leapdegens.arch',
+        archIds: null,
         icns: null,
         ibcDomains: 'leapwallet.archway',
         stargazeNames: 'messi.archway',
@@ -254,6 +260,7 @@ describe('registry', () => {
         nibId: null,
         degeNS: null,
         bdd: null,
+        celestialsId: null
       })
     }
   )
@@ -272,8 +279,9 @@ describe('registry', () => {
         sns: null,
         spaceIds: 'allen.sei',
         nibId: null,
-        degeNS: 'allen.sei',
+        degeNS: null,
         bdd: null,
+        celestialsId: null
       })
     }
   )
@@ -338,6 +346,7 @@ describe('registry', () => {
         nibId: null,
         degeNS: null,
         bdd: 'core10g5cy007hcmzhh4ta9sne0trasfds59lless97',
+        celestialsId: null
       })
     },
     10000
@@ -359,14 +368,50 @@ describe('registry', () => {
         nibId: null,
         degeNS: null,
         bdd: 'bdd-registrar.core',
+        celestialsId: null
       })
     }
   )
-    
-  it.concurrent('should resolve zucky.nibi',
+
+  it.concurrent(
+    'should resolve zucky.nibi',
     async () => {
       const result = await registry.resolve('zucky.nibi', services.nibId)
       expect(result).toBe('nibi1kmx4u9q4dcf36qpp0wgymfc3yzj3r4epnu4m6m')
+    },
+    10000
+  )
+
+  it.concurrent(
+    'should resolveAll for celestiaa.i',
+    async () => {
+      const res = await registry.resolveAll('celestiaa.i')
+      expect(res).toEqual({
+        archIds: null,
+        icns: null,
+        ibcDomains: null,
+        stargazeNames: null,
+        sns: null,
+        spaceIds: null,
+        bdd: null,
+        nibId: null,
+        degeNS: null,
+        celestialsId: expect.arrayContaining([
+          {
+            address: '0x90cc5514f5eef8b8a683224a54991d90fb3f8c16',
+            chain_id: '984122'
+          },
+          {
+            address: 'celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy',
+            chain_id: 'celestia'
+          },
+          {
+            address: '0xdf3b77dde35eb980a03915f2a36032dcb89f924c',
+            chain_id: '8453'
+          }
+        ])
+      })
+      
     },
     10000
   )

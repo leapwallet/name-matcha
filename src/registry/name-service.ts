@@ -1,4 +1,5 @@
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate'
+
 /**
  * Types of errors
  */
@@ -40,6 +41,7 @@ export type AllowedTopLevelDomains = {
   bdd?: string[]
   nibId?: string[]
   degeNS?: string[]
+  celestialsId?: string[]
 }
 
 export type rpcUrls = Record<Network, string>
@@ -54,6 +56,7 @@ export type RpcURLs = {
   bdd?: rpcUrls
   nibId?: rpcUrls
   degeNS?: rpcUrls
+  celestialsId?: rpcUrls
 }
 
 class CosmWasmClientHandler {
@@ -68,6 +71,26 @@ class CosmWasmClientHandler {
     return _client
   }
 }
+
+/**
+ * The result of resolving a name through a name service
+ * An array of objects containing chain_id and address pairs or a single name string
+ */
+export interface ChainAddressResult {
+  chain_id: string
+  address: string
+}
+export type NameServiceResolveResult = string | ChainAddressResult[]
+
+/**
+ * The result of looking up an address through a name service
+ * An array of objects containing name and chain_id pairs or a single name string
+ */
+export interface NameResult {
+  name: string
+  chain_id: string
+}
+export type NameServiceLookupResult = string | NameResult[]
 
 /**
  * What a NameService class needs to implement
@@ -90,7 +113,7 @@ export abstract class NameService {
       }
     | Record<string, { [key in Network]: string }>
   /**
-   * @param name Resolve this name into an address
+   * @param name Resolve this name into an address or an array of objects with chain_id and address
    */
   abstract resolve(
     name: string,
@@ -99,7 +122,7 @@ export abstract class NameService {
       allowedTopLevelDomains?: AllowedTopLevelDomains
       rpcUrls?: RpcURLs
     }
-  ): Promise<string>
+  ): Promise<NameServiceResolveResult>
   /**
    * @param address Lookup this address and returns primary name
    */
@@ -109,7 +132,7 @@ export abstract class NameService {
     options?: {
       rpcUrls?: RpcURLs
     }
-  ): Promise<string>
+  ): Promise<NameServiceLookupResult>
   /**
    * @param network The network to use
    */

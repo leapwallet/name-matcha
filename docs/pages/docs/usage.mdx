@@ -31,7 +31,8 @@ const services = {
   spaceIds: 'spaceIds',
   sns: 'sns',
   nibId: 'nibId',
-  degeNS: 'degeNS'
+  degeNS: 'degeNS',
+  celestialsId: 'celestialsId'
 }
 ```
 
@@ -44,9 +45,34 @@ For resolving a name to address, you can use the `resolve` method. It takes two 
 1. The name to query 
 2. The service to query against
 
+The response can be either:
+- A string containing the resolved address for single-chain services
+- An array of chain_id and address pairs for multichain services like celestialsId
+
 ```ts
+// Single chain example
 const address = await nameMatcha.resolve('leap_cosmos.osmo', services.icns)
 console.log(address); // osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9
+
+// Multichain example
+const multiChainAddress = await nameMatcha.resolve('celestiaa.id', services.celestialsId)
+console.log(multiChainAddress);
+/* Output:
+[
+  {
+    "chain_id": "984122",
+    "address": "0x90cc5514f5eef8b8a683224a54991d90fb3f8c16"
+  },
+  {
+    "chain_id": "8453",
+    "address": "0xdf3b77dde35eb980a03915f2a36032dcb89f924c"
+  },
+  {
+    "chain_id": "celestia",
+    "address": "celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy"
+  }
+]
+*/
 ```
 
 ### `resolveAll`
@@ -60,9 +86,13 @@ const address = await nameMatcha.resolveAll('leap_cosmos.osmo')
 console.log(address);
 ```
 
-The output will be an object with the service as key and the address as value:
+The output will be an object with the service as key and the value can be:
+- `null` if no resolution found for that service
+- A string containing the resolved address for single-chain services
+- An array of chain_id and address pairs for multichain services like celestialsId
 
 ```ts
+// Example output for single chain name
 {
   icns: 'osmo19vf5mfr40awvkefw69nl6p3mmlsnacmmzu45k9',
   ibcDomains: null,
@@ -72,7 +102,35 @@ The output will be an object with the service as key and the address as value:
   sns: null,
   nibId: null,
   degeNS: null,
-  bidds: null
+  bidds: null,
+  celestialsId: null
+}
+
+// Example output for multichain name (celestiaa.id)
+{
+  spaceIds: null,
+  archIds: null,
+  nibId: null,
+  degeNS: null,
+  bdd: null,
+  sns: null,
+  ibcDomains: null,
+  icns: null,
+  stargazeNames: null,
+  celestialsId: [
+    {
+      chain_id: "984122",
+      address: "0x90cc5514f5eef8b8a683224a54991d90fb3f8c16"
+    },
+    {
+      chain_id: "8453",
+      address: "0xdf3b77dde35eb980a03915f2a36032dcb89f924c"
+    },
+    {
+      chain_id: "celestia",
+      address: "celestia1u0cltepg9wjkj0u49enu0fswgygze9va74lkwy"
+    }
+  ]
 }
 ```
 
@@ -159,3 +217,4 @@ try {
 - [NIB ID](https://nibid.app) - .nibi domains on Nibiru
 - [DegeNS](https://www.degens.domains) - Degen Name Service on Sei Network
 - [Bidds Decentralized Domains](https://bidds.com) - Coreum .core domains
+- [Celestials](https://celestials.xyz) - Multichain name service supporting Celestia, Base and other chains

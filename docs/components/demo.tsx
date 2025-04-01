@@ -1,4 +1,11 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import { Listbox, Switch, Transition } from '@headlessui/react'
+import {
+  allowedTopLevelDomains,
+  NameServiceLookupResult,
+  NameServiceResolveResult,
+  registry,
+  services
+} from '@leapwallet/name-matcha'
 import {
   CaretUpDown,
   Check,
@@ -6,12 +13,7 @@ import {
   MagnifyingGlass,
   SpinnerGap
 } from '@phosphor-icons/react'
-import {
-  allowedTopLevelDomains,
-  registry,
-  services
-} from '@leapwallet/name-matcha'
-import { Listbox, Switch, Transition } from '@headlessui/react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 
 const nsMap = {
   [services.icns]: 'ICNS',
@@ -23,6 +25,7 @@ const nsMap = {
   [services.nibId]: 'Nib ID',
   [services.degeNS]: 'DegeNS',
   [services.bdd]: 'BDD',
+  [services.celestialsId]: 'Celestials ID'
 }
 
 const nsList = Object.entries(nsMap)
@@ -58,7 +61,8 @@ const Select: React.FC<{
               <Listbox.Option
                 key={value}
                 className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-indigo-400 text-white' : 'text-gray-300'
+                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                    active ? 'bg-indigo-400 text-white' : 'text-gray-300'
                   }`
                 }
                 value={value}
@@ -66,8 +70,9 @@ const Select: React.FC<{
                 {({ selected }) => (
                   <>
                     <span
-                      className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                        }`}
+                      className={`block truncate ${
+                        selected ? 'font-medium' : 'font-normal'
+                      }`}
                     >
                       {label}
                     </span>
@@ -90,7 +95,7 @@ const Select: React.FC<{
 const MultipleResults = ({
   results
 }: {
-  results: Record<string, string | null>
+  results: Record<string, any | null>
 }) => {
   return (
     <div className="flex flex-col space-y-4">
@@ -98,7 +103,16 @@ const MultipleResults = ({
         <div key={service}>
           <p className="font-bold mb-1">{nsMap[service]}</p>
           {result ? (
-            <p className="font-thin text-gray-300">{result}</p>
+            Array.isArray(result) ? (
+              result.map((r) => (
+                <p className="font-thin text-gray-300">
+                  <span className="font-bold">{r.chain_id} : </span>{' '}
+                  {r.address ?? r.name}
+                </p>
+              ))
+            ) : (
+              <p className="font-thin text-gray-300">{result}</p>
+            )
           ) : (
             <p className="text-red-400">Not found</p>
           )}
@@ -136,7 +150,9 @@ const CopyToClipboardButton: React.FC<{ text: string }> = ({ text }) => {
 const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
-    string | null | Record<string, string | null>
+    | NameServiceResolveResult
+    | null
+    | Record<string, NameServiceResolveResult | null>
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
@@ -212,12 +228,14 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
             onChange={(v) => {
               setMode(v ? 'multi' : 'single')
             }}
-            className={`${mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
+            className={`${
+              mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
-              className={`${mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              className={`${
+                mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
         </div>
@@ -280,13 +298,25 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
             <div className="text-sm text-slate-200">
               <div className="flex items-center justify-between">
                 <p>Result</p>
-                {mode === 'single' ? (
+                {mode === 'single' && typeof result === 'string' ? (
                   <CopyToClipboardButton text={result as string} />
                 ) : null}
               </div>
               <div className="mt-2 p-2 bg-slate-800 rounded-lg font-mono text-sm">
-                {mode === 'single' && typeof result === 'string' ? (
-                  <p>{result as string}</p>
+                {mode === 'single' ? (
+                  nameService !== services.celestialsId ? (
+                    <p>{result as string}</p>
+                  ) : (
+                    <>
+                      {/* @ts-ignore */}
+                      {result?.map((r) => (
+                        <p className="font-thin text-gray-300">
+                          <span className="font-bold">{r.chain_id} : </span>{' '}
+                          {r.address}
+                        </p>
+                      ))}
+                    </>
+                  )
                 ) : (
                   <MultipleResults
                     results={result as Record<string, string | null>}
@@ -309,7 +339,9 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
 const LookupDemo = ({ testnet }: { testnet: boolean }) => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
-    string | null | Record<string, string | null>
+    | NameServiceLookupResult
+    | null
+    | Record<string, NameServiceLookupResult | null>
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
@@ -353,6 +385,7 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
           })
           .catch((err) => {
             setStatus('error')
+            console.log(err)
             setError(err.type)
           })
       }
@@ -377,12 +410,14 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
             onChange={(v) => {
               setMode(v ? 'multi' : 'single')
             }}
-            className={`${mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
+            className={`${
+              mode === 'multi' ? 'bg-indigo-500' : 'bg-gray-700'
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
-              className={`${mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              className={`${
+                mode === 'multi' ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
         </div>
@@ -445,13 +480,25 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
             <div className="text-sm text-slate-200">
               <div className="flex items-center justify-between">
                 <p>Result</p>
-                {mode === 'single' ? (
+                {mode === 'single' && typeof result === 'string' ? (
                   <CopyToClipboardButton text={result as string} />
                 ) : null}
               </div>
               <div className="mt-2 p-2 bg-slate-800 rounded-lg font-mono text-sm">
-                {mode === 'single' && typeof result === 'string' ? (
-                  <p>{result as string}</p>
+                {mode === 'single' ? (
+                  typeof result === 'string' ? (
+                    <p>{result}</p>
+                  ) : (
+                    <>
+                      {/* @ts-ignore */}
+                      {result?.map((r) => (
+                        <p className="font-thin text-gray-300">
+                          <span className="font-bold">{r.chain_id} : </span>{' '}
+                          {r.name}
+                        </p>
+                      ))}
+                    </>
+                  )
                 ) : (
                   <MultipleResults
                     results={result as Record<string, string | null>}
@@ -482,12 +529,14 @@ export const Demo = () => {
           onChange={(v) => {
             setTestnet(v)
           }}
-          className={`${testnet ? 'bg-indigo-500' : 'bg-gray-700'
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
+          className={`${
+            testnet ? 'bg-indigo-500' : 'bg-gray-700'
+          } relative inline-flex h-6 w-11 items-center rounded-full`}
         >
           <span
-            className={`${testnet ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+            className={`${
+              testnet ? 'translate-x-6' : 'translate-x-1'
+            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
           />
         </Switch>
       </div>
