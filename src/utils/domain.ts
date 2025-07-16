@@ -92,7 +92,14 @@ export const supportedTopLevelDomainListForAllChains = [
   'nibi',
   'maya',
   'empower',
-  'dydx'
+  'dydx',
+  'eth',
+  'bnb',
+  'sol',
+  'arb',
+  'manta',
+  'll',
+  'ip'
 ]
 
 export const allowedTopLevelDomains: AllowedTopLevelDomains = {
@@ -100,7 +107,7 @@ export const allowedTopLevelDomains: AllowedTopLevelDomains = {
   ibcDomains: supportedTopLevelDomainListForAllChains,
   stargazeNames: supportedTopLevelDomainListForAllChains,
   archIds: ['arch'],
-  spaceIds: ['inj', 'sei'],
+  spaceIds: ['inj', 'sei', 'eth', 'bnb', 'sol', 'arb', 'manta', 'll', 'ip'],
   sns: ['sol'],
   nibId: ['nibi'],
   degeNS: ['pp', 'sei'],

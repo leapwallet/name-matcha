@@ -6,10 +6,19 @@ import {
   NameService,
   Network
 } from '../name-service'
-import { domainNode } from '../../utils/space-id-helper'
+import axios from 'axios'
 import { decode } from 'bech32'
 
+const SPACEID_API = 'https://nameapi.space.id'
+
+type SpaceIdDomainResponse = {
+  address: string
+  code: 0 | 1 | -1
+  msg: string
+}
+
 type SupportedSpaceIdDomains = 'inj' | 'sei'
+export type SupportedSpaceIdEcosystems = 'btc' | 'evm' | 'sol' | 'aptos' | 'sui'
 
 const chainRpcUrls: Record<SupportedSpaceIdDomains, Record<Network, string>> = {
   inj: {
@@ -40,33 +49,36 @@ export class SpaceIds extends NameService {
 
   async resolve(
     name: string,
-    network: Network,
+    _network: Network,
     options?: {
       allowedTopLevelDomains?: AllowedTopLevelDomains
+      paymentIdEcosystem?: SupportedSpaceIdEcosystems
     }
   ): Promise<string> {
     try {
-      const [, prefix] = name.split('.')
-      const rpcUrl =
-        chainRpcUrls?.[prefix as SupportedSpaceIdDomains]?.[network]
-      const contractAddress =
-        this.contractAddress[prefix as SupportedSpaceIdDomains][network]
-      if (rpcUrl && contractAddress) {
-        const client = await this.getCosmWasmClient(rpcUrl)
-        const res = await client?.queryContractSmart(contractAddress, {
-          address: {
-            node: domainNode(name)
-          }
-        })
-        if (
-          !res?.address ||
-          options?.allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1
-        ) {
+      const delimiter = name.includes('@') ? '@' : '.'
+      const [, prefix] = name.split(delimiter)
+      if (options?.paymentIdEcosystem && delimiter === '@') {
+        const res = await axios.get<SpaceIdDomainResponse>(
+          `${SPACEID_API}/getPaymentIdName/${name}/${options.paymentIdEcosystem}`
+        )
+        if (res.data.code === 0) {
+          return res.data.address
+        } else {
           throw new MatchaError('', MatchaErrorType.NOT_FOUND)
         }
-        return res?.address
       } else {
-        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+        if (options?.allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1) {
+          throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+        }
+        const res = await axios.get<SpaceIdDomainResponse>(
+          `${SPACEID_API}/getAddress?domain=${name}`
+        )
+        if (res.data.code === 0) {
+          return res.data.address
+        } else {
+          throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+        }
       }
     } catch (e) {
       throw new MatchaError('', MatchaErrorType.NOT_FOUND)

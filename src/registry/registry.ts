@@ -2,7 +2,11 @@ import { ICNS, serviceID as _icnsID } from './icns'
 import { IBCDomains, serviceID as _ibcDomainsID } from './ibc-domains'
 import { StargazeNames, serviceID as _stargazeNamesID } from './stargaze-names'
 import { ArchIdNames, serviceID as _archId } from './arch-id'
-import { SpaceIds, serviceID as _spaceId } from './space-id/space-id'
+import {
+  SpaceIds,
+  SupportedSpaceIdEcosystems,
+  serviceID as _spaceId
+} from './space-id/space-id'
 import { SNS, serviceID as _sns } from './sns'
 import { BDD, serviceID as _bdd } from './bdd'
 import { NibId, serviceID as _nibId } from './nib-id'
@@ -115,6 +119,7 @@ export class Registry {
       rpcUrls?: {
         [key: string]: { [key in Network]: string }
       }
+      paymentIdEcosystem?: SupportedSpaceIdEcosystems
     }
   ) {
     const record: Record<string, NameServiceResolveResult | null> = {}
