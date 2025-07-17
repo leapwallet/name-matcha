@@ -43,7 +43,10 @@ export class SpaceIds extends NameService {
     try {
       const delimiter = name.includes('@') ? '@' : '.'
       const [, prefix] = name.split(delimiter)
-      if (options?.paymentIdEcosystem && delimiter === '@') {
+      if (delimiter === '@') {
+        if (!options?.paymentIdEcosystem) {
+          throw new MatchaError('', MatchaErrorType.INVALID_ECOSYSTEM)
+        }
         const res = await axios.get<SpaceIdDomainResponse>(
           `${SPACEID_API}/getPaymentIdName/${name}/${options.paymentIdEcosystem}`
         )
@@ -52,18 +55,17 @@ export class SpaceIds extends NameService {
         } else {
           throw new MatchaError('', MatchaErrorType.NOT_FOUND)
         }
+      }
+      if (options?.allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      const res = await axios.get<SpaceIdDomainResponse>(
+        `${SPACEID_API}/getAddress?domain=${name}`
+      )
+      if (res.data.code === 0) {
+        return res.data.address
       } else {
-        if (options?.allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1) {
-          throw new MatchaError('', MatchaErrorType.NOT_FOUND)
-        }
-        const res = await axios.get<SpaceIdDomainResponse>(
-          `${SPACEID_API}/getAddress?domain=${name}`
-        )
-        if (res.data.code === 0) {
-          return res.data.address
-        } else {
-          throw new MatchaError('', MatchaErrorType.NOT_FOUND)
-        }
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
     } catch (e) {
       throw new MatchaError('', MatchaErrorType.NOT_FOUND)
