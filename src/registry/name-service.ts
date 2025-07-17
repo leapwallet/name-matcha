@@ -1,4 +1,5 @@
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate'
+import { SupportedSpaceIdEcosystems } from './space-id/space-id'
 
 /**
  * Types of errors
@@ -122,6 +123,7 @@ export abstract class NameService {
     options?: {
       allowedTopLevelDomains?: AllowedTopLevelDomains
       rpcUrls?: RpcURLs
+      paymentIdEcosystem?: SupportedSpaceIdEcosystems
     }
   ): Promise<NameServiceResolveResult>
   /**

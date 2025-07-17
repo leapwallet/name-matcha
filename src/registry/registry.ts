@@ -95,6 +95,7 @@ export class Registry {
     options?: {
       allowedTopLevelDomains?: AllowedTopLevelDomains
       rpcUrls?: RpcURLs
+      paymentIdEcosystem?: SupportedSpaceIdEcosystems
     }
   ): Promise<NameServiceResolveResult> {
     const service = this.getService(serviceID)
@@ -106,6 +107,7 @@ export class Registry {
     serviceID: string,
     options?: {
       rpcUrls?: RpcURLs
+      chainId?: string
     }
   ): Promise<NameServiceLookupResult> {
     const service = this.getService(serviceID)
@@ -142,6 +144,7 @@ export class Registry {
       rpcUrls?: {
         [key: string]: { [key in Network]: string }
       }
+      chainId?: string
     }
   ) {
     const record: Record<string, NameServiceLookupResult | null> = {}
