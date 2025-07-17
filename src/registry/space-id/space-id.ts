@@ -1,70 +1,69 @@
+import axios from 'axios'
 import {
-  Addr,
   AllowedTopLevelDomains,
   MatchaError,
   MatchaErrorType,
   NameService,
   Network
 } from '../name-service'
-import { domainNode } from '../../utils/space-id-helper'
-import { decode } from 'bech32'
 
-type SupportedSpaceIdDomains = 'inj' | 'sei'
+const SPACEID_API = 'https://nameapi.space.id'
 
-const chainRpcUrls: Record<SupportedSpaceIdDomains, Record<Network, string>> = {
-  inj: {
-    mainnet: 'https://tm.injective.network',
-    testnet: 'https://testnet.tm.injective.dev'
-  },
-  sei: {
-    mainnet: 'https://rpc.wallet.pacific-1.sei.io',
-    testnet: 'https://sei-testnet-rpc.polkachu.com'
-  }
+type SpaceIdDomainResponse = {
+  address: string
+  code: 0 | 1 | -1
+  msg: string
 }
 
+type SpaceIdNameResponse = {
+  data: {
+    name: string
+    chainID: number
+  }
+  code: 0 | 1 | -1
+  msg: string
+}
+
+export type SupportedSpaceIdEcosystems = 'btc' | 'evm' | 'sol' | 'aptos' | 'sui'
 export const serviceID = 'spaceIds'
 
 export class SpaceIds extends NameService {
   serviceID = serviceID
-  chain = ['injective', 'sei']
-  contractAddress: Record<SupportedSpaceIdDomains, Record<Network, string>> = {
-    inj: {
-      mainnet: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
-      testnet: 'inj1ppneyx6qfnye26k9mwnf3ngyelvqng67f5v948'
-    },
-    sei: {
-      mainnet: 'sei1qujw7gxacyk08fpg0lsf377f727ldq8f9cmjlrxt6awdkag9ypjsdnkh98',
-      testnet: 'sei1a59k7mc9hsvtaeu532etl2geqmqdyufjncjkg0h3lxsu5u2rpensanaxwf'
-    }
-  }
+  chain = ['injective', 'sei', 'ethereum', 'binance', 'solana', 'arbitrum', 'manta', 'lightlink', 'story']
+  contractAddress = {}
 
   async resolve(
     name: string,
-    network: Network,
+    _network: Network,
     options?: {
       allowedTopLevelDomains?: AllowedTopLevelDomains
+      paymentIdEcosystem?: SupportedSpaceIdEcosystems
     }
   ): Promise<string> {
     try {
-      const [, prefix] = name.split('.')
-      const rpcUrl =
-        chainRpcUrls?.[prefix as SupportedSpaceIdDomains]?.[network]
-      const contractAddress =
-        this.contractAddress[prefix as SupportedSpaceIdDomains][network]
-      if (rpcUrl && contractAddress) {
-        const client = await this.getCosmWasmClient(rpcUrl)
-        const res = await client?.queryContractSmart(contractAddress, {
-          address: {
-            node: domainNode(name)
-          }
-        })
-        if (
-          !res?.address ||
-          options?.allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1
-        ) {
+      const delimiter = name.includes('@') ? '@' : '.'
+      const [, prefix] = name.split(delimiter)
+      if (delimiter === '@') {
+        if (!options?.paymentIdEcosystem) {
+          throw new MatchaError('', MatchaErrorType.INVALID_ECOSYSTEM)
+        }
+        const res = await axios.get<SpaceIdDomainResponse>(
+          `${SPACEID_API}/getPaymentIdName/${name}/${options.paymentIdEcosystem}`
+        )
+        if (res.data.code === 0) {
+          return res.data.address
+        } else {
           throw new MatchaError('', MatchaErrorType.NOT_FOUND)
         }
-        return res?.address
+      }
+      if (options?.allowedTopLevelDomains?.spaceIds?.indexOf(prefix) === -1) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      const res = await axios.get<SpaceIdDomainResponse>(
+        `${SPACEID_API}/getAddress?domain=${name}`
+      )
+      if (res.data.code === 0) {
+        return res.data.address
       } else {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }
@@ -73,38 +72,20 @@ export class SpaceIds extends NameService {
     }
   }
 
-  async lookup(address: string, network: Network): Promise<string> {
-    const addr: Addr = {
-      prefix: null,
-      words: null
-    }
+  async lookup(
+    address: string,
+    _network: Network,
+    options?: { chainId?: string }
+  ): Promise<string> {
     try {
-      const { prefix, words } = decode(address)
-      addr.prefix = prefix
-      addr.words = words
-    } catch (e) {
-      throw new MatchaError('', MatchaErrorType.INVALID_ADDRESS)
-    }
-    try {
-      const rpcUrl =
-        chainRpcUrls?.[addr.prefix as SupportedSpaceIdDomains]?.[network]
-      const contractAddress =
-        this.contractAddress[addr.prefix as SupportedSpaceIdDomains][network]
-      if (rpcUrl && contractAddress) {
-        const client = await this.getCosmWasmClient(rpcUrl)
-        const res = await client?.queryContractSmart(contractAddress, {
-          name: {
-            address: address.toLowerCase()
-          }
-        })
-
-        if (!res?.name) {
-          throw new MatchaError('', MatchaErrorType.NOT_FOUND)
-        }
-        const domain = res.name.endsWith(addr.prefix)
-          ? res.name
-          : res.name + addr.prefix
-        return domain
+      if (!options?.chainId) {
+        throw new MatchaError('', MatchaErrorType.NOT_FOUND)
+      }
+      const res = await axios.get<SpaceIdNameResponse>(
+        `${SPACEID_API}/getName?chainid=${options.chainId}&address=${address}`
+      )
+      if (res.data.code === 0) {
+        return res.data.data.name
       } else {
         throw new MatchaError('', MatchaErrorType.NOT_FOUND)
       }

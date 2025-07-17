@@ -1,4 +1,5 @@
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate'
+import { SupportedSpaceIdEcosystems } from './space-id/space-id'
 
 /**
  * Types of errors
@@ -9,7 +10,8 @@ export enum MatchaErrorType {
   UNREGISTERED_SERVICE = 'unregistered-service',
   DUPLICATE_SERVICE = 'duplicate-service',
   INVALID_ADDRESS = 'invalid-address',
-  UNAVAILABLE_METHOD = 'invalid-address'
+  UNAVAILABLE_METHOD = 'invalid-address',
+  INVALID_ECOSYSTEM = 'invalid-ecosystem',
 }
 
 /**
@@ -121,6 +123,7 @@ export abstract class NameService {
     options?: {
       allowedTopLevelDomains?: AllowedTopLevelDomains
       rpcUrls?: RpcURLs
+      paymentIdEcosystem?: SupportedSpaceIdEcosystems
     }
   ): Promise<NameServiceResolveResult>
   /**
@@ -131,6 +134,7 @@ export abstract class NameService {
     network: Network,
     options?: {
       rpcUrls?: RpcURLs
+      chainId?: string
     }
   ): Promise<NameServiceLookupResult>
   /**
