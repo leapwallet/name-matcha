@@ -9,7 +9,8 @@ export enum MatchaErrorType {
   UNREGISTERED_SERVICE = 'unregistered-service',
   DUPLICATE_SERVICE = 'duplicate-service',
   INVALID_ADDRESS = 'invalid-address',
-  UNAVAILABLE_METHOD = 'invalid-address'
+  UNAVAILABLE_METHOD = 'invalid-address',
+  INVALID_ECOSYSTEM = 'invalid-ecosystem',
 }
 
 /**
@@ -131,6 +132,7 @@ export abstract class NameService {
     network: Network,
     options?: {
       rpcUrls?: RpcURLs
+      chainId?: string
     }
   ): Promise<NameServiceLookupResult>
   /**

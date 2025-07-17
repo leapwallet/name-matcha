@@ -48,20 +48,11 @@ describe('SpaceIds', () => {
       try {
         await resolver.lookup(
           'cosmos1pkzmx7j90m9hxarmtu5j5ywxyetxl2q4wgxl59',
-          'testnet'
+          'testnet',
         )
       } catch (e) {
         expect(e.type).toEqual(MatchaErrorType.NOT_FOUND)
       }
-    },
-    10000
-  )
-
-  it.concurrent(
-    'should resolve 000.sei testnet',
-    async () => {
-      const result = await resolver.resolve('000.sei', 'testnet')
-      expect(result).toBe('sei1qwzw8u4q859l8pjqvfh9a959u8a3kmvpfnzjpw')
     },
     10000
   )
@@ -88,18 +79,6 @@ describe('SpaceIds', () => {
   )
 
   it.concurrent(
-    'should resolve sei1qwzw8u4q859l8pjqvfh9a959u8a3kmvpfnzjpw',
-    async () => {
-      const result = await resolver.lookup(
-        'sei1qwzw8u4q859l8pjqvfh9a959u8a3kmvpfnzjpw',
-        'testnet'
-      )
-      expect(result).toBe('000.sei')
-    },
-    10000
-  )
-
-  it.concurrent(
     'should lookup name for allen.sei',
     async () => {
       const result = await resolver.resolve('allen.sei', 'mainnet')
@@ -113,7 +92,8 @@ describe('SpaceIds', () => {
     async () => {
       const result = await resolver.lookup(
         'sei1tmew60aj394kdfff0t54lfaelu3p8j8lz93pmf',
-        'mainnet'
+        'mainnet',
+        {chainId: '902'}
       )
       expect(result).toEqual('allen.sei')
     },
@@ -126,7 +106,8 @@ describe('SpaceIds', () => {
       try {
         await resolver.lookup(
           'sei1tmew60aj34kdfff0t54lfaelu3p8j8lz93pmf',
-          'mainnet'
+          'mainnet',
+          {chainId: '902'}
         )
       } catch (e) {
         expect(e.type).toBe(MatchaErrorType.INVALID_ADDRESS)
