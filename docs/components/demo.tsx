@@ -95,29 +95,39 @@ const Select: React.FC<{
 const MultipleResults = ({
   results
 }: {
-  results: Record<string, any | null>
+  results:
+    | Record<string, NameServiceLookupResult | null>
+    | Record<string, NameServiceResolveResult | null>
 }) => {
   return (
     <div className="flex flex-col space-y-4">
-      {Object.entries(results).map(([service, result]) => (
-        <div key={service}>
-          <p className="font-bold mb-1">{nsMap[service]}</p>
-          {result ? (
-            Array.isArray(result) ? (
-              result.map((r) => (
-                <p className="font-thin text-gray-300">
-                  <span className="font-bold">{r.chain_id} : </span>{' '}
-                  {r.address ?? r.name}
-                </p>
-              ))
+      {Object.keys(results).map((service) => {
+        const result = results[service]
+        return (
+          <div key={service}>
+            <p className="font-bold mb-1">{nsMap[service]}</p>
+            {result ? (
+              Array.isArray(result) ? (
+                result.map((r) => {
+                  const val = 'address' in r ? r.address : r.name
+                  return (
+                    <p
+                      className="font-thin text-gray-300"
+                      key={`${r.chain_id}-${val}`}
+                    >
+                      <span className="font-bold">{r.chain_id} : </span> {val}
+                    </p>
+                  )
+                })
+              ) : (
+                <p className="font-thin text-gray-300">{result}</p>
+              )
             ) : (
-              <p className="font-thin text-gray-300">{result}</p>
-            )
-          ) : (
-            <p className="text-red-400">Not found</p>
-          )}
-        </div>
-      ))}
+              <p className="text-red-400">Not found</p>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -150,9 +160,15 @@ const CopyToClipboardButton: React.FC<{ text: string }> = ({ text }) => {
 const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
-    | NameServiceResolveResult
+    | {
+        res: NameServiceResolveResult
+        mode: 'single'
+      }
     | null
-    | Record<string, NameServiceResolveResult | null>
+    | {
+        mode: 'multi'
+        res: Record<string, NameServiceResolveResult | null>
+      }
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
@@ -167,7 +183,7 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const data = new FormData(e.currentTarget)
-      const name = data.get('name')!.toString().trim()
+      const name = data.get('name')?.toString()?.trim() || ''
       if (!name) {
         setStatus('error')
         setError('Name is required')
@@ -186,7 +202,10 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
           .then((res) => {
             setStatus('success')
             setError(null)
-            setResult(res)
+            setResult({
+              mode: 'single',
+              res
+            })
           })
           .catch((err) => {
             setStatus('error')
@@ -200,7 +219,10 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
           .then((res) => {
             setStatus('success')
             setError(null)
-            setResult(res)
+            setResult({
+              mode: 'multi',
+              res
+            })
           })
           .catch((err) => {
             setStatus('error')
@@ -299,18 +321,20 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
               <div className="flex items-center justify-between">
                 <p>Result</p>
                 {mode === 'single' && typeof result === 'string' ? (
-                  <CopyToClipboardButton text={result as string} />
+                  <CopyToClipboardButton text={result} />
                 ) : null}
               </div>
               <div className="mt-2 p-2 bg-slate-800 rounded-lg font-mono text-sm">
-                {mode === 'single' ? (
-                  nameService !== services.celestialsId ? (
-                    <p>{result as string}</p>
+                {result.mode === 'single' ? (
+                  typeof result.res === 'string' ? (
+                    <p>{result.res}</p>
                   ) : (
                     <>
-                      {/* @ts-ignore */}
-                      {result?.map((r) => (
-                        <p className="font-thin text-gray-300">
+                      {result.res.map((r) => (
+                        <p
+                          className="font-thin text-gray-300"
+                          key={`${r.chain_id}-${r.address}`}
+                        >
                           <span className="font-bold">{r.chain_id} : </span>{' '}
                           {r.address}
                         </p>
@@ -318,9 +342,7 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
                     </>
                   )
                 ) : (
-                  <MultipleResults
-                    results={result as Record<string, string | null>}
-                  />
+                  <MultipleResults results={result.res} />
                 )}
               </div>
             </div>
@@ -339,9 +361,15 @@ const ResolutionDemo = ({ testnet }: { testnet: boolean }) => {
 const LookupDemo = ({ testnet }: { testnet: boolean }) => {
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState<
-    | NameServiceLookupResult
+    | {
+        res: NameServiceLookupResult
+        mode: 'single'
+      }
     | null
-    | Record<string, NameServiceLookupResult | null>
+    | {
+        mode: 'multi'
+        res: Record<string, NameServiceLookupResult | null>
+      }
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [nameService, setNameService] = useState<string>(services.ibcDomains)
@@ -356,7 +384,7 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const data = new FormData(e.currentTarget)
-      const address = data.get('address')!.toString().trim()
+      const address = data.get('address')?.toString()?.trim() || ''
       if (!address) {
         setStatus('error')
         setError('Address is required')
@@ -369,7 +397,10 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
           .then((res) => {
             setStatus('success')
             setError(null)
-            setResult(res)
+            setResult({
+              mode: 'single',
+              res
+            })
           })
           .catch((err) => {
             setStatus('error')
@@ -381,7 +412,10 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
           .then((res) => {
             setStatus('success')
             setError(null)
-            setResult(res)
+            setResult({
+              mode: 'multi',
+              res
+            })
           })
           .catch((err) => {
             setStatus('error')
@@ -481,18 +515,20 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
               <div className="flex items-center justify-between">
                 <p>Result</p>
                 {mode === 'single' && typeof result === 'string' ? (
-                  <CopyToClipboardButton text={result as string} />
+                  <CopyToClipboardButton text={result} />
                 ) : null}
               </div>
               <div className="mt-2 p-2 bg-slate-800 rounded-lg font-mono text-sm">
-                {mode === 'single' ? (
-                  typeof result === 'string' ? (
-                    <p>{result}</p>
+                {result.mode === 'single' ? (
+                  typeof result.res === 'string' ? (
+                    <p>{result.res}</p>
                   ) : (
                     <>
-                      {/* @ts-ignore */}
-                      {result?.map((r) => (
-                        <p className="font-thin text-gray-300">
+                      {result.res.map((r) => (
+                        <p
+                          className="font-thin text-gray-300"
+                          key={`${r.chain_id}-${r.name}`}
+                        >
                           <span className="font-bold">{r.chain_id} : </span>{' '}
                           {r.name}
                         </p>
@@ -500,9 +536,7 @@ const LookupDemo = ({ testnet }: { testnet: boolean }) => {
                     </>
                   )
                 ) : (
-                  <MultipleResults
-                    results={result as Record<string, string | null>}
-                  />
+                  <MultipleResults results={result.res} />
                 )}
               </div>
             </div>
